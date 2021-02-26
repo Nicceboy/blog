@@ -91,7 +91,7 @@ naver_site_verification  :
 author:
   name             : *name # *name is a YAML reference pointing to the &anchor earlier
   avatar           : ""
-  bio              : "Undergraduate computer scientist"
+  bio              : "Undergraduate computer scientist student"
   location         : "Oulu"
   links:
     - label: "Made Mistakes"
