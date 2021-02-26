@@ -1,6 +1,15 @@
+---
+title:  "Running your favorite Windows games on Linux containers"
+date:   2021-02-24
+categories: Gaming
+tags: containers docker linux windows
+classes:
+  - landing
+header:
+  teaser: /assets/images/preview_mtg_container.png
+---
 
-
-![](../assets/images/preview_mtg_container.png)
+![Preview of MTG running](../assets/images/preview_mtg_container.png)
 
 Magic The Gathering: Arena works well when played from the container
 
@@ -42,14 +51,18 @@ cat “${HOME}/.config/pulse/default.pa”
 
 Modify or create the file with following contents:
 
-    .include /etc/pulse/default.pa
-    load-module module-native-protocol-unix socket=/tmp/pulse-socket 
+```
+.include /etc/pulse/default.pa
+load-module module-native-protocol-unix socket=/tmp/pulse-socket
+```
 
 After applying changes, server should be restarted:
 
-    pulseaudio -k
-    pulseaudio --start
-    pulseaudio --check
+```
+pulseaudio -k
+pulseaudio --start
+pulseaudio --check
+```
 
 Now, when we have also container with PulseAudio installed, we can share this socket as read-only volume into container. To make container to use this socket, it should be configured as well; modify file in the same path as before inside container to contain:
 
