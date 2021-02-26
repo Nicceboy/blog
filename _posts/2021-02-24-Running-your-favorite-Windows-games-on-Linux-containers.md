@@ -9,7 +9,7 @@ header:
   teaser: /assets/images/preview_mtg_container.png
 ---
 
-![Preview of MTG running](../assets/images/preview_mtg_container.png)
+![](../assets/images/preview_mtg_container.png)
 
 Magic The Gathering: Arena works well when played from the container
 
@@ -47,18 +47,18 @@ To get some sound from the container for your host machine speakers, one way is 
 
 Look for user-specific Pulse configuration file in path:
 
-cat “${HOME}/.config/pulse/default.pa”
+`cat “${HOME}/.config/pulse/default.pa”`
 
 Modify or create the file with following contents:
 
-```
+```shell
 .include /etc/pulse/default.pa
 load-module module-native-protocol-unix socket=/tmp/pulse-socket
 ```
 
 After applying changes, server should be restarted:
 
-```
+```shell
 pulseaudio -k
 pulseaudio --start
 pulseaudio --check
@@ -66,7 +66,7 @@ pulseaudio --check
 
 Now, when we have also container with PulseAudio installed, we can share this socket as read-only volume into container. To make container to use this socket, it should be configured as well; modify file in the same path as before inside container to contain:
 
-```cmd
+```shell
 # Use host socket
 default-server = unix:/tmp/pulse-socket
 enable-shm = false
@@ -93,8 +93,10 @@ We can limit access for this specific container with similar way than with sound
 
 Hexadecimal key can be acquired with xauth tool:
 
-    xauth list                
-    workstation/unix:  MIT-MAGIC-COOKIE-1  f57d6fbab111c34b56efb04776e52229
+```shell
+xauth list                
+workstation/unix:  MIT-MAGIC-COOKIE-1  f57d6fbab111c34b56efb04776e52229
+```
 
 Inside container as root, display can be then added as:
 
@@ -102,7 +104,7 @@ Inside container as root, display can be then added as:
 
 This will generate .Xauthority file, which should be copied for correct user as well. Note, that variables have been predefined manually.
 
-```cmd
+```shell
 cp /root/.Xauthority "${USER_HOME}"
 chown "${USER_UID}":"${USER_GID}" "${USER_HOME}/.Xauthority"
 ```
@@ -120,7 +122,7 @@ Graphic cards are usually found from the path /dev/dri . They can be passed as d
 
 On Debian based system, you can install AMD and Intel based drivers with Vulkan support by getting following packages:
 
-```cmd
+```shell
 dpkg --add-architecture i386 && \ # Get 32-bit support as well
 apt-get update && apt-get install vulkan-utils \
 mesa-vulkan-drivers \
@@ -140,7 +142,7 @@ There is one big open-source project just for this; [Lutris ](https://lutris.net
 
 Dependencies of Lutris can be installed for Debian based system as follows:
 
-```cmd
+```shell
 echo "deb http://download.opensuse.org/repositories/home:/strycore/Debian_10/ ./" | tee /etc/apt/sources.list.d/lutris.list \
 && wget -q https://download.opensuse.org/repositories/home:/strycore/Debian_10/Release.key -O- | apt-key add - \
 && apt-get update \
@@ -149,7 +151,7 @@ echo "deb http://download.opensuse.org/repositories/home:/strycore/Debian_10/ ./
 
 Latest client can be installed from GitHub releases:
 
-```cmd
+```shell
 mkdir -p /tmp/lutris && \
 curl -s https://api.github.com/repos/lutris/lutris/releases/latest > /tmp/lutris/version.json && \
 jq ".tarball_url" /tmp/lutris/version.json | xargs curl -Lo /tmp/lutris/lutris && \
