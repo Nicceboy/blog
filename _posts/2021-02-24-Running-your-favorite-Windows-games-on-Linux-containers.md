@@ -3,13 +3,13 @@ title:  "Running your favorite Windows games on Linux containers"
 date:   2021-02-24
 categories: Gaming
 tags: containers docker linux windows
-classes:
-  - landing
+tagline: "Running your favorite Windows games on Linux containers"
 header:
-  teaser: ../assets/images/preview_mtg_container.png
+  overlay_image: /assets/images/preview_mtg_container.png
+  caption: "Magic The Gathering: Arena works well when played from the container"
+header:
+  teaser: /assets/images/preview_mtg_container.png
 ---
-
-Magic The Gathering: Arena works well when played from the container
 
 There was a moment in one weekend when I wanted to play one Windows game on my laptop, but unfortunately, I am using Linux with integrated Intel graphics and that does not sound too promising.
 
@@ -158,7 +158,7 @@ tar -C /opt/lutris --strip-components 1 -xf /tmp/lutris/lutris && \
 rm -rf /tmp/lutris
 ```
 
-Client will end up into path /opt/lutris/bin/lutris .
+Client will end up into path `/opt/lutris/bin/lutris` .
 
 All additional data will be installed into container’s user home directory. To make is sustainable after stopping containers, it is mounted as named volume into host system. Environment and all the packages can change, but this data can be saved even if deleting all Docker images and containers.
 
