@@ -11,9 +11,9 @@ minimal_mistakes_skin    : "dark" # "air", "aqua", "contrast", "dark", "dirt", "
 
 # Site Settings
 locale                   : "en-US"
-title                    : "Minimal Mistakes"
+title                    : "Home"
 title_separator          : "-"
-subtitle                 : "A Jekyll theme"
+# subtitle                 : "A Jekyll theme"
 name                     : &name "Niklas Saari" # &name is a YAML anchor which can be *referenced later
 description              : &description "Personal blog about \"anything that gratifies one's intellectual curiosity\", usually related to computers,"
 url                      : https://nicceboy.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
