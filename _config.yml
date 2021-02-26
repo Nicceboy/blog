@@ -97,12 +97,12 @@ analytics:
 author:
   name             : *name # *name is a YAML reference pointing to the &anchor earlier
   avatar           : ""
-  bio              : "Undergraduate computer scientist student"
+  bio              : "Undergraduate computer science student"
   location         : "Oulu"
-  links:
-    - label: "Made Mistakes"
-      icon: "fas fa-fw fa-link"
-      url: "https://mademistakes.com"
+  # links:
+  #   - label: "Made Mistakes"
+  #     icon: "fas fa-fw fa-link"
+  #     url: "https://mademistakes.com"
     # - label: "Twitter"
     #   icon: "fab fa-fw fa-twitter-square"
     #   url: "https://twitter.com/mmistakes"
@@ -277,3 +277,4 @@ defaults:
       comments: # true
       share: true
       related: true
+      show_date: true
