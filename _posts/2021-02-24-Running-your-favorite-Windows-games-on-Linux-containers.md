@@ -9,8 +9,6 @@ header:
   teaser: ../assets/images/preview_mtg_container.png
 ---
 
-![](../assets/images/preview_mtg_container.png)
-
 Magic The Gathering: Arena works well when played from the container
 
 There was a moment in one weekend when I wanted to play one Windows game on my laptop, but unfortunately, I am using Linux with integrated Intel graphics and that does not sound too promising.
