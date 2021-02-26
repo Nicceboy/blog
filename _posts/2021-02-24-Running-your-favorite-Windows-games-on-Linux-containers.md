@@ -6,7 +6,7 @@ tags: containers docker linux windows
 classes:
   - landing
 header:
-  teaser: /assets/images/preview_mtg_container.png
+  teaser: ../assets/images/preview_mtg_container.png
 ---
 
 ![](../assets/images/preview_mtg_container.png)
