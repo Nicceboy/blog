@@ -1,7 +1,6 @@
 
-# Running your favorite Windows games on Linux containers
 
-![](/assets/images/preview_mtg_container.png)
+![](../assets/images/preview_mtg_container.png)
 
 Magic The Gathering: Arena works well when played from the container
 
