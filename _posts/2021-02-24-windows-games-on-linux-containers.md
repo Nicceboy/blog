@@ -54,12 +54,14 @@ After applying changes, server should be restarted:
 
 Now, when we have also container with PulseAudio installed, we can share this socket as read-only volume into container. To make container to use this socket, it should be configured as well; modify file in the same path as before inside container to contain:
 
-    *# Use host socket
-    default-server *= unix:/tmp/pulse-socket
-    *enable-shm *= false
-    *# Prevent container from running server
-    autospawn *= no
-    *daemon-binary *= /bin/true # Returns true but does nothing
+```cmd
+# Use host socket
+default-server = unix:/tmp/pulse-socket
+enable-shm = false
+# Prevent container from running server
+autospawn = no
+daemon-binary = /bin/true # Returns true but does nothing
+```
 
 However, Pulse server requires authentication, and this is applied with [magic cookies](https://wiki.archlinux.org/index.php/PulseAudio/Configuration#Connection_&_authentication), if we are not granting anonymous access. Anonymous access can be allowed by adding auth-anonymous=1 just before socket definition on host configuration file.
 
