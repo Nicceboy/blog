@@ -15,7 +15,7 @@ title                    : "Minimal Mistakes"
 title_separator          : "-"
 subtitle                 : "A Jekyll theme"
 name                     : &name "Niklas Saari" # &name is a YAML anchor which can be *referenced later
-description              : &description "A flexible Jekyll theme for your blog or site with a minimalist aesthetic."
+description              : &description "Personal blog about \"anything that gratifies one's intellectual curiosity\", usually related to computers,"
 url                      : https://nicceboy.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "/blog" # the subpath of your site, e.g. "/blog"
 repository               : "Nicceboy/blog"
