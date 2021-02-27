@@ -1,15 +1,20 @@
 ---
+
 title:  "Running your favorite Windows games on Linux containers"
 date:   2021-02-24
 categories: Gaming
 tags: containers docker linux windows
-tagline: "Running your favorite Windows games on Linux containers"
-header:
-  overlay_image: /assets/images/preview_mtg_container.png
-  caption: "Magic The Gathering: Arena works well when played from the container"
-header:
-  teaser: /assets/images/preview_mtg_container.png
+tagline: ""
+toc: true
+#header:
+  # teaser: /assets/images/preview_mtg_container.png
+#  caption: "Magic The Gathering: Arena works well when played from the container"
+# header:
+#   teaser: /assets/images/preview_mtg_container.png
 ---
+
+![](/assets/images/preview_mtg_container.png)
+
 
 There was a moment in one weekend when I wanted to play one Windows game on my laptop, but unfortunately, I am using Linux with integrated Intel graphics and that does not sound too promising.
 
@@ -176,7 +181,7 @@ Python script will launch the Lutris client from container after setting up envi
 
 Script can be installed as package as
 
-`pip install git+[https://github.com/Nicceboy/gamify-containers](https://github.com/Nicceboy/gamify-containers)`
+`pip install git+https://github.com/Nicceboy/gamify-containers\`
 
 Lutris can be finally started
 

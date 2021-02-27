@@ -12,7 +12,7 @@
 
 # theme                  : "minimal-mistakes-jekyll"
 remote_theme             : "mmistakes/minimal-mistakes@4.22.0"
-minimal_mistakes_skin    : "dark" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+minimal_mistakes_skin    : "contrast" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 
 # Site Settings
@@ -21,7 +21,7 @@ title                    : "Home"
 title_separator          : "-"
 # subtitle                 : "A Jekyll theme"
 name                     : &name "Niklas Saari" # &name is a YAML anchor which can be *referenced later
-description              : &description "Personal blog about \"anything that gratifies one's intellectual curiosity\", usually related to computers,"
+description              : &description "Something what might gratify one's intellectual curiosity, usually related to computers,"
 url                      : https://nicceboy.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "/blog" # the subpath of your site, e.g. "/blog"
 repository               : "Nicceboy/blog"
@@ -275,6 +275,6 @@ defaults:
       author_profile: true
       read_time: true
       comments: # true
-      share: true
+      share: false
       related: true
       show_date: true
