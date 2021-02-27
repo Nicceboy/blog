@@ -6,15 +6,14 @@ categories: Gaming
 tags: containers docker linux windows
 tagline: ""
 toc: true
-#header:
-  # teaser: /assets/images/preview_mtg_container.png
+header:
+  teaser: /blog/assets/images/preview_mtg_container.png
 #  caption: "Magic The Gathering: Arena works well when played from the container"
 # header:
 #   teaser: /assets/images/preview_mtg_container.png
 ---
 
-![](../assets/images/preview_mtg_container.png)
-
+![](/blog/assets/images/preview_mtg_container.png)
 
 There was a moment in one weekend when I wanted to play one Windows game on my laptop, but unfortunately, I am using Linux with integrated Intel graphics and that does not sound too promising.
 
