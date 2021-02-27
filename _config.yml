@@ -96,7 +96,7 @@ analytics:
 # Site Author
 author:
   name             : *name # *name is a YAML reference pointing to the &anchor earlier
-  avatar           : ""
+  # avatar           : ""
   bio              : "Undergraduate computer science student"
   location         : "Oulu"
   links:
