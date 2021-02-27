@@ -2,8 +2,10 @@
 main:
   - title: "Programming"
     url: /categories/#programming
-  - title: "Gaming"
-    url: /categories/#gaming
+  - title: "Linux"
+    url: /categories/#linux
+  - title: "Search"
+    url: /search
   # - title: "Quick-Start Guide"
   #   url: https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/
   # - title: "About"

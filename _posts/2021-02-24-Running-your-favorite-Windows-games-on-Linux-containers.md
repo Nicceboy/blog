@@ -1,25 +1,24 @@
 ---
-
-title:  "Running your favorite Windows games on Linux containers"
-date:   2021-02-24
-categories: Gaming
+title: "Running your favorite Windows games on Linux containers"
+date: 2021-02-24
+category: Linux
 tags: containers docker linux windows
 tagline: ""
 toc: true
+toc_sticky: true
+# classes: wide
 header:
-  teaser: /blog/assets/images/preview_mtg_container.png
-#  caption: "Magic The Gathering: Arena works well when played from the container"
-# header:
-#   teaser: /assets/images/preview_mtg_container.png
+  teaser: /assets/images/preview_mtg_container.png
 ---
-
-![](/blog/assets/images/preview_mtg_container.png)
-
 There was a moment in one weekend when I wanted to play one Windows game on my laptop, but unfortunately, I am using Linux with integrated Intel graphics and that does not sound too promising.
 
 The other repelling thought proved to be the amount of dependencies I would need that I am able to play this game on [Wine](https://www.winehq.org/). I would like to maintain my system as whole and get rid of unnecessary stuff later on, somewhat easily. Virtualization is not option, as I have already weak performance.
 
 However, there is another, bit more lightweight solution; containers, especially OCI or Docker containers. So instead of playing the game a bit, I ended up spending a weekend for installing it. In the end, it seemed to be possible. On top of wrapping all the software on single container, games are executed at least in a bit more isolated matter. If I ever want to get same environment back again, I could just pull single Docker image.
+
+{% include figure image_path="/assets/images/preview_mtg_container.png" alt="Testing MTGArena on container." caption="Magic The Gathering: Arena works well when played from the Linux container." %}
+
+
 
 This article expects, that you are already familiar with containers.
 
@@ -43,7 +42,7 @@ What this means in practice, is that container needs more access into host syste
 
 If you don’t have it already, for Debian you can install it for example with following command. It might be better to skip this, if you don’t know how to make it as your primary server if you have another one already.
 
-apt-get update && apt-get install pulseaudio
+`apt-get update && apt-get install pulseaudio`
 
 To get some sound from the container for your host machine speakers, one way is to grant access for PulseAudio server running on your host machine. To achieve this, PulseAudio must be configured to provide accessible Unix socket.
 
