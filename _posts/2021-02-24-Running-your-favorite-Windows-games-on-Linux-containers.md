@@ -48,7 +48,7 @@ To get some sound from the container for your host machine speakers, one way is 
 
 Look for user-specific Pulse configuration file in path:
 
-`cat “${HOME}/.config/pulse/default.pa”`
+`cat "${HOME}/.config/pulse/default.pa"`
 
 Modify or create the file with following contents:
 
