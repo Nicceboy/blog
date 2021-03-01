@@ -513,9 +513,9 @@
   box-shadow: $box-shadow;
 
   .nav__title {
-    color: #fff;
+    color:$text-color;
     font-size: $type-size-6;
-    background: $primary-color;
+    background: $toc_title_background;
     border-top-left-radius: $border-radius;
     border-top-right-radius: $border-radius;
   }
@@ -546,7 +546,7 @@
     border-bottom: 1px solid $border-color;
 
     &:hover {
-      color: $text-color;
+      color: $primary-color;
     }
   }
 

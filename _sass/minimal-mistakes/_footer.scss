@@ -5,9 +5,11 @@
 .page__footer {
   @include clearfix;
   float: left;
-  margin-left: 0;
-  margin-right: 0;
-  width: 100%;
+  // margin-left: 0;
+  // margin-right: 0;
+  // width: 100%;
+  margin-left:auto;
+  margin-right:auto;
   margin-top: 3em;
   color: $muted-text-color;
   -webkit-animation: $intro-transition;
