@@ -98,7 +98,7 @@ author:
   name             : *name # *name is a YAML reference pointing to the &anchor earlier
   # avatar           : ""
   bio              : "Undergraduate computer science student"
-  location         : "Oulu"
+  location         : "Oulu, Finland 🇫🇮"
   links:
   #   - label: "Made Mistakes"
   #     icon: "fas fa-fw fa-link"
@@ -183,6 +183,13 @@ highlighter: rouge
 kramdown:
   syntax_highlighter: rouge
   input: GFM
+  hard_wrap: false
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  smart_quotes: lsquo,rsquo,ldquo,rdquo
+  enable_coderay: false
   syntax_highlighter_opts:
     css_class: 'highlight'
     span:
@@ -194,18 +201,6 @@ kramdown:
 # lsi: false
 # excerpt_separator: "\n\n"
 # incremental: false
-
-
-# Markdown Processing
-kramdown:
-  input: GFM
-  hard_wrap: false
-  auto_ids: true
-  footnote_nr: 1
-  entity_output: as_char
-  toc_levels: 1..6
-  smart_quotes: lsquo,rsquo,ldquo,rdquo
-  enable_coderay: false
 
 
 # Sass/SCSS
