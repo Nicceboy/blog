@@ -118,11 +118,13 @@ text-align: center;
   z-index: -999;
 }
 .taglogo {
-  position: fixed;
+  position: relative;
   bottom: 10%;
-  width: 30%;
-  left: 35%;
-  margin:auto;
+  width: 40%;
+  left: 30%;
+  padding-top: 5%;
+  padding-bottom: 5%;
+  /* margin:auto; */
   /* left: 50%; */
   /* left: 5%; */
   z-index: -999;
