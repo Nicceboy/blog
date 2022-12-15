@@ -52,7 +52,7 @@ See https://stackoverflow.com/questions/22252472/how-can-i-change-the-color-of-a
   transform:scale(1)
  }
  .main {
-   padding-top: 0;
+   padding-top: 2rem;
    min-height: 0;
  }
  .main .profile {
