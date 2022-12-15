@@ -29,6 +29,8 @@ body {
 .profile img {
   width: 15rem;
   z-index: -1;
+  border-radius: 0;
+  /* opacity: 0.5; */
   }
 .dark .profile img, .dark .logo a img, .dark .logo a svg {
 /* #b64329
@@ -105,5 +107,26 @@ text-align: center;
 }
 
 .dark .robot404 {
+  filter: invert(30%) sepia(81%) saturate(995%) hue-rotate(338deg) brightness(92%) contrast(92%);
+}
+
+.background-logo {
+  position: fixed;
+  top:0;
+  left: 5%;
+  opacity: 0.05;
+  z-index: -999;
+}
+.taglogo {
+  position: fixed;
+  bottom: 10%;
+  width: 30%;
+  left: 35%;
+  margin:auto;
+  /* left: 50%; */
+  /* left: 5%; */
+  z-index: -999;
+}
+.dark .background-logo, .dark .taglogo {
   filter: invert(30%) sepia(81%) saturate(995%) hue-rotate(338deg) brightness(92%) contrast(92%);
 }

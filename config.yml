@@ -49,7 +49,7 @@ params:
 
   assets:
     # disableHLJS: true # to disable highlight.js
-    disableFingerprinting: true
+    # disableFingerprinting: true
     favicon: "/images/binary.svg"
     apple_touch_icon: "/images/binary.svg"
     safari_pinned_tab: "/images/binary.svg"
@@ -62,9 +62,9 @@ params:
   # profile-mode
   profileMode:
     enabled: True # needs to be explicitly set
-    title: Spiralling curiosity 
-    subtitle: "Welcome to my blog. Blog about computer engineering and hacking in traditional sense. There isn't much more here to see than my personal documentation and learning process."
-    imageUrl: "/images/binary.svg"
+    title: Nicce's Blog 
+    subtitle: "Welcome to my blog. Blog about computer engineering from wide range of topics. There isn't much more here to see than my personal documentation and learning process."
+    imageUrl: "/images/calculator.svg"
     # imageWidth: 45 both variables disabled from theme
     # imageHeight: 45 disabled from theme
     imageTitle: According to some, spiral is a symbolic route into higher level of consciousness. Not Debian logo.
