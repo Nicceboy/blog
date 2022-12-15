@@ -1,5 +1,4 @@
-# baseURL: "https://nicce.dev/"
-baseURL: "http://localhost:1313/"
+baseURL: "https://nicce.dev/"
 title: Curiosity dooms us
 copyright: © 2022 Niklas Saari
 paginate: 5
