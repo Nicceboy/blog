@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>windows on Curiosity dooms us</title>
+    <link>http://localhost:1313/tags/windows/</link>
+    <description>Recent content in windows on Curiosity dooms us</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>© 2022 Niklas Saari</copyright>
+    <lastBuildDate>Wed, 24 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/windows/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Running Your Favorite Windows Games on Linux Containers</title>
+      <link>http://localhost:1313/posts/2021-02-24-running-your-favorite-windows-games-on-linux-containers/</link>
+      <pubDate>Wed, 24 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/posts/2021-02-24-running-your-favorite-windows-games-on-linux-containers/</guid>
+      <description>Gaming on Linux can be simple.</description>
+    </item>
+    
+  </channel>
+</rss>
