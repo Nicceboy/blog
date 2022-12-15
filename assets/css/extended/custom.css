@@ -1,0 +1,227 @@
+body {
+ font-family:Segoe UI,system-ui,-apple-system,sans-serif;
+ -webkit-font-smoothing:antialiased;
+ -moz-osx-font-smoothing:grayscale;
+ -webkit-text-size-adjust:100%;
+ -moz-text-size-adjust:100%;
+ text-size-adjust:100%;
+ image-rendering:-webkit-optimize-contrast
+}
+.first-entry {
+ margin:unset
+}
+details summary {
+ cursor:pointer
+}
+.in-text {
+ vertical-align:text-bottom
+}
+.giscus_comments {
+ background-color:var(--code-bg);
+ border-radius:var(--radius);
+ padding:10px
+}
+.post-content h4 {
+ font-size:unset
+}
+fieldset {
+ border-radius:var(--radius);
+ border-color:var(--secondary)
+}
+table {
+ border:1px solid var(--tertiary);
+ border-radius:var(--radius)
+}
+.highlight tbody {
+ width:100%;
+ display:table
+}
+.post-content table code {
+ white-space:nowrap
+}
+.footnotes ol::before {
+ content:"Read More..."
+}
+a.footnote-ref::before {
+ content:'['
+}
+a.footnote-ref::after {
+ content:']'
+}
+.chroma .hl {
+ display:flex
+}
+.post-content table pre code {
+ padding:10px 0
+}
+.chroma .lntd:first-of-type {
+ padding-inline-start:10px
+}
+.chroma .lntd:last-of-type {
+ padding-inline-end:10px
+}
+mark>a {
+ color:currentColor
+}
+mark {
+ border-radius:2px
+}
+.post-content img.zoomCheck {
+ height:auto;
+ overflow:hidden;
+ aspect-ratio:auto;
+ box-shadow:0 1px 5px 0 var(--tertiary)
+}
+@media screen and (min-width:769px) {
+ .post-content input[type=checkbox]:checked~label>img {
+  transform:scale(1.6);
+  cursor:zoom-out;
+  position:relative;
+  z-index:999
+ }
+ .post-content img.zoomCheck {
+  transition:transform .15s ease;
+  z-index:999;
+  cursor:zoom-in
+ }
+}
+#menu-trigger {
+ display:none
+}
+.menu {
+ display:flex;
+ margin:auto var(--gap);
+ list-style:none;
+ word-break:keep-all;
+ overflow-x:auto;
+ white-space:nowrap
+}
+.menu li+li {
+ margin-inline-start:var(--gap)
+}
+.menu a {
+ font-size:16px
+}
+.menu .active {
+ font-weight:500;
+ border-bottom:2px solid
+}
+@media screen and (max-width:768px) {
+  .nav Å
+ .menu {
+  list-style:none;
+  position:absolute;
+  right:0;
+  z-index:5;
+  margin-bottom:var(--gap);
+  padding:var(--gap);
+  background:var(--code-bg);
+  border-radius:var(--radius);
+  border:2px solid var(--tertiary);
+  line-height:2.5;
+  margin:calc(var(--header-height) - var(--gap))var(--gap);
+  display:block
+ }
+ .list .menu {
+  background:var(--entry)
+ }
+ .menu li+li {
+  margin-inline-start:0
+ }
+ #menu-trigger {
+  font-size:30px;
+  position:relative;
+  display:block;
+  float:right;
+  margin:auto var(--gap)
+ }
+ .menu.hidden {
+  display:none
+ }
+}
+@media print {
+ * {
+  -webkit-print-color-adjust:exact!important;
+  color-adjust:exact!important
+ }
+ .menu,
+ #menu-trigger,
+ .logo-switches,
+ .toc,
+ .post-footer,
+ .page-footer,
+ #graphcomment,
+ #comments,
+ #top-link,
+ .copy-code,
+ div.highlight:hover .copy-code,
+ .adsbygoogle iframe,
+ .post-content ins,
+ .anchor,
+ .giscus_comments,
+ .post-content *:hover .anchor,
+ .sponsor {
+  display:none!important;
+  height:0
+ }
+ .dark {
+  --theme:rgb(255, 255, 255);
+  --entry:rgb(255, 255, 255);
+  --primary:rgb(30, 30, 30);
+  --secondary:rgb(108, 108, 108);
+  --tertiary:rgb(214, 214, 214);
+  --content:rgb(31, 31, 31);
+  --hljs-bg:rgb(28, 29, 33);
+  --code-bg:rgb(245, 245, 245);
+  --border:rgb(238, 238, 238)
+ }
+ .dark.list {
+  background:var(--code-bg)
+ }
+ .list::-webkit-scrollbar-track {
+  background:var(--code-bg)
+ }
+ .list::-webkit-scrollbar-thumb {
+  border:5px solid var(--code-bg)
+ }
+ .post-content a::after {
+  content:"(" attr(href)")"
+ }
+ .post-content a {
+  box-shadow:unset;
+  padding:4px 0;
+  box-shadow:0 -1px 0 var(--primary)inset;
+  -webkit-print-color-adjust:exact
+ }
+ .post-content a::after {
+  padding:4px 0;
+  box-shadow:0 -1px #fff none;
+  -webkit-print-color-adjust:exact
+ }
+ h1,
+ h2,
+ h3,
+ h4,
+ h5 {
+  page-break-after:avoid
+ }
+ table,
+ figure {
+  page-break-inside:avoid
+ }
+ code {
+  white-space:pre-wrap
+ }
+ .nav {
+  display:block;
+  text-align:center
+ }
+ .logo {
+  display:block
+ }
+}
+
+
+.profile img {
+    width: 10rem;
+  }
