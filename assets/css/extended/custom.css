@@ -42,7 +42,7 @@ See https://stackoverflow.com/questions/22252472/how-can-i-change-the-color-of-a
   --gap:14px
  }
  body {
-   font-size: 0.7rem;
+   font-size: 1rem;
  }
  .profile img {
   transform:scale(1)
