@@ -85,21 +85,18 @@ See https://stackoverflow.com/questions/22252472/how-can-i-change-the-color-of-a
   }
 
 }
-.main {
+/* .main {
   text-align: center;
-}
+} */
 .not-found {
   position: sticky;
-left: 2%;
-right: 0;
-display: inline-grid;
 align-items: center;
 justify-content: center;
 height: 80%;
 font-size: 70%;
 font-weight: 700;
-margin-top: 20%;
-margin-bottom: 10%;
+margin-top: 15%;
+margin-bottom: 5%;
 text-align: center;
 }
 .robot404 {
