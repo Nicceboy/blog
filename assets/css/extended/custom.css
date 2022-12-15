@@ -1,3 +1,7 @@
+:root {
+  --custom-color:#b64329;
+}
+
 body {
  font-family:Segoe UI,system-ui,-apple-system,sans-serif;
  -webkit-font-smoothing:antialiased;
@@ -6,14 +10,27 @@ body {
  -moz-text-size-adjust:100%;
  text-size-adjust:100%;
  image-rendering:-webkit-optimize-contrast;
- background-image: var("/images/bitmapbottom.svg") !important;
- display: absolute !important;
+ /* background-image: url("/images/bitmapbottom.svg") !important;
+ background-repeat: no-repeat !important;
+ background-position: center !important;
+ background-size: 90% !important;
+ overflow: visible !important; */
+}
+#menu li a span {
+  font-weight: 500;
+  font-size: 1rem;
+}
+.dark #menu li a span, .dark .logo a, .dark .page-header h1 {
+  color: var(--custom-color);
+}
+.dark .button {
+  /* background: var(--custom-color); */
 }
 .profile img {
   width: 15rem;
   z-index: -1;
   }
-.dark .profile img {
+.dark .profile img, .logo a img, .logo a svg {
 /* #b64329
 See https://stackoverflow.com/questions/22252472/how-can-i-change-the-color-of-an-svg-element
  */
