@@ -63,7 +63,7 @@ params:
   # profile-mode
   profileMode:
     enabled: True # needs to be explicitly set
-    title: Curiosity is a blessing? 
+    title: Spiralling curiosity 
     subtitle: "Welcome to my blog. Blog about computer engineering and hacking in traditional sense. There isn't much more here to see than my personal documentation and learning process."
     imageUrl: "/images/binary.svg"
     # imageWidth: 45 both variables disabled from theme
