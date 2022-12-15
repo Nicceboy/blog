@@ -37,6 +37,8 @@ See https://stackoverflow.com/questions/22252472/how-can-i-change-the-color-of-a
   filter: invert(30%) sepia(81%) saturate(995%) hue-rotate(338deg) brightness(92%) contrast(92%);
   }
 
+
+
 @media screen and (max-width:768px) {
  :root {
   --gap:14px
@@ -83,7 +85,9 @@ See https://stackoverflow.com/questions/22252472/how-can-i-change-the-color-of-a
   }
 
 }
-
+.main {
+  text-align: center;
+}
 .not-found {
   position: sticky;
 left: 2%;
