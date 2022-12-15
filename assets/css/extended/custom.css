@@ -30,7 +30,7 @@ body {
   width: 15rem;
   z-index: -1;
   }
-.dark .profile img, .logo a img, .logo a svg {
+.dark .profile img, .dark .logo a img, .dark .logo a svg {
 /* #b64329
 See https://stackoverflow.com/questions/22252472/how-can-i-change-the-color-of-an-svg-element
  */
@@ -82,4 +82,27 @@ See https://stackoverflow.com/questions/22252472/how-can-i-change-the-color-of-a
     width: 10rem;
   }
 
+}
+
+.not-found {
+  position: sticky;
+left: 2%;
+right: 0;
+display: inline-grid;
+align-items: center;
+justify-content: center;
+height: 80%;
+font-size: 70%;
+font-weight: 700;
+margin-top: 20%;
+margin-bottom: 10%;
+text-align: center;
+}
+.robot404 {
+  /* filter: invert(17%) sepia(14%) saturate(3702%) hue-rotate(137deg) brightness(92%) contrast(104%); */
+  filter: invert(0%) sepia(0%) saturate(7500%) hue-rotate(327deg) brightness(96%) contrast(104%);
+}
+
+.dark .robot404 {
+  filter: invert(30%) sepia(81%) saturate(995%) hue-rotate(338deg) brightness(92%) contrast(92%);
 }
