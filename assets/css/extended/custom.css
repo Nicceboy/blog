@@ -49,6 +49,7 @@ See https://stackoverflow.com/questions/22252472/how-can-i-change-the-color-of-a
  }
  .main {
    padding-top: 0;
+   min-height: 0;
  }
  .main .profile {
   min-height: 0;
