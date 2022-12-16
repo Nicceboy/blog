@@ -21,10 +21,10 @@ outputs:
       - json # is necessary
 
 params:
-  env: development # to enable google analytics, opengraph, twitter-cards and schema.
-  title: ExampleSite
-  description: "ExampleSite description"
-  keywords: [Blog, Portfolio ]
+  env: production # to enable google analytics, opengraph, twitter-cards and schema.
+  title: Nicce's Blog
+  description: "A blog about computers."
+  keywords: [blog, portfolio, Niklas Saari, computer science, hacking, computer engineering, computer security, cybersecurity ]
   author: Niklas Saari
   # author: ["Me", "You"] # multiple authors
   # images: ["/images/binary.svg"]

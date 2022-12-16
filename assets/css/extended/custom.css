@@ -135,3 +135,8 @@ text-align: center;
 .dark .background-logo, .dark .taglogo {
   filter: invert(30%) sepia(81%) saturate(995%) hue-rotate(338deg) brightness(92%) contrast(92%);
 }
+
+.archive-entry {
+  background: var(--theme);
+  border-radius: 0.5rem;
+}
