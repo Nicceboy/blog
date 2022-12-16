@@ -65,7 +65,7 @@ params:
   profileMode:
     enabled: True # needs to be explicitly set
     title: Nicce's Blog 
-    subtitle: "Welcome to my blog. Blog about computer engineering from wide range of topics. There isn't much more here to see than my personal documentation and learning process."
+    subtitle: "Welcome to my blog. A blog about computer engineering on different topics. There isn't much more here to see than my personal documentation and learning process."
     imageUrl: "/images/calculator.svg"
     # imageWidth: 45 both variables disabled from theme
     # imageHeight: 45 disabled from theme
@@ -83,9 +83,16 @@ params:
     Title: ""
     Content: Welcome to my blog. There isn't much more here to see.
 
-      # socialIcons:
-      # - name: github
-      # url: "https://github.com/Nicceboy"
+  # socialIcons:
+  # - name: github
+  # url: "https://github.com/Nicceboy"
+  socialIcons:
+      - name: github
+        url: "https://github.com/Nicceboy"
+      - name: gitlab 
+        url: "https://github.com/nicce"
+      - name: Rss
+        url: "/index.xml"
 
 
   cover:
@@ -94,7 +101,7 @@ params:
     hiddenInSingle: false # hide on single page
 
   editPost:
-    URL: "https://github.com/Nicceboy/blog/content"
+    URL: "https://github.com/Nicceboy/blog/tree/master/content"
     Text: "Suggest Changes" # edit text
     appendFilePath: true # to append file path to Edit link
 
