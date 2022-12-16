@@ -53,7 +53,8 @@ params:
     favicon: "/images/binary.svg"
     apple_touch_icon: "/images/binary.svg"
     safari_pinned_tab: "/images/binary.svg"
-    theme_color: "#fff"
+    theme_color: "#f5f5f5"
+    theme_color_page: "#fff"
 
   label:
     text: "Home"
