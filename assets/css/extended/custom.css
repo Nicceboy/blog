@@ -62,6 +62,7 @@ See https://stackoverflow.com/questions/22252472/how-can-i-change-the-color-of-a
    /* display: none; */
    padding: 0rem 0rem 0rem 0rem;
    line-height: normal;
+   margin: auto;
  }
 /* .profile .profile_inner h1 {
   padding: 0 0 0 0;
