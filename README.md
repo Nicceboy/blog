@@ -1,6 +1,15 @@
-This is a test.
+## A blog based on Hugo and PaperMod them
 
-## TODO
+### Development
+
+Add theme as submodule
+
+```cosole
+git submodule add --depth=1 git@github.com:Nicceboy/hugo-PaperMod.git
+submodule update --init --recursive
+```
+
+### TODO
 
 Maybe add hamburger menu 
 
