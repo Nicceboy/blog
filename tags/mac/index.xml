@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>mac on A blog about computer systems</title>
+    <link>https://nicce.dev/tags/mac/</link>
+    <description>Recent content in mac on A blog about computer systems</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>© 2023 Niklas Saari</copyright>
+    <lastBuildDate>Sat, 11 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://nicce.dev/tags/mac/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OCI containers, Arch Linux ARM and LaTeX on Apple Silicon </title>
+      <link>https://nicce.dev/posts/latex-with-docker-and-m1/</link>
+      <pubDate>Sat, 11 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://nicce.dev/posts/latex-with-docker-and-m1/</guid>
+      <description>Building and using ARM-based OCI images on Apple Silicon from scratch</description>
+    </item>
+    
+  </channel>
+</rss>
