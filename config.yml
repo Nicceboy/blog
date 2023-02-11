@@ -1,6 +1,6 @@
 baseURL: "https://nicce.dev/"
 title: Curiosity dooms us
-copyright: © 2022 Niklas Saari
+copyright: © 2023 Niklas Saari
 paginate: 5
 theme: PaperMod
 
@@ -69,7 +69,8 @@ params:
     imageUrl: "/images/calculator.svg"
     # imageWidth: 45 both variables disabled from theme
     # imageHeight: 45 disabled from theme
-    imageTitle: According to some, spiral is a symbolic route into higher level of consciousness. Not Debian logo.
+    # imageTitle: According to some, spiral is a symbolic route into higher level of consciousness. Not Debian logo.
+    imageTitle: Classic calculator.
     buttons:
       - name: Posts
         url: posts
