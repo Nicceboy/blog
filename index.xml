@@ -6,16 +6,7 @@
     <description>Recent content on A blog about computer systems</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>© 2023 Niklas Saari</copyright>
-    <lastBuildDate>Sat, 11 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://nicce.dev/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>OCI containers, Arch Linux ARM and LaTeX on Apple Silicon </title>
-      <link>https://nicce.dev/posts/latex-with-docker-and-m1/</link>
-      <pubDate>Sat, 11 Feb 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://nicce.dev/posts/latex-with-docker-and-m1/</guid>
-      <description>Building and using ARM-based OCI images on Apple Silicon from scratch</description>
-    </item>
-    
+    <lastBuildDate>Wed, 24 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://nicce.dev/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Running Your Favorite Windows Games on Linux Containers</title>
       <link>https://nicce.dev/posts/running-your-favorite-windows-games-on-linux-containers/</link>
