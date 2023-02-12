@@ -2,7 +2,7 @@
 title: "LaTeX with OCI containers, Podman and Arch Linux ARM on Apple Silicon"
 summary: "This blog post introduces a brief overview of how to set up a container runner on your ARM Macbook and how to create an AArch64 Open Container Initiative (OCI) container image from the scratch."
 date: 2023-02-11
-draft: true
+draft: false
 tags: ["containers", "podman", "docker", "mac", "arm", "latex", "oci"]
 author: Niklas Saari
 # author: ["Me", "You"] # multiple authors
@@ -71,8 +71,7 @@ There is an advanced tool called [_Buildah_](https://buildah.io/), but unfortuna
 Some of the features will work on MacOS (if installed with Nix), but not all of them, and images will be separated from the Podman VM.
 
 Podman `build` command uses a subset of Buildah and it is sufficient for our needs for now; `podman build` is equivalent to `buildah build -f Dockerfile` 
-For advanced use of Buildah, I might make another post for demonstration purposes when we will build our OCI image without `Dockerfile` in MacOS.
-Buildah can be used from the VM or inside another container.
+Buildah can be used from the VM or inside another container, but that is too complicated for this post.
 
 ## Installing Podman on Mac
 
@@ -86,7 +85,7 @@ Before anything works, we need to set up a virtual machine.
 At this point, it is important to note that you cannot mount folders into the containers unless you mount them into the VM too.
 So double mount is required; mount the folder into the VM, and mount the folder from VM into the container.
 
-You could either mount a specific limited directory into the machine or the whole home directory.
+You could either mount a specific limited directory into the machine or the whole home directory, for example.
 Mounting the whole home directory might not be advised, but I will do it for demonstration purposes.
 CPU count and memory size has been also increased.
 
@@ -184,9 +183,6 @@ ENV TLMGR /usr/share/texmf-dist/scripts/texlive/tlmgr.pl
 # For some reason, default tlmgr.pl contex filepath is in wrong location in Arch Linux 
 RUN sed -i '/\$Master = "\$Master\/\.\.\/\.\.";/c     \$Master = "\${Master}\/\.\.\/\.\.\/\.\.";' $TLMGR
 
-# Folder as mountpoint with correct permissions
-RUN mkdir /latex && chown alarm:alarm /latex
-
 USER alarm
 WORKDIR /home/alarm
 
@@ -197,58 +193,37 @@ ENTRYPOINT ["/bin/zsh"]
 ```
 
 Generated image will have the latest TeX Live distribution with a working package manager and desired default timezone.
-On runtime, the timezone can also be changed to `-e TZ=Europe/Amsterdam` Podman parameter.
+On runtime, the timezone can also be changed to `-e TZ=Europe/Amsterdam` with Podman parameter.
 
 
-## Elsevier template as an example
+## IEEE Conference template as an example
 
-As an example, we will build Elsevier template.
-The template is provided [in here.](https://www.elsevier.com/authors/policies-and-guidelines/latex-instructions)
+As an example, we will build IEEE Conference template.
+The template is provided [in here.](https://www.ieee.org/conferences/publishing/templates.html)
 
-We will download and extract it.
+Download and extract it:
 ```bash
-curl -OL https://www.elsevier.com/__data/assets/file/0007/56842/elsarticle-template.zip && 7z x elsarticle-template.zip
+curl -o ieee_template.zip -L https://www.ieee.org/content/dam/ieee-org/ieee/web/org/pubs/conference-latex-template_10-17-19.zip && 7z x ieee_template.zip
 ```
 
 Mount the source into our container.
-Note the ``--userns`` option; it maps the ownership of the volume inside the container to the correct user.
+Note the ``--userns`` option; it maps the ownership of the volume inside the container to the correct non-root user.
 
 ```bash
-podman run --userns=keep-id:uid=1000,gid=1000 --rm -itv "$(pwd)/elsarticle:/latex" texlive:latest
+cd Conference-LaTeX-template_10-17-19 
+podman run --userns=keep-id:uid=1000,gid=1000 --rm -itv "$(pwd):/latex" texlive:latest
 ```
 
-To build our document with LuaLatex and detect new changes
+To build our document with LuaLatex and to also detect new changes
 
 ```bash
-cd /elsarticle
-latexmk -pdflatex=lualatex  -pdf -pvc dimain.tex
+cd /latex
+latexmk -pdflatex=lualatex  -pdf -pvc conference_101719.tex
 ```
 
-{{< details "Using Buildah" >}}
-  
+And the PDF will finally appear in the mounted folder and will be rebuilt if the source is changed.
 
-### Installing Buildah
+## Conclusion
 
-To see the name of the machine
-
-```sh
-podman machine list                                                           130 ↵
-NAME                     VM TYPE     CREATED            LAST UP            CPUS        MEMORY      DISK SIZE
-podman-machine-default*  qemu        About an hour ago  Currently running  1           2.147GB     107.4GB
-```
-
-Podman default machine uses Fedore CoreOS which is immutable and atomic by nature.
-To install additional packages, we need to use a specific package manager to add additional layers for the base VM.
-
-Connect to the VM
-```sh
-podman machine ssh podman-machine-default # Connect to VM
-```
-Install Buildah
-
-```sh
-sudo rpm-ostree install buildah
-systemctl reboot # reboot to make changes effective
-```
-
-{{< /details >}}
+Using Podman to build PDF files might be overly complicated, but it gives us a working and reproducible environment.
+LaTeX can be messy sometimes, and it is good to have a chance to roll back to the previous working environment version, which can be quickly removed as well.
