@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Posts on A blog about computer systems</title>
-    <link>https://nicce.dev/posts/</link>
-    <description>Recent content in Posts on A blog about computer systems</description>
+    <title>podman on A blog about computer systems</title>
+    <link>https://nicce.dev/tags/podman/</link>
+    <description>Recent content in podman on A blog about computer systems</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>© 2023 Niklas Saari</copyright>
-    <lastBuildDate>Sat, 11 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://nicce.dev/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 11 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://nicce.dev/tags/podman/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>LaTeX with OCI containers, Podman and Arch Linux ARM on Apple Silicon</title>
       <link>https://nicce.dev/posts/latex-with-containers-and-apple-silicon/</link>
@@ -14,15 +14,6 @@
       
       <guid>https://nicce.dev/posts/latex-with-containers-and-apple-silicon/</guid>
       <description>Building and using ARM-based OCI images on Apple Silicon from scratch. LaTeX document preparation system used as an example.</description>
-    </item>
-    
-    <item>
-      <title>Running Your Favorite Windows Games on Linux Containers</title>
-      <link>https://nicce.dev/posts/running-your-favorite-windows-games-on-linux-containers/</link>
-      <pubDate>Wed, 24 Feb 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://nicce.dev/posts/running-your-favorite-windows-games-on-linux-containers/</guid>
-      <description>Gaming on Linux can be simple.</description>
     </item>
     
   </channel>

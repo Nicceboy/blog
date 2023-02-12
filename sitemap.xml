@@ -3,24 +3,42 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://nicce.dev/</loc>
-    <lastmod>2021-02-24T00:00:00+00:00</lastmod>
+    <lastmod>2023-02-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://nicce.dev/tags/arm/</loc>
+    <lastmod>2023-02-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://nicce.dev/tags/containers/</loc>
-    <lastmod>2021-02-24T00:00:00+00:00</lastmod>
+    <lastmod>2023-02-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://nicce.dev/tags/docker/</loc>
-    <lastmod>2021-02-24T00:00:00+00:00</lastmod>
+    <lastmod>2023-02-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://nicce.dev/tags/latex/</loc>
+    <lastmod>2023-02-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://nicce.dev/posts/latex-with-containers-and-apple-silicon/</loc>
+    <lastmod>2023-02-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://nicce.dev/tags/mac/</loc>
+    <lastmod>2023-02-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://nicce.dev/tags/oci/</loc>
+    <lastmod>2023-02-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://nicce.dev/tags/podman/</loc>
+    <lastmod>2023-02-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://nicce.dev/posts/</loc>
+    <lastmod>2023-02-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://nicce.dev/tags/</loc>
+    <lastmod>2023-02-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://nicce.dev/tags/linux/</loc>
     <lastmod>2021-02-24T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://nicce.dev/posts/</loc>
-    <lastmod>2021-02-24T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://nicce.dev/posts/running-your-favorite-windows-games-on-linux-containers/</loc>
-    <lastmod>2021-02-24T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://nicce.dev/tags/</loc>
     <lastmod>2021-02-24T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://nicce.dev/tags/windows/</loc>
