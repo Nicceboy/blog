@@ -48,7 +48,7 @@ params:
   tocopen: false
 
   assets:
-    # disableHLJS: true # to disable highlight.js
+    disableHLJS: true # to disable highlight.js
     # disableFingerprinting: true
     favicon: "/images/binary.svg"
     apple_touch_icon: "/images/binary.svg"
@@ -142,10 +142,10 @@ menu:
 pygmentsUseClasses: true
 markup:
   highlight:
-    noClasses: false
+    # noClasses: false
     # anchorLineNos: true
-    # codeFences: true
-    # guessSyntax: true
+    codeFences: true
+    guessSyntax: true
     # lineNos: true
-    # style: monokai
+    style: monokai
 
