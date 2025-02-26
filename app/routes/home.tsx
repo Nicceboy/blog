@@ -1,10 +1,10 @@
-import { Welcome } from "~/welcome/welcome.tsx";
+import { Post } from "~/welcome/welcome.tsx";
 import type { Route } from "./+types/home.ts";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "A blog about something" },
+    { name: "description", content: "Welcome to my website!" },
   ];
 }
 
@@ -17,5 +17,5 @@ export function loader() {
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
-  return <Welcome message={loaderData.message} />;
+  return <Post message={loaderData.message} />;
 }

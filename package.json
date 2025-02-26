@@ -1,8 +1,14 @@
 {
-  "name": "",
+  "name": "a_very_personal_blog",
   "private": true,
   "type": "module",
   "dependencies": {
+    "@mdx-js/react": "^3.1.0",
+    "@mdx-js/rollup": "^3.1.0",
+    "@radix-ui/react-navigation-menu": "^1.2.5",
+    "@tailwindcss/postcss": "^4.0.9",
+    "@types/mdx": "^2.0.13",
+    "autoprefixer": "^10.4.20",
     "isbot": "^5.1.18",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

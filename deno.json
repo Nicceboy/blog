@@ -12,6 +12,7 @@
     "typegen": "react-router typegen"
   },
   "compilerOptions": {
+    "checkJs": true,
     "lib": ["deno.window", "dom"],
     "jsx": "react-jsx",
     "jsxImportSource": "react",

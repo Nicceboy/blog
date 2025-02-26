@@ -4,11 +4,23 @@
   --font-sans:
     "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  /* --font-sans: VT323, serif; */
+
+  /* custom colors */
+  --color-red-my: #b7384b;
+  --color-red-my-hover: #830c16;
 }
 
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
+  .vt323-regular {
+    font-family: "VT323", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  /* @apply bg-white dark:bg-gray-900; */
+  @apply bg-white dark:bg-stone-950;
+  /* @apply bg-white dark:bg-black; */
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;

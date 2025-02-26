@@ -1,0 +1,193 @@
+
+
+export const metadata = {
+    title: "Running Your Favorite Windows Games on Linux Containers",
+    created: Date.parse("2021-02-24"),
+    // updated: Date.parse("2025-02-26"),
+    tags: ["containers", "docker", "linux", "windows"],
+    author: "Niklas Saari",
+    description: "Gaming on Linux can be simple."
+};
+
+There was a moment in one weekend when I wanted to play one Windows game on my laptop, but unfortunately, I am using Linux with integrated Intel graphics and that does not sound too promising.
+
+The other repelling thought proved to be the amount of dependencies I would need that I am able to play this game on [Wine](https://www.winehq.org/). I would like to maintain my system as whole and get rid of unnecessary stuff later on, somewhat easily. Virtualization is not option, as I have already weak performance.
+
+However, there is another, bit more lightweight solution; containers, especially OCI or Docker containers. So instead of playing the game a bit, I ended up spending a weekend for installing it. In the end, it seemed to be possible. On top of wrapping all the software on single container, games are executed at least in a bit more isolated matter. If I ever want to get same environment back again, I could just pull single Docker image.
+
+
+ ![Testing MTGArena on container.](/app/posts/preview_mtg_container.png)
+
+
+
+This article expects, that you are already familiar with containers.
+
+GitHub repository with source code is available [here.](https://github.com/Nicceboy/gamify-containers)
+
+## Challenges
+
+Traditional container applications are in the most of the cases CLI based, not making sound and rarely needing hardware acceleration or GPUs. This brings more requirements for containers, when we are talking about games:
+
+* Sound support
+
+* Display support
+
+* GPU/Hardware acceleration
+
+What this means in practice, is that container needs more access into host system resources and applications.
+
+### Sound
+
+[PulseAudio](https://www.freedesktop.org/wiki/Software/PulseAudio/) is one of the most used sound servers in the Linux world for generic purpose. It is probably already on your machine. Jack is used more for professionals and left out of scope. [PipeWire](https://pipewire.org/) might be the future.
+
+If you don't have it already, for Debian you can install it for example with following command. It might be better to skip this, if you don't know how to make it as your primary server if you have another one already.
+
+`apt-get update && apt-get install pulseaudio`
+
+To get some sound from the container for your host machine speakers, one way is to grant access for PulseAudio server running on your host machine. To achieve this, PulseAudio must be configured to provide accessible Unix socket.
+
+Look for user-specific Pulse configuration file in path:
+
+`cat "${HOME}/.config/pulse/default.pa"`
+
+Modify or create the file with following contents:
+
+```shell
+.include /etc/pulse/default.pa
+load-module module-native-protocol-unix socket=/tmp/pulse-socket
+```
+
+After applying changes, server should be restarted:
+
+```shell
+pulseaudio -k
+pulseaudio --start
+pulseaudio --check
+```
+
+Now, when we have also container with PulseAudio installed, we can share this socket as read-only volume into container. To make container to use this socket, it should be configured as well; modify file in the same path as before inside container to contain:
+
+```shell
+# Use host socket
+default-server = unix:/tmp/pulse-socket
+enable-shm = false
+# Prevent container from running server
+autospawn = no
+daemon-binary = /bin/true # Returns true but does nothing
+```
+
+However, Pulse server requires authentication, and this is applied with [magic cookies](https://wiki.archlinux.org/index.php/PulseAudio/Configuration#Connection_&_authentication), if we are not granting anonymous access. Anonymous access can be allowed by adding auth-anonymous=1 just before socket definition on host configuration file.
+
+Non-anonymous access requires copying the cookies each time container is executed from the host path `“${HOME}/.config/pulse/cookie”` into same destination path in container. Sounds should be working now.
+
+### Display
+
+There are two main display servers; X.org and Wayland. X.org is beginning to reach its end of life, but still most of the applications are only supporting it.
+
+To make X applications to work under containers, we need to share Unix socket as read-only volume again, this time in the path /tmp/.X11-unix .
+
+Additionally, environment value of $DISPLAY must be shared into container, to tell location of the display.
+
+In general, granting **access to host machine's X server is considered dangerous**, as content and key presses can be manipulated and seen. [X11docker project](https://github.com/mviereck/x11docker) attempts to solve some of these problems.
+
+We can limit access for this specific container with similar way than with sound; copying magic cookies into container when it is executed.
+
+Hexadecimal key can be acquired with xauth tool:
+
+```shell
+xauth list                
+workstation/unix:  MIT-MAGIC-COOKIE-1  f57d6fbab111c34b56efb04776e52229
+```
+
+Inside container as root, display can be then added as:
+
+`xauth add “$DISPLAY” . <key>`
+
+This will generate .Xauthority file, which should be copied for correct user as well. Note, that variables have been predefined manually.
+
+```shell
+cp /root/.Xauthority "${USER_HOME}"
+chown "${USER_UID}":"${USER_GID}" "${USER_HOME}/.Xauthority"
+```
+**NOTE:** When running XWayland compositor (Wayland support for X), it seems that UID of Docker user in container must be same than in the owner of host X server. Otherwise there are not enough permissions. This has impact for the level of isolation.
+
+Pure Wayland applications are yet to be tested, but should not take much more effort.
+
+### Graphic cards and hardware acceleration
+
+There was a time when this sounded complicated problem for me, but it was simple after all.
+
+All what you need to do, is to share graphic cards as devices, and install drivers!
+
+Graphic cards are usually found from the path /dev/dri . They can be passed as devices into container. To install drivers, you must find suitable packages.
+
+On Debian based system, you can install AMD and Intel based drivers with Vulkan support by getting following packages:
+
+```shell
+dpkg --add-architecture i386 && \ # Get 32-bit support as well
+apt-get update && apt-get install vulkan-utils \
+mesa-vulkan-drivers \
+mesa-vulkan-drivers:i386 \
+libvulkan1 \
+libvulkan1:i386 \
+libglx-mesa0 \
+libgl1-mesa-dri
+```
+Vulkan is required to boost performance especially of DirectX 11 applications, when running Windows games in Wine. There is project called as [dxvk](https://github.com/doitsujin/dxvk) which attempts to make transitions from DirectX into Vulkan.
+
+If everything is good in you container, running command vulkaninfo should tell information about your graphic card. With command vkcube you should get spinning 3D cube.
+
+## Managing games and runners on Linux
+
+There is one big open-source project just for this; [Lutris ](https://lutris.net/)is trying to simplify it all. I decided to try it for managing Wine and dxvk runner versions and for managing game installations. It was installed into container as well.
+
+Dependencies of Lutris can be installed for Debian based system as follows:
+
+```shell
+echo "deb http://download.opensuse.org/repositories/home:/strycore/Debian_10/ ./" | tee /etc/apt/sources.list.d/lutris.list \
+&& wget -q https://download.opensuse.org/repositories/home:/strycore/Debian_10/Release.key -O- | apt-key add - \
+&& apt-get update \
+&& apt-get -y install lutris
+```
+
+Latest client can be installed from GitHub releases:
+
+```shell
+mkdir -p /tmp/lutris && \
+curl -s https://api.github.com/repos/lutris/lutris/releases/latest > /tmp/lutris/version.json && \
+jq ".tarball_url" /tmp/lutris/version.json | xargs curl -Lo /tmp/lutris/lutris && \
+mkdir -p /opt/lutris && \
+tar -C /opt/lutris --strip-components 1 -xf /tmp/lutris/lutris && \
+rm -rf /tmp/lutris
+```
+
+Client will end up into path `/opt/lutris/bin/lutris` .
+
+All additional data will be installed into container's user home directory. To make is sustainable after stopping containers, it is mounted as named volume into host system. Environment and all the packages can change, but this data can be saved even if deleting all Docker images and containers.
+
+The one specific game I wanted to play was Magic The Gathering: Arena. There is pre-made installation script in Lutris already, which installs some dependencies game is requiring, such as .NET Framework 4.8.
+
+Game has been running smoothly on my machine so far, with Vulkan transitions after little tweaking of dxvk versions. However, functionality of other games depends heavily on sufficient Wine features.
+
+## Conclusion
+
+In the end, I made Python script and specific Docker image to automate most of the requirements and it is available at [GitHub in here](https://github.com/Nicceboy/gamify-containers). It will create required named volume of game data ($HOME directory of user) and sets environment up. Docker image has been pre-built and can be pulled with command
+
+`docker pull ghcr.io/nicceboy/lutris-vulkan:latest`
+
+Python script will launch the Lutris client from container after setting up environment. As manual step, PulseAudio should be configured beforehand.
+
+Script can be installed as package as
+
+`pip install git+https://github.com/Nicceboy/gamify-containers`
+
+Lutris can be finally started
+
+`playlutris --detach`
+
+![](https://cdn-images-1.medium.com/max/3428/1*yDApwAZGTMONUhI2yjeeUg.png)
+
+At this point, I had already installed the game before, and game data is visible from mounted volume.
+
+In my case, I did not make any performance measurements to see impact from container usage. Game was still very playable and therefore I did not bother with that.
+
