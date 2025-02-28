@@ -42,24 +42,28 @@ What this means in practice, is that container needs more access into host syste
 
 If you don't have it already, for Debian you can install it for example with following command. It might be better to skip this, if you don't know how to make it as your primary server if you have another one already.
 
-`apt-get update && apt-get install pulseaudio`
+```bash showLineNumbers=false
+apt-get update && apt-get install pulseaudio
+```
 
 To get some sound from the container for your host machine speakers, one way is to grant access for PulseAudio server running on your host machine. To achieve this, PulseAudio must be configured to provide accessible Unix socket.
 
 Look for user-specific Pulse configuration file in path:
 
-`cat "${HOME}/.config/pulse/default.pa"`
+```bash showLineNumbers=false
+cat "${HOME}/.config/pulse/default.pa"
+```
 
 Modify or create the file with following contents:
 
-```shell
+
+```shell showLineNumbers=false 
 .include /etc/pulse/default.pa
 load-module module-native-protocol-unix socket=/tmp/pulse-socket
 ```
+After applying changes, server should be restarted.
 
-After applying changes, server should be restarted:
-
-```shell
+```bash showLineNumbers=false
 pulseaudio -k
 pulseaudio --start
 pulseaudio --check
@@ -67,7 +71,7 @@ pulseaudio --check
 
 Now, when we have also container with PulseAudio installed, we can share this socket as read-only volume into container. To make container to use this socket, it should be configured as well; modify file in the same path as before inside container to contain:
 
-```shell
+```shell showLineNumbers=false
 # Use host socket
 default-server = unix:/tmp/pulse-socket
 enable-shm = false
@@ -94,18 +98,20 @@ We can limit access for this specific container with similar way than with sound
 
 Hexadecimal key can be acquired with xauth tool:
 
-```shell
+```shell showLineNumbers=false
 xauth list                
 workstation/unix:  MIT-MAGIC-COOKIE-1  f57d6fbab111c34b56efb04776e52229
 ```
 
 Inside container as root, display can be then added as:
 
-`xauth add “$DISPLAY” . <key>`
+```bash showLineNumbers=false
+xauth add “$DISPLAY” . <key>
+```
 
 This will generate .Xauthority file, which should be copied for correct user as well. Note, that variables have been predefined manually.
 
-```shell
+```shell showLineNumbers=false
 cp /root/.Xauthority "${USER_HOME}"
 chown "${USER_UID}":"${USER_GID}" "${USER_HOME}/.Xauthority"
 ```
@@ -123,7 +129,7 @@ Graphic cards are usually found from the path /dev/dri . They can be passed as d
 
 On Debian based system, you can install AMD and Intel based drivers with Vulkan support by getting following packages:
 
-```shell
+```shell showLineNumbers=false
 dpkg --add-architecture i386 && \ # Get 32-bit support as well
 apt-get update && apt-get install vulkan-utils \
 mesa-vulkan-drivers \
@@ -143,7 +149,7 @@ There is one big open-source project just for this; [Lutris ](https://lutris.net
 
 Dependencies of Lutris can be installed for Debian based system as follows:
 
-```shell
+```shell showLineNumbers=false
 echo "deb http://download.opensuse.org/repositories/home:/strycore/Debian_10/ ./" | tee /etc/apt/sources.list.d/lutris.list \
 && wget -q https://download.opensuse.org/repositories/home:/strycore/Debian_10/Release.key -O- | apt-key add - \
 && apt-get update \
@@ -152,7 +158,7 @@ echo "deb http://download.opensuse.org/repositories/home:/strycore/Debian_10/ ./
 
 Latest client can be installed from GitHub releases:
 
-```shell
+```shell showLineNumbers=false
 mkdir -p /tmp/lutris && \
 curl -s https://api.github.com/repos/lutris/lutris/releases/latest > /tmp/lutris/version.json && \
 jq ".tarball_url" /tmp/lutris/version.json | xargs curl -Lo /tmp/lutris/lutris && \
@@ -173,17 +179,21 @@ Game has been running smoothly on my machine so far, with Vulkan transitions aft
 
 In the end, I made Python script and specific Docker image to automate most of the requirements and it is available at [GitHub in here](https://github.com/Nicceboy/gamify-containers). It will create required named volume of game data ($HOME directory of user) and sets environment up. Docker image has been pre-built and can be pulled with command
 
-`docker pull ghcr.io/nicceboy/lutris-vulkan:latest`
+```bash showLineNumbers=false
+docker pull ghcr.io/nicceboy/lutris-vulkan:latest`
+```
 
-Python script will launch the Lutris client from container after setting up environment. As manual step, PulseAudio should be configured beforehand.
+Python script will launch the Lutris client from container after setting up environment.
+As manual step, PulseAudio should be configured beforehand.
 
-Script can be installed as package as
 
-`pip install git+https://github.com/Nicceboy/gamify-containers`
+```bash showLineNumbers=false title="Script can be installed as package"
+pip install git+https://github.com/Nicceboy/gamify-containers
+```
 
-Lutris can be finally started
-
-`playlutris --detach`
+```bash showLineNumbers=false title="Lutris can be finally started"
+playlutris --detach
+```
 
 ![](https://cdn-images-1.medium.com/max/3428/1*yDApwAZGTMONUhI2yjeeUg.png)
 

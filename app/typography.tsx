@@ -1,20 +1,36 @@
 import type { MDXComponents } from "mdx/types";
 import type { JSX } from "react";
+// import { ExternalLink } from "lucide-react";
 
 export function useMDXComponents(): MDXComponents {
   return {
-    h1: ({ children }: { children: React.ReactNode }): JSX.Element => (
-      <h1 className="scroll-m-20 text-red-my text-4xl font-extrabold tracking-tight lg:text-5xl">
+    h1: (
+      { id, children }: { id: string; children: React.ReactNode },
+    ): JSX.Element => (
+      <h1
+        id={id}
+        className="scroll-m-20 text-red-my text-4xl font-extrabold tracking-tight lg:text-5xl"
+      >
         {children}
       </h1>
     ),
-    h2: ({ children }: { children: React.ReactNode }): JSX.Element => (
-      <h2 className="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
+    h2: (
+      { id, children }: { id: string; children: React.ReactNode },
+    ): JSX.Element => (
+      <h2
+        id={id}
+        className="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0"
+      >
         {children}
       </h2>
     ),
-    h3: ({ children }: { children: React.ReactNode }): JSX.Element => (
-      <h3 className="mt-8 scroll-m-20 text-2xl font-semibold tracking-tight">
+    h3: (
+      { id, children }: { id: string; children: React.ReactNode },
+    ): JSX.Element => (
+      <h3
+        id={id}
+        className="mt-8 scroll-m-20 text-2xl font-semibold tracking-tight"
+      >
         {children}
       </h3>
     ),
@@ -33,13 +49,19 @@ export function useMDXComponents(): MDXComponents {
         {children}
       </ol>
     ),
+    // code: ({ children }: { children: React.ReactNode }): JSX.Element => (
+    //   <code className="border-amber-500 relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold text-red-my transition-colors">
+    //     {children}
+    //   </code>
+    // ),
     code: ({ children }: { children: React.ReactNode }): JSX.Element => (
-      <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold text-red-my hover:text-red-my-hover transition-colors">
+      <code className="relative rounded bg-muted font-mono text-sm font-semibold text-red-my transition-colors">
         {children}
       </code>
     ),
     pre: ({ children }: { children: React.ReactNode }): JSX.Element => (
-      <pre className="mb-4 mt-6 overflow-x-auto rounded-lg bg-muted p-4 font-mono text-sm">
+      // <pre className="rounded-md border-1 mx-2 my-2 px-3 py-3 border-solid dark:border-gray-700 ">
+      <pre className="mb-4 mt-6 p-2  overflow-x-auto rounded-lg bg-muted font-mono text-sm border border-solid dark:border-gray-900">
         {children}
       </pre>
     ),
@@ -53,11 +75,26 @@ export function useMDXComponents(): MDXComponents {
     ): JSX.Element => (
       <a
         href={href}
-        className="font-medium text-primary underline underline-offset-4"
+        className="font-medium text-primary underline underline-offset-4 decoration-red-my "
       >
         {children}
       </a>
     ),
+    // a: (
+    //   { children, href }: { children: React.ReactNode; href?: string },
+    // ): JSX.Element => (
+    //   <a
+    //     href={href}
+    //     className="font-medium text-primary decoration-red-my underline underline-offset-4 inline-flex items-center"
+    //     target={href?.startsWith("http") ? "_blank" : undefined}
+    //     rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
+    //   >
+    //     {children}
+    //     {href?.startsWith("http") && (
+    //       <ExternalLink className="text-red-my ml-1 inline-block h-[0.9em] w-[0.9em]" />
+    //     )}
+    //   </a>
+    // ),
     table: ({ children }: { children: React.ReactNode }): JSX.Element => (
       <div className="my-6 w-full overflow-y-auto">
         <table className="w-full">{children}</table>

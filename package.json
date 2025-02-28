@@ -3,16 +3,24 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "@expressive-code/plugin-line-numbers": "^0.40.2",
     "@mdx-js/react": "^3.1.0",
     "@mdx-js/rollup": "^3.1.0",
     "@radix-ui/react-navigation-menu": "^1.2.5",
+    "@shikijs/rehype": "^3.0.0",
+    "@shikijs/transformers": "^3.0.0",
     "@tailwindcss/postcss": "^4.0.9",
     "@types/mdx": "^2.0.13",
     "autoprefixer": "^10.4.20",
     "isbot": "^5.1.18",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router": "^7.1.1"
+    "react-router": "^7.1.1",
+    "rehype-expressive-code": "^0.40.2",
+    "rehype-stringify": "^10.0.1",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.1",
+    "unified": "^11.0.5"
   },
   "devDependencies": {
     "@deno/vite-plugin": "^1.0.2",

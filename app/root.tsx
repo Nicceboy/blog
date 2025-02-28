@@ -10,6 +10,9 @@ import {
 import type { Route } from "./+types/root.ts";
 import "./app.css";
 
+const test =
+  "https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap";
+
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
@@ -23,6 +26,12 @@ export const links: Route.LinksFunction = () => [
       "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
     // href: "https://fonts.googleapis.com/css2?family=VT323&display=swap",
   },
+  {
+    rel: "stylesheet",
+    href: test,
+    // "https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap",
+    // href: "https://fonts.googleapis.com/css2?family=VT323&display=swap",
+  },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -34,25 +43,34 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="text-default-text font-normal text-xl">
         {children}
         <ScrollRestoration />
         <Scripts />
-      </body>
-      <footer className="mt-auto py-4 text-sm text-gray-500 text-center">
-        <div className="container mx-auto">
-          <p>© {new Date().getFullYear()} - All rights reserved</p>
-          <p className="mt-2">
-            <a
-              href="/feed.xml"
-              className="text-red-my hover:text-red-my-hover underline"
-              title="RSS Feed"
-            >
-              Atom Feed
-            </a>
-          </p>
+
+        <footer className="mt-auto py-4 text-sm text-gray-500 text-center">
+          <div className="container mx-auto">
+            <p>© {new Date().getFullYear()} - Niklas Saari</p>
+            <p className="mt-2">
+              <a
+                href="/feed.xml"
+                className="text-red-my hover:text-red-my-hover underline"
+                title="RSS Feed"
+              >
+                Atom Feed
+              </a>
+            </p>
+          </div>
+        </footer>
+
+        <div className="flex items-center my-2">
+          <div className="flex-1 border-t border-gray-300 dark:border-gray-700">
+          </div>
+          <span className="mx-4 text-gray-500 text-sm">EOF</span>
+          <div className="flex-1 border-t border-gray-300 dark:border-gray-700">
+          </div>
         </div>
-      </footer>
+      </body>
     </html>
   );
 }
