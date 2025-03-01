@@ -1,22 +1,21 @@
-// import HelloPost from "~/posts/hello.mdx";
-import React, { useState } from "react";
-import * as Run from "~/posts/run.mdx";
+// import * as HelloPost from "~/posts/hello.mdx";
+import { useState } from "react";
+import * as HelloPost from "~/posts/run.mdx";
 import { PostContainer } from "~/posts/container.tsx";
 import Components from "../typography.tsx";
-import { NavigationMenuDemo } from "./navtes.tsx";
-import { Link, NavLink } from "react-router";
+import { NavLink } from "react-router";
 
 const getNavLinkClass = (isActive: boolean) =>
   `text-2xl hover:text-red-my transition-colors ${
     isActive ? "text-red-my font-semibold" : "text-gray-500"
   } block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground`;
 
-export function Post({ message }: { message: string }) {
+export function Post({ _message }: { message: string }) {
   const [isFlipped, setIsFlipped] = useState(false);
 
-  const handleClick = () => {
-    setIsFlipped(!isFlipped);
-  };
+  // const handleClick = () => {
+  //   setIsFlipped(!isFlipped);
+  // };
   return (
     <main className="flex items-center justify-center pt-16 ">
       <div className="flex-1 flex flex-col items-center gap-6 min-h-0">
@@ -45,8 +44,8 @@ export function Post({ message }: { message: string }) {
           </nav>
         </header>
         <div className={`${isFlipped ? "rotate-x-180" : ""}`}>
-          <PostContainer meta={Run.metadata}>
-            <Run.default components={Components} />
+          <PostContainer meta={HelloPost.metadata}>
+            <HelloPost.default components={Components} />
           </PostContainer>
         </div>
       </div>

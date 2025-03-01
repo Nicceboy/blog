@@ -16,8 +16,6 @@
     "npm:@mdx-js/rollup@^3.1.0": "3.1.0_rollup@4.34.8",
     "npm:@radix-ui/react-navigation-menu@^1.2.5": "1.2.5_@types+react@19.0.10_@types+react-dom@19.0.4__@types+react@19.0.10_react@19.0.0_react-dom@19.0.0__react@19.0.0",
     "npm:@react-router/dev@^7.1.1": "7.2.0_react-router@7.2.0__react@19.0.0__react-dom@19.0.0___react@19.0.0_vite@6.1.1__@types+node@22.13.5__lightningcss@1.29.1_@babel+core@7.26.9_react@19.0.0_react-dom@19.0.0__react@19.0.0_@types+node@22.13.5",
-    "npm:@shikijs/rehype@3": "3.0.0",
-    "npm:@shikijs/transformers@3": "3.0.0",
     "npm:@tailwindcss/postcss@^4.0.9": "4.0.9",
     "npm:@tailwindcss/vite@^4.0.8": "4.0.8_vite@6.1.1__@types+node@22.13.5__lightningcss@1.29.1_@types+node@22.13.5_lightningcss@1.29.1",
     "npm:@types/mdx@^2.0.13": "2.0.13",
@@ -30,7 +28,7 @@
     "npm:react-router@^7.1.1": "7.2.0_react@19.0.0_react-dom@19.0.0__react@19.0.0",
     "npm:react@19": "19.0.0",
     "npm:rehype-expressive-code@~0.40.2": "0.40.2",
-    "npm:rehype-stringify@^10.0.1": "10.0.1",
+    "npm:remark-math@6": "6.0.0",
     "npm:remark-parse@11": "11.0.0",
     "npm:remark-rehype@^11.1.1": "11.1.1",
     "npm:tailwindcss@^4.0.8": "4.0.8",
@@ -419,7 +417,7 @@
       "integrity": "sha512-t2HMR5BO6GdDW1c1ISBTk66xO503e/Z8ecZdNcr6E4NpUfvY+MRje+LtrcvbBqMwWBBO8RpVKcam/Uy+1GxwKQ==",
       "dependencies": [
         "@expressive-code/core",
-        "shiki@1.29.2"
+        "shiki"
       ]
     },
     "@expressive-code/plugin-text-markers@0.40.2": {
@@ -820,18 +818,9 @@
     "@shikijs/core@1.29.2": {
       "integrity": "sha512-vju0lY9r27jJfOY4Z7+Rt/nIOjzJpZ3y+nYpqtUZInVoXQ/TJZcfGnNOGnKjFdVZb8qexiCuSlZRKcGfhhTTZQ==",
       "dependencies": [
-        "@shikijs/engine-javascript@1.29.2",
-        "@shikijs/engine-oniguruma@1.29.2",
-        "@shikijs/types@1.29.2",
-        "@shikijs/vscode-textmate",
-        "@types/hast",
-        "hast-util-to-html"
-      ]
-    },
-    "@shikijs/core@3.0.0": {
-      "integrity": "sha512-gSm3JQf2J2psiUn5bWokmZwnu5N0jfBtRps4CQ1B+qrFvmZCRAkMVoaxgl9qZgAFK5KisLAS3//XaMFVytYHKw==",
-      "dependencies": [
-        "@shikijs/types@3.0.0",
+        "@shikijs/engine-javascript",
+        "@shikijs/engine-oniguruma",
+        "@shikijs/types",
         "@shikijs/vscode-textmate",
         "@types/hast",
         "hast-util-to-html"
@@ -840,84 +829,32 @@
     "@shikijs/engine-javascript@1.29.2": {
       "integrity": "sha512-iNEZv4IrLYPv64Q6k7EPpOCE/nuvGiKl7zxdq0WFuRPF5PAE9PRo2JGq/d8crLusM59BRemJ4eOqrFrC4wiQ+A==",
       "dependencies": [
-        "@shikijs/types@1.29.2",
+        "@shikijs/types",
         "@shikijs/vscode-textmate",
-        "oniguruma-to-es@2.3.0"
-      ]
-    },
-    "@shikijs/engine-javascript@3.0.0": {
-      "integrity": "sha512-zoB10hTfvk1iZk1ldt6VaF+0iucQL+4TtSvTdTu5MhOeLPLEf5nZ8Wz6uxlp99y627OLalYa2z4W0iTTwb6oyA==",
-      "dependencies": [
-        "@shikijs/types@3.0.0",
-        "@shikijs/vscode-textmate",
-        "oniguruma-to-es@3.1.1"
+        "oniguruma-to-es"
       ]
     },
     "@shikijs/engine-oniguruma@1.29.2": {
       "integrity": "sha512-7iiOx3SG8+g1MnlzZVDYiaeHe7Ez2Kf2HrJzdmGwkRisT7r4rak0e655AcM/tF9JG/kg5fMNYlLLKglbN7gBqA==",
       "dependencies": [
-        "@shikijs/types@1.29.2",
-        "@shikijs/vscode-textmate"
-      ]
-    },
-    "@shikijs/engine-oniguruma@3.0.0": {
-      "integrity": "sha512-uM9lqwMrlPHPVcdpAN/4pAzTJah1pY7mi9f1MxG887SDkjF/tdiQK+5200Y8N5Hg125sewdMQ1K2agoAo8hDiA==",
-      "dependencies": [
-        "@shikijs/types@3.0.0",
+        "@shikijs/types",
         "@shikijs/vscode-textmate"
       ]
     },
     "@shikijs/langs@1.29.2": {
       "integrity": "sha512-FIBA7N3LZ+223U7cJDUYd5shmciFQlYkFXlkKVaHsCPgfVLiO+e12FmQE6Tf9vuyEsFe3dIl8qGWKXgEHL9wmQ==",
       "dependencies": [
-        "@shikijs/types@1.29.2"
-      ]
-    },
-    "@shikijs/langs@3.0.0": {
-      "integrity": "sha512-HBsZAukiYz7k3hzttPWa0en3PABEwK3cpxcAcERRwvwuKc5pn0Y+yPxAIYZtN9cFdtNqrbFJNhfcEu/xbG1u/A==",
-      "dependencies": [
-        "@shikijs/types@3.0.0"
-      ]
-    },
-    "@shikijs/rehype@3.0.0": {
-      "integrity": "sha512-cvl6W9rkxM94q1nECj8WTpOjUxZ1BIhuAxiq1V1sqLPWLm7TN6GtNOPT7fhg1fHX6M5fj3fE0LUXELFKC2FRCQ==",
-      "dependencies": [
-        "@shikijs/types@3.0.0",
-        "@types/hast",
-        "hast-util-to-string",
-        "shiki@3.0.0",
-        "unified",
-        "unist-util-visit"
+        "@shikijs/types"
       ]
     },
     "@shikijs/themes@1.29.2": {
       "integrity": "sha512-i9TNZlsq4uoyqSbluIcZkmPL9Bfi3djVxRnofUHwvx/h6SRW3cwgBC5SML7vsDcWyukY0eCzVN980rqP6qNl9g==",
       "dependencies": [
-        "@shikijs/types@1.29.2"
-      ]
-    },
-    "@shikijs/themes@3.0.0": {
-      "integrity": "sha512-mz63nyVB5nXWsv5H2hifDFIThZEJ/cJhMq1/+0JjMdOuuBq2H2D1Fn8UM5yzUtEvap/ipRltv381+hsHZFs4ug==",
-      "dependencies": [
-        "@shikijs/types@3.0.0"
-      ]
-    },
-    "@shikijs/transformers@3.0.0": {
-      "integrity": "sha512-N6iwlPt1IN4oQMdwSqWJhveBjfY2eLBjdmGglPngQ9ML1OPAgCPog0hI1lFPl52Rx7+s7GGuvWsSIu4zCUv2XA==",
-      "dependencies": [
-        "@shikijs/core@3.0.0",
-        "@shikijs/types@3.0.0"
+        "@shikijs/types"
       ]
     },
     "@shikijs/types@1.29.2": {
       "integrity": "sha512-VJjK0eIijTZf0QSTODEXCqinjBn0joAHQ+aPSBzrv4O2d/QSbsMw+ZeSRx03kV34Hy7NzUvV/7NqfYGRLrASmw==",
-      "dependencies": [
-        "@shikijs/vscode-textmate",
-        "@types/hast"
-      ]
-    },
-    "@shikijs/types@3.0.0": {
-      "integrity": "sha512-kh/xgZHxI6m9trVvPw+C47jyVHx190r0F5gkF+VO5vYB54UtcoPJe66dzZmK7GbJbzmtGEGbOwct/jsoPjjUqg==",
       "dependencies": [
         "@shikijs/vscode-textmate",
         "@types/hast"
@@ -1091,6 +1028,9 @@
         "@types/unist@3.0.3"
       ]
     },
+    "@types/katex@0.16.7": {
+      "integrity": "sha512-HMwFiRujE5PjrgwHQ25+bsLJgowjGjm5Z8FVSf0N6PwgJrwxH0QxzHYDcKsTfV3wva0vzrpqMTJS2jXPr5BMEQ=="
+    },
     "@types/mdast@4.0.4": {
       "integrity": "sha512-kGaNbPh1k7AFzgpud/gMdvIm5xuECykRR+JnWKQno9TAXVa6WIVCGTPvYGekIDL4uwCZQSYbUxNBSb1aUo79oA==",
       "dependencies": [
@@ -1258,6 +1198,9 @@
     },
     "comma-separated-tokens@2.0.3": {
       "integrity": "sha512-Fu4hJdvzeylCfQPp9SGWidpzrMs7tTrlu6Vb8XGaRGck8QSNZJJp538Wrb60Lax4fPwR64ViY468OIUTbRlGZg=="
+    },
+    "commander@8.3.0": {
+      "integrity": "sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww=="
     },
     "convert-source-map@2.0.0": {
       "integrity": "sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg=="
@@ -1747,6 +1690,12 @@
         "universalify"
       ]
     },
+    "katex@0.16.21": {
+      "integrity": "sha512-XvqR7FgOHtWupfMiigNzmh+MgUVmDGU2kXZm899ZkPfcuoPuFxyHmXsgATDpFZDAXCI8tvinaVcDo8PIIJSo4A==",
+      "dependencies": [
+        "commander"
+      ]
+    },
     "lightningcss-darwin-arm64@1.29.1": {
       "integrity": "sha512-HtR5XJ5A0lvCqYAoSv2QdZZyoHNttBpa5EP9aNuzBQeKGfbyH5+UipLWvVzpP4Uml5ej4BYs5I9Lco9u1fECqw=="
     },
@@ -1829,6 +1778,18 @@
         "micromark-util-symbol",
         "micromark-util-types",
         "unist-util-stringify-position"
+      ]
+    },
+    "mdast-util-math@3.0.0": {
+      "integrity": "sha512-Tl9GBNeG/AhJnQM221bJR2HPvLOSnLE/T9cJI9tlc6zwQk2nPk/4f0cHkOdEixQPC/j8UtKDdITswvLAy1OZ1w==",
+      "dependencies": [
+        "@types/hast",
+        "@types/mdast",
+        "devlop",
+        "longest-streak",
+        "mdast-util-from-markdown",
+        "mdast-util-to-markdown",
+        "unist-util-remove-position"
       ]
     },
     "mdast-util-mdx-expression@2.0.1": {
@@ -1938,6 +1899,18 @@
         "micromark-util-normalize-identifier",
         "micromark-util-resolve-all",
         "micromark-util-subtokenize",
+        "micromark-util-symbol",
+        "micromark-util-types"
+      ]
+    },
+    "micromark-extension-math@3.1.0": {
+      "integrity": "sha512-lvEqd+fHjATVs+2v/8kg9i5Q0AP2k85H0WUOwpIVvUML8BapsMvh1XAogmQjOCsLpoKRCVQqEkQBB3NhVBcsOg==",
+      "dependencies": [
+        "@types/katex",
+        "devlop",
+        "katex",
+        "micromark-factory-space",
+        "micromark-util-character",
         "micromark-util-symbol",
         "micromark-util-types"
       ]
@@ -2252,16 +2225,8 @@
       "integrity": "sha512-bwALDxriqfKGfUufKGGepCzu9x7nJQuoRoAFp4AnwehhC2crqrDIAP/uN2qdlsAvSMpeRC3+Yzhqc7hLmle5+g==",
       "dependencies": [
         "emoji-regex-xs",
-        "regex@5.1.1",
-        "regex-recursion@5.1.1"
-      ]
-    },
-    "oniguruma-to-es@3.1.1": {
-      "integrity": "sha512-bUH8SDvPkH3ho3dvwJwfonjlQ4R80vjyvrU8YpxuROddv55vAEJrTuCuCVUhhsHbtlD9tGGbaNApGQckXhS8iQ==",
-      "dependencies": [
-        "emoji-regex-xs",
-        "regex@6.0.1",
-        "regex-recursion@6.0.2"
+        "regex",
+        "regex-recursion"
       ]
     },
     "package-json-from-dist@1.0.1": {
@@ -2452,13 +2417,7 @@
     "regex-recursion@5.1.1": {
       "integrity": "sha512-ae7SBCbzVNrIjgSbh7wMznPcQel1DNlDtzensnFxpiNpXt1U2ju/bHugH422r+4LAVS1FpW1YCwilmnNsjum9w==",
       "dependencies": [
-        "regex@5.1.1",
-        "regex-utilities"
-      ]
-    },
-    "regex-recursion@6.0.2": {
-      "integrity": "sha512-0YCaSCq2VRIebiaUviZNs0cBz1kg5kVS2UKUfNIx8YVs1cN3AV7NTctO5FOKBA+UT2BPJIWZauYHPqJODG50cg==",
-      "dependencies": [
+        "regex",
         "regex-utilities"
       ]
     },
@@ -2467,12 +2426,6 @@
     },
     "regex@5.1.1": {
       "integrity": "sha512-dN5I359AVGPnwzJm2jN1k0W9LPZ+ePvoOeVMMfqIMFz53sSwXkxaJoxr50ptnsC771lK95BnTrVSZxq0b9yCGw==",
-      "dependencies": [
-        "regex-utilities"
-      ]
-    },
-    "regex@6.0.1": {
-      "integrity": "sha512-uorlqlzAKjKQZ5P+kTJr3eeJGSVroLKoHmquUj4zHWuR+hEyNqlXsSKlYYF5F4NI6nl7tWCs0apKJ0lmfsXAPA==",
       "dependencies": [
         "regex-utilities"
       ]
@@ -2491,11 +2444,12 @@
         "hast-util-to-estree"
       ]
     },
-    "rehype-stringify@10.0.1": {
-      "integrity": "sha512-k9ecfXHmIPuFVI61B9DeLPN0qFHfawM6RsuX48hoqlaKSF61RskNjSm1lI8PhBEM0MRdLxVVm4WmTqJQccH9mA==",
+    "remark-math@6.0.0": {
+      "integrity": "sha512-MMqgnP74Igy+S3WwnhQ7kqGlEerTETXMvJhrUzDikVZ2/uogJCb+WHUg97hK9/jcfc0dkD73s3LN8zU49cTEtA==",
       "dependencies": [
-        "@types/hast",
-        "hast-util-to-html",
+        "@types/mdast",
+        "mdast-util-math",
+        "micromark-extension-math",
         "unified"
       ]
     },
@@ -2581,25 +2535,12 @@
     "shiki@1.29.2": {
       "integrity": "sha512-njXuliz/cP+67jU2hukkxCNuH1yUi4QfdZZY+sMr5PPrIyXSu5iTb/qYC4BiWWB0vZ+7TbdvYUCeL23zpwCfbg==",
       "dependencies": [
-        "@shikijs/core@1.29.2",
-        "@shikijs/engine-javascript@1.29.2",
-        "@shikijs/engine-oniguruma@1.29.2",
-        "@shikijs/langs@1.29.2",
-        "@shikijs/themes@1.29.2",
-        "@shikijs/types@1.29.2",
-        "@shikijs/vscode-textmate",
-        "@types/hast"
-      ]
-    },
-    "shiki@3.0.0": {
-      "integrity": "sha512-x6MMdYN9auPGx7kMFtyKbaj65eCdetfrfkvQZwqisZLnGMnAZsZxOpcWD0ElvLPFWHOSMukVyN9Opm7TxQjnZA==",
-      "dependencies": [
-        "@shikijs/core@3.0.0",
-        "@shikijs/engine-javascript@3.0.0",
-        "@shikijs/engine-oniguruma@3.0.0",
-        "@shikijs/langs@3.0.0",
-        "@shikijs/themes@3.0.0",
-        "@shikijs/types@3.0.0",
+        "@shikijs/core",
+        "@shikijs/engine-javascript",
+        "@shikijs/engine-oniguruma",
+        "@shikijs/langs",
+        "@shikijs/themes",
+        "@shikijs/types",
         "@shikijs/vscode-textmate",
         "@types/hast"
       ]
@@ -2767,6 +2708,13 @@
         "@types/unist@3.0.3"
       ]
     },
+    "unist-util-remove-position@5.0.0": {
+      "integrity": "sha512-Hp5Kh3wLxv0PHj9m2yZhhLt58KzPtEYKQQ4yxfYFEO7EvHwzyDYnduhHnY1mDxoqr7VUwVuHXk9RXKIiYS1N8Q==",
+      "dependencies": [
+        "@types/unist@3.0.3",
+        "unist-util-visit"
+      ]
+    },
     "unist-util-stringify-position@4.0.0": {
       "integrity": "sha512-0ASV06AAoKCDkS2+xw5RXJywruurpbC4JZSm7nr7MOt1ojAzvyyaO+UxZf18j8FCF6kmzCZKcAgN/yu2gm2XgQ==",
       "dependencies": [
@@ -2903,6 +2851,9 @@
   },
   "redirects": {
     "https://esm.sh/@mdx-js/react@3": "https://esm.sh/@mdx-js/react@3.1.0",
+    "https://esm.sh/@types/hast@3": "https://esm.sh/@types/hast@3.0.4/index.d.ts",
+    "https://esm.sh/@types/unist": "https://esm.sh/@types/unist@3.0.3/index.d.ts",
+    "https://esm.sh/@types/unist@3": "https://esm.sh/@types/unist@3.0.3/index.d.ts",
     "https://esm.sh/@ungap/structured-clone@^1.0.0?target=denonext": "https://esm.sh/@ungap/structured-clone@1.3.0?target=denonext",
     "https://esm.sh/github-slugger@^2.0.0?target=denonext": "https://esm.sh/github-slugger@2.0.0?target=denonext",
     "https://esm.sh/hast-util-heading-rank@^3.0.0?target=denonext": "https://esm.sh/hast-util-heading-rank@3.0.0?target=denonext",
@@ -2914,8 +2865,11 @@
     "https://esm.sh/rehype-autolink-headings@7": "https://esm.sh/rehype-autolink-headings@7.1.0",
     "https://esm.sh/rehype-slug@6": "https://esm.sh/rehype-slug@6.0.0",
     "https://esm.sh/remark-toc@9": "https://esm.sh/remark-toc@9.0.0",
+    "https://esm.sh/unist": "https://esm.sh/unist@0.0.1",
     "https://esm.sh/unist-util-is@^6.0.0?target=denonext": "https://esm.sh/unist-util-is@6.0.0?target=denonext",
     "https://esm.sh/unist-util-visit-parents@^6.0.0?target=denonext": "https://esm.sh/unist-util-visit-parents@6.0.1?target=denonext",
+    "https://esm.sh/unist-util-visit/lib@5": "https://esm.sh/unist-util-visit@5.0.0/lib@5",
+    "https://esm.sh/unist-util-visit@5": "https://esm.sh/unist-util-visit@5.0.0",
     "https://esm.sh/unist-util-visit@^5.0.0?target=denonext": "https://esm.sh/unist-util-visit@5.0.0?target=denonext"
   },
   "remote": {
@@ -2951,6 +2905,7 @@
     "https://esm.sh/unist-util-visit-parents@6.0.1/denonext/do-not-use-color.mjs": "94b57609e52050f8d615ab3d096a2efb7183053a494dee89f9af2fe6c8fb9f0b",
     "https://esm.sh/unist-util-visit-parents@6.0.1/denonext/unist-util-visit-parents.mjs": "8a147d91f7a2850549a66368715bbc7c4f057d5985c8606406cd39a1970d3b06",
     "https://esm.sh/unist-util-visit-parents@6.0.1?target=denonext": "d34dfd64dfda160231fe9a0dbf994475b1d5194b2874d9c3309593e942f85ae8",
+    "https://esm.sh/unist-util-visit@5.0.0": "c877716ff21eeb6c104d3fc273bd29962611c2b6eed815be90aa1dbffc448b06",
     "https://esm.sh/unist-util-visit@5.0.0/denonext/unist-util-visit.mjs": "a09fab16c3eafd466e5b5dab65ab76cb8f1eafa360b457eef35a529f59725d7f",
     "https://esm.sh/unist-util-visit@5.0.0?target=denonext": "c877716ff21eeb6c104d3fc273bd29962611c2b6eed815be90aa1dbffc448b06"
   },
@@ -2967,8 +2922,6 @@
         "npm:@mdx-js/rollup@^3.1.0",
         "npm:@radix-ui/react-navigation-menu@^1.2.5",
         "npm:@react-router/dev@^7.1.1",
-        "npm:@shikijs/rehype@3",
-        "npm:@shikijs/transformers@3",
         "npm:@tailwindcss/postcss@^4.0.9",
         "npm:@tailwindcss/vite@^4.0.8",
         "npm:@types/mdx@^2.0.13",
@@ -2981,8 +2934,7 @@
         "npm:react-router@^7.1.1",
         "npm:react@19",
         "npm:rehype-expressive-code@~0.40.2",
-        "npm:rehype-stringify@^10.0.1",
-        "npm:remark-parse@11",
+        "npm:remark-math@6",
         "npm:remark-rehype@^11.1.1",
         "npm:tailwindcss@^4.0.8",
         "npm:unified@^11.0.5",

@@ -2,6 +2,7 @@ import { MDXProvider } from "@mdx-js/react";
 import { ClockAlert } from "lucide-react";
 import Components from "~/typography.tsx";
 import { Alert, AlertTitle } from "~/components/alert.tsx";
+import { TableOfContents } from "~/lib/toc.tsx";
 
 export type MetaData = {
   title: string;
@@ -24,10 +25,10 @@ export const PostContainer = (
 
     if (ageInYears >= 2) {
       return (
-        <Alert className="border-none">
+        <Alert className="border-none text-red-my font-black">
           <ClockAlert className="h-7 w-7" />
-          <AlertTitle>
-            This post{"  "}<b>is over {ageInYears} years old! {" "}</b>
+          <AlertTitle className="text-xl font-bold">
+            This post is over {ageInYears} years old.
           </AlertTitle>
         </Alert>
       );
@@ -36,14 +37,15 @@ export const PostContainer = (
     return null;
   };
   const DateInfo = () => {
-    const createdDate = new Date(meta.created).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
+    const createdDate: string = new Date(meta.created)
+      .toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
 
     const updatedDate = meta.updated
-      ? new Date(meta.updated).toLocaleDateString("en-US", {
+      ? new Date(meta.updated).toLocaleDateString("en-GB", {
         year: "numeric",
         month: "long",
         day: "numeric",
@@ -83,19 +85,33 @@ export const PostContainer = (
     );
   };
 
+  const EOF_TEXT_CLASS = "text-gray-700 text-sm font-bold font-mono py-1";
   return (
     <>
       <section
         className={`prose max-w-screen md:max-w-[85ch] w-full space-y-6 sm:px-4 md:px-6`}
       >
-        <div className="bg-black rounded-3xl  border-gray-200 p-6 dark:border-gray-900 space-y-4">
+        <div className="bg-black p-6 space-y-4 rounded-3xl">
+          <div className="flex items-center">
+            <span className={EOF_TEXT_CLASS}>
+              cat &lt;&lt; EOF
+            </span>
+            <div className="ml-2 border-l-2 h-5 dark:border-gray-700 " />
+            <div className="flex-1 h-[2px] bg-gradient-to-r from-transparent via-gray-700 to-gray-700" />
+          </div>
           <Title />
           <DateInfo />
           <PostAgeWarning />
+          <TableOfContents />
           <MDXProvider components={Components}>
             {children}
           </MDXProvider>
           <TagsList />
+          <div className="flex items-center my-2">
+            <div className="flex-1 h-[2px] dark:border-gray-700 bg-gradient-to-r from-gray-700  via-gray-700 to-transparent" />
+            <span className={`${EOF_TEXT_CLASS} mx-4`}>EOF</span>
+            {/* <div className="flex-1 border-t-2 dark:border-gray-700" /> */}
+          </div>
         </div>
       </section>
     </>

@@ -7,7 +7,7 @@ import {
   ScrollRestoration,
 } from "react-router";
 
-import type { Route } from "./+types/root.ts";
+import type { Route } from "react-router/app/+types/root.ts";
 import "./app.css";
 
 const test =
@@ -62,14 +62,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </p>
           </div>
         </footer>
-
-        <div className="flex items-center my-2">
-          <div className="flex-1 border-t border-gray-300 dark:border-gray-700">
-          </div>
-          <span className="mx-4 text-gray-500 text-sm">EOF</span>
-          <div className="flex-1 border-t border-gray-300 dark:border-gray-700">
-          </div>
-        </div>
       </body>
     </html>
   );
@@ -87,7 +79,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   if (isRouteErrorResponse(error)) {
     message = error.status === 404 ? "404" : "Error";
     details = error.status === 404
-      ? "The requested page could not be found."
+      ? "The requested page could not be found..."
       : error.statusText || details;
   } else if (import.meta.env.DEV && error && error instanceof Error) {
     details = error.message;

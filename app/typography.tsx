@@ -1,6 +1,6 @@
 import type { MDXComponents } from "mdx/types";
 import type { JSX } from "react";
-// import { ExternalLink } from "lucide-react";
+import { Link } from "lucide-react";
 
 export function useMDXComponents(): MDXComponents {
   return {
@@ -34,11 +34,23 @@ export function useMDXComponents(): MDXComponents {
         {children}
       </h3>
     ),
-    p: ({ children }: { children: React.ReactNode }): JSX.Element => (
-      <p className="leading-7 [&:not(:first-child)]:mt-6">
-        {children}
-      </p>
-    ),
+    p: ({ children, ...props }: { children: React.ReactNode }): JSX.Element => {
+      const isFirstParagraph = props["first"] === "true";
+      return (
+        <p
+          {...props}
+          className={` leading-7 [&:not(:first-child)]:mt-6 
+            ${
+            isFirstParagraph
+              ? "first-line:tracking-widest first-letter:float-left first-letter:mr-3 first-letter:text-7xl first-letter:font-bold first-letter:text-red-my"
+              : ""
+          }
+          `}
+        >
+          {children}
+        </p>
+      );
+    },
     ul: ({ children }: { children: React.ReactNode }): JSX.Element => (
       <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
         {children}
@@ -49,18 +61,12 @@ export function useMDXComponents(): MDXComponents {
         {children}
       </ol>
     ),
-    // code: ({ children }: { children: React.ReactNode }): JSX.Element => (
-    //   <code className="border-amber-500 relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold text-red-my transition-colors">
-    //     {children}
-    //   </code>
-    // ),
     code: ({ children }: { children: React.ReactNode }): JSX.Element => (
       <code className="relative rounded bg-muted font-mono text-sm font-semibold text-red-my transition-colors">
         {children}
       </code>
     ),
     pre: ({ children }: { children: React.ReactNode }): JSX.Element => (
-      // <pre className="rounded-md border-1 mx-2 my-2 px-3 py-3 border-solid dark:border-gray-700 ">
       <pre className="mb-4 mt-6 p-2  overflow-x-auto rounded-lg bg-muted font-mono text-sm border border-solid dark:border-gray-900">
         {children}
       </pre>
@@ -72,29 +78,59 @@ export function useMDXComponents(): MDXComponents {
     ),
     a: (
       { children, href }: { children: React.ReactNode; href?: string },
-    ): JSX.Element => (
-      <a
-        href={href}
-        className="font-medium text-primary underline underline-offset-4 decoration-red-my "
-      >
-        {children}
-      </a>
-    ),
-    // a: (
-    //   { children, href }: { children: React.ReactNode; href?: string },
-    // ): JSX.Element => (
-    //   <a
-    //     href={href}
-    //     className="font-medium text-primary decoration-red-my underline underline-offset-4 inline-flex items-center"
-    //     target={href?.startsWith("http") ? "_blank" : undefined}
-    //     rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
-    //   >
-    //     {children}
-    //     {href?.startsWith("http") && (
-    //       <ExternalLink className="text-red-my ml-1 inline-block h-[0.9em] w-[0.9em]" />
-    //     )}
-    //   </a>
-    // ),
+    ): JSX.Element => {
+      // Check if this is an anchor link pointing to itself
+      const isAnchorSelfRef = href?.startsWith("#") &&
+        children &&
+        typeof children === "string";
+      // &&
+      // href.substring(1) === children.toLowerCase().replace(/\s+/g, "-");
+
+      const handleAnchorClick = (e: React.MouseEvent) => {
+        if (href?.startsWith("#")) {
+          e.preventDefault();
+          const targetId = href.slice(1);
+          const targetElement = document.getElementById(targetId);
+
+          if (targetElement) {
+            targetElement.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+            // Update URL without causing navigation
+            globalThis.history.pushState(null, "", href);
+          }
+        }
+      };
+
+      if (isAnchorSelfRef) {
+        return (
+          <a
+            href={href}
+            onClick={handleAnchorClick}
+            className="group relative font-medium text-primary"
+          >
+            <span
+              className="absolute -left-5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity"
+              aria-hidden="true"
+            >
+              <Link size={16} className="text-muted-foreground" />
+            </span>
+            {children}
+          </a>
+        );
+      }
+
+      return (
+        <a
+          href={href}
+          onClick={href?.startsWith("#") ? handleAnchorClick : undefined}
+          className="font-medium text-primary underline underline-offset-4 decoration-red-my decoration-3"
+        >
+          {children}
+        </a>
+      );
+    },
     table: ({ children }: { children: React.ReactNode }): JSX.Element => (
       <div className="my-6 w-full overflow-y-auto">
         <table className="w-full">{children}</table>
