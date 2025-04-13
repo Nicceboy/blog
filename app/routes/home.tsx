@@ -1,21 +1,17 @@
-import { Post } from "~/welcome/welcome.tsx";
-import type { Route } from "./+types/home.ts";
+import { PageLayout } from "~/layouts/default.tsx";
+import * as HelloPost from "~/posts/mtg_containers/index.mdx";
 
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "A blog about something" },
-    { name: "description", content: "Welcome to my website!" },
-  ];
-}
+// import * as HelloPost from "~/posts/footnote-example.mdx";
+// import * as HelloPost from "~/posts/hello.mdx";
+import { PostContainer } from "~/layouts/post.tsx";
+import Components from "../typography.tsx";
 
-export function loader() {
-  return {
-    message: `Hello from Deno ${
-      Deno.version.deno ? `v${Deno.version.deno}` : "Deploy"
-    }`,
-  };
-}
-
-export default function Home({ loaderData }: Route.ComponentProps) {
-  return <Post message={loaderData.message} />;
+export default function HomePage() {
+  return (
+    <PageLayout>
+      <PostContainer meta={HelloPost.metadata}>
+        <HelloPost.default components={Components} />
+      </PostContainer>
+    </PageLayout>
+  );
 }

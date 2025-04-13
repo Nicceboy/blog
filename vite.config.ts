@@ -6,6 +6,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 
 import remarkMath from "remark-math";
+import remarkGfm from "remark-gfm";
 
 import { rehypeTypographyInjector } from "~/lib/mdx_inject.ts";
 import type { TypographyOptions } from "~/lib/mdx_inject.ts";
@@ -86,7 +87,7 @@ export default defineConfig({
       enforce: "pre",
       ...mdx({
         providerImportSource: "@mdx-js/react",
-        remarkPlugins: [remarkMath],
+        remarkPlugins: [remarkGfm, remarkMath],
         rehypePlugins: [
           [rehypeSlug],
           [rehypeAutolinkHeadings, { behavior: "wrap" }],

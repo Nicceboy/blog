@@ -8,7 +8,7 @@ import {
 } from "react-router";
 
 import type { Route } from "react-router/app/+types/root.ts";
-import "./app.css";
+import "./styles/main.css";
 
 const test =
   "https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap";
@@ -47,7 +47,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {children}
         <ScrollRestoration />
         <Scripts />
-
         <footer className="mt-auto py-4 text-sm text-gray-500 text-center">
           <div className="container mx-auto">
             <p>© {new Date().getFullYear()} - Niklas Saari</p>

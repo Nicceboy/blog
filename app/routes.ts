@@ -1,3 +1,9 @@
-import { index, type RouteConfig } from "@react-router/dev/routes";
+import { index, route, type RouteConfig } from "@react-router/dev/routes";
+// import { robotsLoader } from "./routes/robots.tsx";
 
-export default [index("routes/home.tsx")] satisfies RouteConfig;
+// Combine main routes with utility routes
+export default [
+  index("routes/home.tsx"),
+  route("robots.txt", "routes/robots.tsx"),
+  route("/about", "routes/about.tsx"),
+] satisfies RouteConfig;

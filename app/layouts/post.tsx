@@ -1,8 +1,11 @@
+"use client";
+
 import { MDXProvider } from "@mdx-js/react";
 import { ClockAlert } from "lucide-react";
 import Components from "~/typography.tsx";
 import { Alert, AlertTitle } from "~/components/alert.tsx";
 import { TableOfContents } from "~/lib/toc.tsx";
+import { Sidenotes } from "~/components/sidenotes.tsx";
 
 export type MetaData = {
   title: string;
@@ -86,17 +89,17 @@ export const PostContainer = (
   };
 
   const EOF_TEXT_CLASS = "text-gray-700 text-sm font-bold font-mono py-1";
+
   return (
     <>
       <section
-        className={`prose max-w-screen md:max-w-[85ch] w-full space-y-6 sm:px-4 md:px-6`}
+        className={`lg:-left-50 prose max-w-screen md:max-w-[85ch] w-full space-y-6 sm:px-4 md:px-6 relative`}
       >
-        <div className="bg-black p-6 space-y-4 rounded-3xl">
+        <div className="bg-black p-6 space-y-4 rounded-3xl relative">
           <div className="flex items-center">
             <span className={EOF_TEXT_CLASS}>
-              cat &lt;&lt; EOF
             </span>
-            <div className="ml-2 border-l-2 h-5 dark:border-gray-700 " />
+            {/* <div className="ml-2 border-l-2 h-5 dark:border-gray-700 " /> */}
             <div className="flex-1 h-[2px] bg-gradient-to-r from-transparent via-gray-700 to-gray-700" />
           </div>
           <Title />
@@ -109,9 +112,11 @@ export const PostContainer = (
           <TagsList />
           <div className="flex items-center my-2">
             <div className="flex-1 h-[2px] dark:border-gray-700 bg-gradient-to-r from-gray-700  via-gray-700 to-transparent" />
-            <span className={`${EOF_TEXT_CLASS} mx-4`}>EOF</span>
+            <span className={`${EOF_TEXT_CLASS} mx-4`}></span>
             {/* <div className="flex-1 border-t-2 dark:border-gray-700" /> */}
           </div>
+
+          <Sidenotes />
         </div>
       </section>
     </>

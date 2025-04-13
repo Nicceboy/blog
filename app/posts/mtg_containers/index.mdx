@@ -7,6 +7,8 @@ export const metadata = {
     description: "Gaming on Linux can be simple."
 };
 
+import previewImage from './preview_mtg_container.png';
+
 There was a moment in one weekend when I wanted to play one Windows game on my laptop, but unfortunately, I am using Linux with integrated Intel graphics and that does not sound too promising.
 
 The other repelling thought proved to be the amount of dependencies I would need that I am able to play this game on [Wine](https://www.winehq.org/). I would like to maintain my system as whole and get rid of unnecessary stuff later on, somewhat easily. Virtualization is not option, as I have already weak performance.
@@ -14,7 +16,7 @@ The other repelling thought proved to be the amount of dependencies I would need
 However, there is another, bit more lightweight solution; containers, especially OCI or Docker containers. So instead of playing the game a bit, I ended up spending a weekend for installing it. In the end, it seemed to be possible. On top of wrapping all the software on single container, games are executed at least in a bit more isolated matter. If I ever want to get same environment back again, I could just pull single Docker image.
 
 
- ![Testing MTGArena on container.](/app/posts/preview_mtg_container.png)
+ {/* ![Testing MTGArena on container.](${previewImage}) */}
 
 
 
@@ -80,7 +82,7 @@ daemon-binary = /bin/true # Returns true but does nothing
 
 However, Pulse server requires authentication, and this is applied with [magic cookies](https://wiki.archlinux.org/index.php/PulseAudio/Configuration#Connection_&_authentication), if we are not granting anonymous access. Anonymous access can be allowed by adding auth-anonymous=1 just before socket definition on host configuration file.
 
-Non-anonymous access requires copying the cookies each time container is executed from the host path `“${HOME}/.config/pulse/cookie”` into same destination path in container. Sounds should be working now.
+Non-anonymous access requires copying the cookies each time container is executed from the host path `"${HOME}/.config/pulse/cookie"` into same destination path in container. Sounds should be working now.
 
 ### Display
 

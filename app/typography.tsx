@@ -1,6 +1,7 @@
 import type { MDXComponents } from "mdx/types";
 import type { JSX } from "react";
-import { Link } from "lucide-react";
+import { CornerRightUp, Link } from "lucide-react";
+import "./styles/footnotes.css";
 
 export function useMDXComponents(): MDXComponents {
   return {
@@ -35,7 +36,14 @@ export function useMDXComponents(): MDXComponents {
       </h3>
     ),
     p: ({ children, ...props }: { children: React.ReactNode }): JSX.Element => {
-      const isFirstParagraph = props["first"] === "true";
+      // Define the props type with the optional 'first' property
+      interface ParagraphProps
+        extends React.HTMLAttributes<HTMLParagraphElement> {
+        first?: string;
+        children: React.ReactNode;
+      }
+
+      const isFirstParagraph = (props as ParagraphProps).first === "true";
       return (
         <p
           {...props}
@@ -62,7 +70,7 @@ export function useMDXComponents(): MDXComponents {
       </ol>
     ),
     code: ({ children }: { children: React.ReactNode }): JSX.Element => (
-      <code className="relative rounded bg-muted font-mono text-sm font-semibold text-red-my transition-colors">
+      <code className="relative rounded px-[0.25em] py-[0.15em] font-mono text-sm text-red-my border border-black dark:border-red-my">
         {children}
       </code>
     ),
@@ -77,14 +85,19 @@ export function useMDXComponents(): MDXComponents {
       </blockquote>
     ),
     a: (
-      { children, href }: { children: React.ReactNode; href?: string },
+      { children, href, className, ...props }: {
+        children: React.ReactNode;
+        href?: string;
+        className?: string;
+        [key: string]: any;
+      },
     ): JSX.Element => {
+      // Check if this is a footnote reference (from remark-gfm)
+      const isFootnoteRef = className?.includes("data-footnote-backref");
       // Check if this is an anchor link pointing to itself
       const isAnchorSelfRef = href?.startsWith("#") &&
         children &&
         typeof children === "string";
-      // &&
-      // href.substring(1) === children.toLowerCase().replace(/\s+/g, "-");
 
       const handleAnchorClick = (e: React.MouseEvent) => {
         if (href?.startsWith("#")) {
@@ -102,6 +115,22 @@ export function useMDXComponents(): MDXComponents {
           }
         }
       };
+      if (isFootnoteRef) {
+        // Replace gfm added icon with Lucide icon to make it consistent regardless of UTF-8 rendering
+        return (
+          <a
+            {...props}
+            href={href}
+            onClick={handleAnchorClick}
+            className="footnote-ref inline-flex items-center"
+          >
+            <CornerRightUp
+              className="inline"
+              style={{ width: "1em", height: "1em" }}
+            />
+          </a>
+        );
+      }
 
       if (isAnchorSelfRef) {
         return (
@@ -109,6 +138,7 @@ export function useMDXComponents(): MDXComponents {
             href={href}
             onClick={handleAnchorClick}
             className="group relative font-medium text-primary"
+            {...props}
           >
             <span
               className="absolute -left-5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity"
@@ -125,12 +155,31 @@ export function useMDXComponents(): MDXComponents {
         <a
           href={href}
           onClick={href?.startsWith("#") ? handleAnchorClick : undefined}
+          target={href?.startsWith("#") ? undefined : "_blank"}
+          // See https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/noopener
+          // and https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/noreferrer
+          rel={href?.startsWith("#") ? undefined : "noopener noreferrer"}
           className="font-medium text-primary underline underline-offset-4 decoration-red-my decoration-3"
+          {...props}
         >
           {children}
         </a>
       );
     },
+    // section: ({ children, className, ...props }: {
+    //   children: React.ReactNode;
+    //   className?: string;
+    //   // [key: string]: any;
+    // }): JSX.Element => {
+    //   if (className?.includes("footnotes")) {
+    //     return (
+    //       <section {...props} className={`footnotes ${className || ""}`}>
+    //         {children}
+    //       </section>
+    //     );
+    //   }
+    //   return <section {...props} className={className}>{children}</section>;
+    // },
     table: ({ children }: { children: React.ReactNode }): JSX.Element => (
       <div className="my-6 w-full overflow-y-auto">
         <table className="w-full">{children}</table>

@@ -10,17 +10,13 @@ export function TableOfContents() {
     // Option 1: Exclude h1 headings entirely
     const headingElements = document.querySelectorAll("h2, h3, h4, h5");
 
-    // Option 2 (alternative): Include all headings but filter out the first h1
-    // const allHeadings = document.querySelectorAll("h1, h2, h3, h4, h5");
-    // const headingElements = Array.from(allHeadings).filter((el, index) => {
-    //   return !(el.tagName === 'H1' && index === 0);
-    // });
-
-    const headingsData = Array.from(headingElements).map((heading) => ({
-      id: heading.id,
-      text: heading.textContent || "",
-      level: parseInt(heading.tagName.charAt(1), 10),
-    }));
+    const headingsData = Array.from(headingElements)
+      .filter((heading) => heading.id !== "footnote-label")
+      .map((heading) => ({
+        id: heading.id,
+        text: heading.textContent || "",
+        level: parseInt(heading.tagName.charAt(1), 10),
+      }));
 
     setHeadings(headingsData);
   }, []);

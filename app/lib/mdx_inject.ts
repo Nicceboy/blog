@@ -14,7 +14,7 @@ export type TypographyOptions = {
  * Creates a rehype plugin that inspects the document structure
  * and can extract headings, paragraphs, etc.
  */
-export function rehypeTypographyInjector(options: TypographyOptions) {
+export function rehypeTypographyInjector(_options: TypographyOptions) {
   // Allow any type for deno
 
   return (tree: Root) => {
@@ -50,14 +50,6 @@ export function rehypeTypographyInjector(options: TypographyOptions) {
         node.properties["first"] = "true";
       }
     });
-
-    // Log the extracted information (or do something else with it)
-    console.log("Document structure:");
-    console.log("Headings:", headings);
-    console.log("First paragraph:", firstParagraph);
-
-    // You could also add this data to the file's metadata
-    // or modify the tree if needed
 
     return tree;
   };

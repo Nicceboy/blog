@@ -1,11 +1,8 @@
-import type { Route } from "+types/robots.ts";
 import { readDataFile } from "~/lib/file_read.ts";
 
-// Serves the robots.txt and excludes many AI bots from crawling the site
-export async function loader(
-  {}: Route.LoaderArgs,
-) {
-  const aiRules = await readDataFile("robots", "ai.txt");
+// Export the loader function for use in the route configuration
+export const loader = async () => {
+  const aiRules = await readDataFile("robots", "robots.txt");
   const robotText = [
     aiRules,
     "User-agent: *",
@@ -19,4 +16,4 @@ export async function loader(
       "Cache-Control": "max-age=300, s-maxage=3600",
     },
   });
-}
+};
