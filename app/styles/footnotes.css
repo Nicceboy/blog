@@ -1,0 +1,25 @@
+/* Desktop: Sidenote styling */
+@media (min-width: 1024px) {
+  /* Hide the traditional footnotes section on desktop */
+  .footnotes {
+    display: none;
+  }
+}
+
+/* Mobile: Traditional footnotes styling */
+@media (max-width: 1023px) {
+  .footnotes {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    /* border-top: 1px solid #e2e8f0; */
+  }
+
+  .footnotes ol {
+    padding-left: 1.5rem;
+  }
+
+  .footnotes li {
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+  }
+}

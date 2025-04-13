@@ -1,0 +1,34 @@
+{
+  "name": "a_very_personal_blog",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@expressive-code/plugin-line-numbers": "^0.40.2",
+    "@mdx-js/react": "^3.1.0",
+    "@mdx-js/rollup": "^3.1.0",
+    "@radix-ui/react-navigation-menu": "^1.2.5",
+    "@tailwindcss/postcss": "^4.0.9",
+    "@types/mdx": "^2.0.13",
+    "autoprefixer": "^10.4.20",
+    "isbot": "^5.1.18",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router": "^7.1.1",
+    "unified": "^11.0.5"
+  },
+  "devDependencies": {
+    "@deno/vite-plugin": "^1.0.2",
+    "@react-router/dev": "^7.1.1",
+    "@tailwindcss/vite": "^4.0.8",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "tailwindcss": "^4.0.8",
+    "vite": "^6.0.5",
+    "vite-imagetools": "^7.0.5",
+    "rehype-expressive-code": "^0.40.2",
+    "remark-gfm": "^4.0.1",
+    "remark-math": "^6.0.0",
+    "remark-rehype": "^11.1.1"
+  }
+}
