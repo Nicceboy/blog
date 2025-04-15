@@ -4,6 +4,7 @@ import mdx from "@mdx-js/rollup";
 import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
+import { imagetools } from "vite-imagetools";
 
 import remarkMath from "remark-math";
 import remarkGfm from "remark-gfm";
@@ -15,6 +16,7 @@ import rehypeAutolinkHeadings from "https://esm.sh/rehype-autolink-headings@7";
 import rehypeMathjax from "rehype-mathjax/chtml";
 
 import rehypeExpressiveCode from "rehype-expressive-code";
+import type { RehypeExpressiveCodeOptions } from "rehype-expressive-code";
 import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 
 const typographyOptions: TypographyOptions = {
@@ -28,23 +30,17 @@ const typographyOptions: TypographyOptions = {
   heading_depth: 3,
 };
 
-const rehypeExpressiveCodeOptions = {
-  // themes: ["ayu-dark"],
-  // themes: ["github-dark-high-contrast"],
-  themes: ["vesper"],
-  // themes: ["vitesse-black", "solarized-light"],
+const rehypeExpressiveCodeOptions: RehypeExpressiveCodeOptions = {
+  themes: ["poimandres"],
   plugins: [pluginLineNumbers()],
-  // shiki: {
-  //   bundledLangs: [".ts", ".rs"],
-  // },
   frames: {
     showCopyToClipboardButton: false,
   },
   styleOverrides: {
     borderRadius: "0.3rem",
     borderWidth: "1px",
-    // borderColor: "var(--color-semi-dark)",
-    borderColor: "rgb(56 56 56/1)",
+    // borderColor: "rgb(56 56 56/1)",
+    borderColor: "var(--color-gray-800)",
     gutterBorderColor: "transparent",
     codeFontFamily: "var(--font-mono)",
     codeBackground: "var(--color-darkest-dark)",
@@ -56,7 +52,7 @@ const rehypeExpressiveCodeOptions = {
       terminalBackground: "var(--color-darkest-dark)",
     },
     textMarkers: {
-      inlineMarkerBorderWidth: "0.1rem",
+      // inlineMarkerBorderWidth: "0.1rem",
     },
   },
 };
@@ -73,7 +69,7 @@ const mathjax_options = {
     displayAlign: "center", // default for indentalign when set to 'auto'
     displayIndent: "0", // default for indentshift when set to 'auto'
     matchFontHeight: true, // true to match ex-height of surrounding font
-    fontURL: "fonts/woff-v2", // The URL where the fonts are found
+    fontURL: "/fonts/woff-v2", // The URL where the fonts are found
     adaptiveCSS: true, // true means only produce CSS that is used in the processed equations
   },
 };
@@ -83,6 +79,7 @@ export default defineConfig({
     deno(),
     tailwindcss(),
     reactRouter(),
+    imagetools(),
     {
       enforce: "pre",
       ...mdx({

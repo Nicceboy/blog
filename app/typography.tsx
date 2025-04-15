@@ -70,12 +70,12 @@ export function useMDXComponents(): MDXComponents {
       </ol>
     ),
     code: ({ children }: { children: React.ReactNode }): JSX.Element => (
-      <code className="relative rounded px-[0.25em] py-[0.15em] font-mono text-sm text-red-my border border-black dark:border-red-my">
+      <code className="relative rounded px-[0.25em] py-[0.15em] font-mono text-sm text-red-my border border-black dark:border-gray-800">
         {children}
       </code>
     ),
     pre: ({ children }: { children: React.ReactNode }): JSX.Element => (
-      <pre className="mb-4 mt-6 p-2  overflow-x-auto rounded-lg bg-muted font-mono text-sm border border-solid dark:border-gray-900">
+      <pre className="mb-4 mt-6 p-4  overflow-x-auto rounded-lg bg-muted font-mono text-sm border border-solid dark:border-gray-900">
         {children}
       </pre>
     ),
@@ -96,8 +96,9 @@ export function useMDXComponents(): MDXComponents {
       const isFootnoteRef = className?.includes("data-footnote-backref");
       // Check if this is an anchor link pointing to itself
       const isAnchorSelfRef = href?.startsWith("#") &&
-        children &&
-        typeof children === "string";
+        children;
+      // &&
+      // typeof children === "string"; // Does not work with MathJax
 
       const handleAnchorClick = (e: React.MouseEvent) => {
         if (href?.startsWith("#")) {

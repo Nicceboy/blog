@@ -38,6 +38,7 @@ export function Sidenotes() {
         // Get footnote contents
         const footnoteItems = footnotesSection.querySelectorAll("li");
         const footnoteContents = new Map();
+        console.log("Footnote items:", footnoteItems);
 
         footnoteItems.forEach((item) => {
           const id = item.id;
@@ -117,7 +118,7 @@ export function Sidenotes() {
   };
 
   return (
-    <div className="hidden sidenotes-container lg:block absolute top-0 right-0 h-full pointer-events-none">
+    <div className="hidden sidenotes-container lg:block top-0  h-full pointer-events-none">
       {footnotePositions.map((footnote, index) => {
         // Calculate offset based on previous footnotes
         let offset = 0;

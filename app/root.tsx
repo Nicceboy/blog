@@ -10,28 +10,14 @@ import {
 import type { Route } from "react-router/app/+types/root.ts";
 import "./styles/main.css";
 
-const test =
-  "https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap";
-
 export const links: Route.LinksFunction = () => [
-  { rel: "preconnect", href: "https://fonts.googleapis.com" },
-  {
-    rel: "preconnect",
-    href: "https://fonts.gstatic.com",
-    crossOrigin: "anonymous",
-  },
-  {
-    rel: "stylesheet",
-    href:
-      "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
-    // href: "https://fonts.googleapis.com/css2?family=VT323&display=swap",
-  },
-  {
-    rel: "stylesheet",
-    href: test,
-    // "https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap",
-    // href: "https://fonts.googleapis.com/css2?family=VT323&display=swap",
-  },
+  // Example
+  // { rel: "preconnect", href: "https://fonts.googleapis.com" },
+  // {
+  //   rel: "preconnect",
+  //   href: "https://fonts.gstatic.com",
+  //   crossOrigin: "anonymous",
+  // },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -43,22 +29,37 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="text-default-text font-normal text-xl">
-        {children}
-        <ScrollRestoration />
-        <Scripts />
-        <footer className="mt-auto py-4 text-sm text-gray-500 text-center">
+
+      <title>A blog about something</title>
+      <body className="text-default-text font-normal text-xl min-h-screen flex flex-col">
+        <div className="flex-grow">
+          {children}
+          <ScrollRestoration />
+          <Scripts />
+        </div>
+        <footer className="w-full py-4 text-sm text-gray-500 text-center bg-black bg-opacity-90 backdrop-blur-sm z-10">
           <div className="container mx-auto">
-            <p>© {new Date().getFullYear()} - Niklas Saari</p>
-            <p className="mt-2">
-              <a
-                href="/feed.xml"
-                className="text-red-my hover:text-red-my-hover underline"
-                title="RSS Feed"
-              >
-                Atom Feed
-              </a>
-            </p>
+            <div className="px-4 flex flex-col items-center justify-center gap-1 max-w-xl mx-auto">
+              <p>
+                Except where otherwise noted, content on this site is licensed
+                under{" "}
+                <a
+                  href="https://creativecommons.org/licenses/by/4.0/"
+                  className="text-red-my hover:text-red-my-hover underline"
+                  target="_blank"
+                  rel="license noopener noreferrer"
+                >
+                  CC BY 4.0
+                </a>{" "}
+                © {new Date().getFullYear()} Niklas Saari
+              </p>
+              <p>
+                <span>
+                  This website does not collect data or use any third-party
+                  APIs.
+                </span>
+              </p>
+            </div>
           </div>
         </footer>
       </body>

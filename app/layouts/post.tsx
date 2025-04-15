@@ -6,14 +6,15 @@ import Components from "~/typography.tsx";
 import { Alert, AlertTitle } from "~/components/alert.tsx";
 import { TableOfContents } from "~/lib/toc.tsx";
 import { Sidenotes } from "~/components/sidenotes.tsx";
+import { isValidElement, useMemo } from "react";
 
 export type MetaData = {
   title: string;
-  created: number;
-  updated: number;
-  tags: string[];
-  author: string;
-  description: string;
+  description?: string;
+  created: Date | number;
+  updated?: Date | number;
+  tags?: string[];
+  image?: string;
 };
 
 export const PostContainer = (
@@ -23,7 +24,8 @@ export const PostContainer = (
   const Title = () => Components.h1({ children: meta.title });
   const PostAgeWarning = () => {
     const ageInYears = Math.floor(
-      (Date.now() - meta.created) / (1000 * 60 * 60 * 24 * 365),
+      (Date.now() - new Date(meta.created).getTime()) /
+        (1000 * 60 * 60 * 24 * 365),
     );
 
     if (ageInYears >= 2) {
@@ -39,28 +41,32 @@ export const PostContainer = (
 
     return null;
   };
-  const DateInfo = () => {
-    const createdDate: string = new Date(meta.created)
-      .toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
+
+  const formattedDates = useMemo(() => {
+    const createdDate = new Date(meta.created).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
 
     const updatedDate = meta.updated
-      ? new Date(meta.updated).toLocaleDateString("en-GB", {
+      ? new Date(meta.updated).toLocaleDateString("en-US", {
         year: "numeric",
         month: "long",
         day: "numeric",
       })
       : null;
 
+    return { createdDate, updatedDate };
+  }, [meta.created, meta.updated]);
+
+  const DateInfo = () => {
     return (
       <div className="text-gray-500 text-md font-bold mb-4 flex flex-col sm:flex-row">
-        <span>Published on {createdDate}</span>
-        {updatedDate && (
+        <span>Published on {formattedDates.createdDate}</span>
+        {formattedDates.updatedDate && (
           <span className="sm:ml-4 mt-1 sm:mt-0">
-            Updated: {updatedDate}
+            Updated: {formattedDates.updatedDate}
           </span>
         )}
       </div>
@@ -92,28 +98,36 @@ export const PostContainer = (
 
   return (
     <>
+      <title>{meta.title}</title>
       <section
-        className={`lg:-left-50 prose max-w-screen md:max-w-[85ch] w-full space-y-6 sm:px-4 md:px-6 relative`}
+        className={`prose max-w-screen md:max-w-[85ch] w-full space-y-6 sm:px-4 md:px-6 relative text-gray-300`}
       >
-        <div className="bg-black p-6 space-y-4 rounded-3xl relative">
+        <div className="bg-black p-6 space-y-4 rounded-3xl relative ">
           <div className="flex items-center">
             <span className={EOF_TEXT_CLASS}>
             </span>
-            {/* <div className="ml-2 border-l-2 h-5 dark:border-gray-700 " /> */}
             <div className="flex-1 h-[2px] bg-gradient-to-r from-transparent via-gray-700 to-gray-700" />
           </div>
           <Title />
           <DateInfo />
           <PostAgeWarning />
           <TableOfContents />
-          <MDXProvider components={Components}>
-            {children}
-          </MDXProvider>
+
+          {/* Safely render the MDX content with error boundary */}
+          <div className="mdx-content">
+            {typeof children === "function" || isValidElement(children)
+              ? (
+                <MDXProvider components={Components}>
+                  {children}
+                </MDXProvider>
+              )
+              : <div className="text-red-500">Invalid MDX content</div>}
+          </div>
+
           <TagsList />
           <div className="flex items-center my-2">
             <div className="flex-1 h-[2px] dark:border-gray-700 bg-gradient-to-r from-gray-700  via-gray-700 to-transparent" />
             <span className={`${EOF_TEXT_CLASS} mx-4`}></span>
-            {/* <div className="flex-1 border-t-2 dark:border-gray-700" /> */}
           </div>
 
           <Sidenotes />

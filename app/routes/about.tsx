@@ -1,19 +1,18 @@
 import { PageLayout } from "../layouts/default.tsx";
+import * as About from "~/posts/about.mdx";
+import { MDXProvider } from "@mdx-js/react";
+import Components from "~/typography.tsx";
 
 const AboutPage: React.FC = () => {
+  //   console.log(About.default);
   return (
     <PageLayout>
-      <div className="about-page">
-        <h1>About Me</h1>
-
-        <div className="about-content">
-          <h1>
-            Hello! Wondering what I am doing here...
-          </h1>
-
-          {/* Add more about content here */}
-        </div>
-      </div>
+      <title>About this page</title>
+      <section className="prose">
+        <MDXProvider components={Components}>
+          <About.default components={Components} />
+        </MDXProvider>
+      </section>
     </PageLayout>
   );
 };

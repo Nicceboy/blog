@@ -7,7 +7,7 @@ const getNavLinkClass = (isActive: boolean) =>
 
 export function Navbar() {
   return (
-    <nav className="flex gap-6 sticky top-0 bg-black p-1 z-10">
+    <nav className="w-full flex lg:flex-col items-left sticky top-0 bg-black p-1 lg:pl-[4em] z-10">
       <NavLink
         to="/"
         end
@@ -16,18 +16,13 @@ export function Navbar() {
         /root
       </NavLink>
       <NavLink
-        to="/posts"
-        end
-        className={({ isActive }) => getNavLinkClass(isActive)}
-      >
-        /posts
-      </NavLink>
-      <NavLink
         to="/about"
         className={({ isActive }) => getNavLinkClass(isActive)}
       >
         /about
       </NavLink>
+
+      {/* Add theme toggle at the end with ml-auto to push it to the right */}
     </nav>
   );
 }
