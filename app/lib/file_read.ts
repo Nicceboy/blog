@@ -1,4 +1,4 @@
-import * as path from "jsr:@std/path";
+import * as path from "@std/path";
 
 const DATA_DIR = path.join(Deno.cwd(), "app", "data");
 
