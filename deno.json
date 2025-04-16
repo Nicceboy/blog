@@ -9,7 +9,7 @@
       "command": "deno check --node-modules-dir=auto '**/*'",
       "dependencies": ["typegen"]
     },
-    "typegen": "react-router typegen && tsc"
+    "typegen": "react-router typegen"
   },
   "compilerOptions": {
     "noImplicitReturns": true,
@@ -26,7 +26,8 @@
     ],
     "jsx": "react-jsx",
     "jsxImportSource": "react",
-    "rootDirs": [".", "./.react-router/types"],
+    "jsxImportSourceTypes": "@types/react",
+    "rootDirs": [".", "./.react-router/types" ],
     "types": [
       "vite/client",
       ".react-router/types/**/*"
@@ -36,7 +37,6 @@
   "exclude": ["build/"],
   "nodeModulesDir": "manual",
   "imports": {
-    "react-router/": "./.react-router/types/",
     "~/": "./app/",
     "+types/": "./.react-router/types/app/routes/+types/",
     "@std/http": "jsr:@std/http@^1.0.14",

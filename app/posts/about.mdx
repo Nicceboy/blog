@@ -3,12 +3,22 @@
     # About this page
 </div>
 
+
 The page is a personal blog where my opinions are my own and do not represent my employer or any other organization, unless explicitly mentioned otherwise.
 
 The website was built with an overly complicated, modern
 front-end stack. 
 The features of the blog will also increase over the time. If there are more than 10 posts some day, I will add search and category filter, but not likely before.
+
 To not disappoint Rube Goldberg[^1], the search will be also something extraordinaly unnecessary, likely SIMD accelerated WASM.
+The code highlighter already uses Shiki's `Oniguruma` WASM regex engine which is about 231 KB in bundle size.
+It is the same as VSCode uses in TextMate.
+Preperaing the worst - maybe there is a lot of code to highlight in the future.
+
+If I ever manage to reach the 10 posts, I will also add Atom feed, but not likely before.
+
+Beware the big bundle size!
+<br></br>
     
 
 [^1]: Rube Goldberg is known for his humorous illustrations of [machines](https://en.wikipedia.org/wiki/Rube_Goldberg_machine) doing simple tasks in overly complicated way. 

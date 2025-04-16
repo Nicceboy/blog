@@ -47,10 +47,10 @@ export function useMDXComponents(): MDXComponents {
       return (
         <p
           {...props}
-          className={` leading-7 [&:not(:first-child)]:mt-6 
+          className={`leading-7 [&:not(:first-child)]:mt-6 text-justify w-full
             ${
             isFirstParagraph
-              ? "first-line:tracking-widest first-letter:float-left first-letter:mr-3 first-letter:text-7xl first-letter:font-bold first-letter:text-red-my"
+              ? "first-line:tracking-wider first-letter:float-left first-letter:mr-3 first-letter:text-7xl first-letter:font-bold first-letter:text-red-my"
               : ""
           }
           `}
@@ -69,13 +69,29 @@ export function useMDXComponents(): MDXComponents {
         {children}
       </ol>
     ),
-    code: ({ children }: { children: React.ReactNode }): JSX.Element => (
-      <code className="relative rounded px-[0.25em] py-[0.15em] font-mono text-sm text-red-my border border-black dark:border-gray-800">
-        {children}
-      </code>
-    ),
+    code: ({ children, className }: { children: React.ReactNode, className?: string }): JSX.Element => {
+      // Check if children is a plain string. If so, assume it's inline code.
+      // If children is complex (e.g., React elements from syntax highlighting),
+      // assume it's inside a <pre> block.
+      const isInlineCode = typeof children === 'string';
+      if (isInlineCode) {
+        return (
+          <code className="relative rounded border border-black dark:border-gray-800 bg-muted/50 px-[0.25em] py-[0.15em] font-mono text-sm text-red-my whitespace-nowrap">
+            {children}
+          </code>
+        );
+      }
+      // Render code block content without extra inline styling.
+      // The parent <pre> component and syntax highlighting handle block styling.
+      // Pass className along for the syntax highlighter.
+      return (
+        <code className={className}>
+          {children}
+        </code>
+      );
+    },
     pre: ({ children }: { children: React.ReactNode }): JSX.Element => (
-      <pre className="mb-4 mt-6 p-4  overflow-x-auto rounded-lg bg-muted font-mono text-sm border border-solid dark:border-gray-900">
+      <pre className="mb-4 mt-6 p-4 overflow-x-auto rounded-lg bg-muted font-mono text-sm  border border-solid dark:border-gray-900">
         {children}
       </pre>
     ),
@@ -89,7 +105,6 @@ export function useMDXComponents(): MDXComponents {
         children: React.ReactNode;
         href?: string;
         className?: string;
-        [key: string]: any;
       },
     ): JSX.Element => {
       // Check if this is a footnote reference (from remark-gfm)
@@ -160,27 +175,13 @@ export function useMDXComponents(): MDXComponents {
           // See https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/noopener
           // and https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/noreferrer
           rel={href?.startsWith("#") ? undefined : "noopener noreferrer"}
-          className="font-medium text-primary underline underline-offset-4 decoration-red-my decoration-3"
+          className="font-medium text-primary underline underline-offset-4 decoration-red-my decoration-2"
           {...props}
         >
           {children}
         </a>
       );
     },
-    // section: ({ children, className, ...props }: {
-    //   children: React.ReactNode;
-    //   className?: string;
-    //   // [key: string]: any;
-    // }): JSX.Element => {
-    //   if (className?.includes("footnotes")) {
-    //     return (
-    //       <section {...props} className={`footnotes ${className || ""}`}>
-    //         {children}
-    //       </section>
-    //     );
-    //   }
-    //   return <section {...props} className={className}>{children}</section>;
-    // },
     table: ({ children }: { children: React.ReactNode }): JSX.Element => (
       <div className="my-6 w-full overflow-y-auto">
         <table className="w-full">{children}</table>

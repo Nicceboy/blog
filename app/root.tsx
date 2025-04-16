@@ -7,7 +7,7 @@ import {
   ScrollRestoration,
 } from "react-router";
 
-import type { Route } from "react-router/app/+types/root.ts";
+import type { Route } from "./+types/root.ts";
 import "./styles/main.css";
 
 export const links: Route.LinksFunction = () => [
@@ -31,13 +31,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
 
       <title>A blog about something</title>
-      <body className="text-default-text font-normal text-xl min-h-screen flex flex-col">
+      <body className="text-shadow-default-text dark:text-default-text font-normal text-xl min-h-screen flex flex-col">
         <div className="flex-grow">
           {children}
           <ScrollRestoration />
           <Scripts />
         </div>
-        <footer className="w-full py-4 text-sm text-gray-500 text-center bg-black bg-opacity-90 backdrop-blur-sm z-10">
+        <footer className="w-full py-4 text-sm text-black dark:text-gray-500 text-center bg-opacity-90 backdrop-blur-sm z-10">
           <div className="container mx-auto">
             <div className="px-4 flex flex-col items-center justify-center gap-1 max-w-xl mx-auto">
               <p>

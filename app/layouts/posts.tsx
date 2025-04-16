@@ -16,15 +16,15 @@ const PostCard = ({ post }: { post: Post }) => {
   });
 
   return (
-    <div className="bg-black p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-800 mb-3">
+    <div className="dark:bg-black p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-800 mb-3">
       <Link to={`/posts/${post.slug}`} className="no-underline">
-        <h2 className="text-2xl font-bold text-gray-400 mb-2 hover:text-red-my transition-colors">
+        <h2 className="text-2xl font-bold dark:text-gray-400 mb-2 hover:text-red-my transition-colors">
           {post.title}
         </h2>
       </Link>
-      <div className="text-gray-400 text-sm mb-3">{formattedDate}</div>
+      <div className="dark:text-gray-400 text-sm mb-3">{formattedDate}</div>
       {post.description && (
-        <p className="text-gray-500 mb-3">{post.description}</p>
+        <p className="dark:text-gray-500 mb-3">{post.description}</p>
       )}
       {post.tags && post.tags.length > 0 && (
         <div className="flex flex-wrap gap-2">

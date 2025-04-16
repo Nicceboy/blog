@@ -1,5 +1,5 @@
-import { Navbar } from "../components/navbar.tsx";
-import { Sidenotes } from "~/components/sidenotes.tsx";
+import { Navbar } from "~/components/navbar.tsx";
+import { Sidenotes } from "~/components/sidenote.tsx";
 
 export function PageLayout({ children }: { children: React.ReactNode }) {
   return (

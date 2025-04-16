@@ -4,9 +4,13 @@ import { getAllPosts } from "~/lib/posts.ts";
 export const loader: LoaderFunction = async () => {
   try {
     const posts = await getAllPosts();
-    return { posts };
+    return { posts, status: 200 };
   } catch (error) {
     console.error("Error fetching posts:", error);
-    return { error: "Failed to fetch posts", status: 500 };
+    return { 
+      error: "Failed to fetch posts", 
+      status: 500,
+      message: error instanceof Error ? error.message : "Unknown error"
+    };
   }
 };

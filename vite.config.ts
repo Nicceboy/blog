@@ -5,6 +5,10 @@ import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import { imagetools } from "vite-imagetools";
+import type {RehypeShikiOptions} from '@shikijs/rehype';
+import rehypeShikiFromHighlighter from '@shikijs/rehype/core';
+import { createOnigurumaEngine } from 'shiki/engine/oniguruma';
+import { createHighlighterCore } from 'shiki/core';
 
 import remarkMath from "remark-math";
 import remarkGfm from "remark-gfm";
@@ -15,9 +19,6 @@ import rehypeSlug from "https://esm.sh/rehype-slug@6";
 import rehypeAutolinkHeadings from "https://esm.sh/rehype-autolink-headings@7";
 import rehypeMathjax from "rehype-mathjax/chtml";
 
-import rehypeExpressiveCode from "rehype-expressive-code";
-import type { RehypeExpressiveCodeOptions } from "rehype-expressive-code";
-import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 
 const typographyOptions: TypographyOptions = {
   initial_classes: [
@@ -30,32 +31,65 @@ const typographyOptions: TypographyOptions = {
   heading_depth: 3,
 };
 
-const rehypeExpressiveCodeOptions: RehypeExpressiveCodeOptions = {
-  themes: ["poimandres"],
-  plugins: [pluginLineNumbers()],
-  frames: {
-    showCopyToClipboardButton: false,
-  },
-  styleOverrides: {
-    borderRadius: "0.3rem",
-    borderWidth: "1px",
-    // borderColor: "rgb(56 56 56/1)",
-    borderColor: "var(--color-gray-800)",
-    gutterBorderColor: "transparent",
-    codeFontFamily: "var(--font-mono)",
-    codeBackground: "var(--color-darkest-dark)",
-    frames: {
-      editorActiveTabIndicatorTopColor: "var(--color-red-my)",
-      editorTabBarBorderBottomColor: "var(--color-semi-dark)",
-      terminalTitlebarBackground: "var(--color-darkest-dark)",
-      terminalTitlebarBorderBottomColor: "var(--color-semi-dark)",
-      terminalBackground: "var(--color-darkest-dark)",
+
+const highlighter = await createHighlighterCore ({
+  themes : [
+    import('@shikijs/themes/github-light-default'),
+    import('@shikijs/themes/github-dark-default'),
+  ],
+  langs : [
+    import('@shikijs/langs/typescript'), 
+    import('@shikijs/langs/rust'),
+    import('@shikijs/langs/bash'),
+    import('@shikijs/langs/dockerfile'),
+    import('@shikijs/langs/yaml'),
+    import('@shikijs/langs/json'),
+    import('@shikijs/langs/hcl'),
+  ],
+  engine : createOnigurumaEngine (() => import('shiki/wasm'))
+});
+
+
+
+ const shiki_opts: RehypeShikiOptions =  {
+    themes: {
+      light: 'github-light-default',
+      dark: 'github-dark-default',
     },
-    textMarkers: {
-      // inlineMarkerBorderWidth: "0.1rem",
+    colorReplacements: {
+      'github-light-default': {
+        '#953800': '#b7384b',
+      },
+      'github-dark-default': {
+        '#ffa657': '#b7384b',
+      },
     },
-  },
-};
+    transformers: [
+    //   {
+    //     // Transformer hook for the <pre> element
+    //     pre(node) {
+    //       // Ensure the pre element preserves whitespace and line breaks
+    //       const existingStyle = node.properties.style || '';
+    //       // Check if white-space is already set, if not, add it.
+    //       if (!/white-space\s*:/.test(String(existingStyle))) {
+    //         node.properties.style = `white-space: pre;${existingStyle ? ' ' + existingStyle : ''}`;
+    //       }
+    //       // You can add other classes or styles to the <pre> element here if needed
+    //       // node.properties.class = (node.properties.class || '') + ' custom-pre-class';
+    //     },
+    //     // Transformer hook for the <code> element
+    //     code(node) {
+    //       // `node` is the Hast node for the <code> element
+    //       // Add the custom class
+    //       node.properties.class = (node.properties.class || '') + ' processed-code-block';
+    //     }
+    //     // You can add other hooks like `line`, `span` if needed
+    //     // line(node, line) { ... }
+    //   }
+    // ]
+    ],
+  };
+
 
 const mathjax_options = {
   chtml: {
@@ -90,7 +124,7 @@ export default defineConfig({
           [rehypeAutolinkHeadings, { behavior: "wrap" }],
           [rehypeTypographyInjector, typographyOptions],
           [rehypeMathjax, mathjax_options],
-          [rehypeExpressiveCode, rehypeExpressiveCodeOptions],
+          [rehypeShikiFromHighlighter, highlighter, shiki_opts],
         ],
       }),
     },

@@ -4,11 +4,10 @@ import { MDXProvider } from "@mdx-js/react";
 import Components from "~/typography.tsx";
 
 const AboutPage: React.FC = () => {
-  //   console.log(About.default);
   return (
-    <PageLayout>
+    <PageLayout >
       <title>About this page</title>
-      <section className="prose">
+      <section className="prose p-1">
         <MDXProvider components={Components}>
           <About.default components={Components} />
         </MDXProvider>

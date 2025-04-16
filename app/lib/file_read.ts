@@ -1,6 +1,6 @@
-import path from "path";
-import process from "node:process";
-const DATA_DIR = path.join(process.cwd(), "app", "data");
+import * as path from "jsr:@std/path";
+
+const DATA_DIR = path.join(Deno.cwd(), "app", "data");
 
 type FileDirectory = "robots" | "config" | "templates" | "content";
 

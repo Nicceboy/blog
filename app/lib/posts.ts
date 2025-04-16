@@ -1,8 +1,11 @@
 import type { MetaData } from "~/layouts/post.tsx";
+import type React from "react"; // Import React type
 
-// Extended post interface that includes a slug
+// Extended post interface that includes a slug and the component
 export interface Post extends MetaData {
   slug: string;
+  default: React.ComponentType; // Add the component type
+  path: string; // Ensure path is part of the interface if used
 }
 
 // Cache for posts to avoid reloading
@@ -30,19 +33,23 @@ export function getAllLocalPosts(): Post[] {
       .map(([path, module]) => {
         // Extract slug from path (assuming format ../posts/slug/index.mdx)
         const slug = path.split("/").slice(-2)[0];
-        // Get metadata from the module
-        const mod = module as any;
-        const metadata = mod.metadata || {};
+        // Cast the module with proper typing for MDX content
+        const mod = module as {
+          default: React.ComponentType;
+          metadata: MetaData;
+        };
+        const metadata = mod.metadata ;
 
-        // Ensure dates are properly converted to Date objects
-        const created = metadata.created
-          ? new Date(metadata.created)
-          : new Date();
+        if (!metadata.created) {
+          throw new Error(`Post "${path}" is missing the 'created' date in its frontmatter.`);
+        }
+        const created = new Date(metadata.created);
+
+        // Updated can be optional
         const updated = metadata.updated
           ? new Date(metadata.updated)
           : undefined;
 
-        // Return a properly structured Post object
         return {
           slug,
           title: metadata.title || "Untitled Post",
@@ -51,8 +58,8 @@ export function getAllLocalPosts(): Post[] {
           updated,
           tags: metadata.tags || [],
           image: metadata.image,
-          // Store the path for potential future use
           path,
+          default: mod.default, // Store the component itself
         } as Post;
       })
       // Sort by creation date, newest first
@@ -74,31 +81,22 @@ export async function getAllPosts(): Promise<Post[]> {
   posts.sort((a, b) =>
     new Date(b.created).getTime() - new Date(a.created).getTime()
   );
-  //   await new Promise((resolve) => setTimeout(resolve, 3000));
-
   return posts;
 }
-// get post by slug
-export async function getPostBySlug(slug: string) {
+
+// get post by slug - Returns metadata AND the component from cache
+export async function getPostBySlug(slug: string): Promise<Post | null> { // Update return type
+  if (!slug) return null;
+
+  // Ensure posts are loaded into the cache
   const posts = getAllLocalPosts();
   const post = posts.find((post) => post.slug === slug);
 
   if (!post) {
+    console.log(`Post with slug "${slug}" not found.`);
     return null;
   }
 
-  try {
-    // Dynamically import the MDX file
-    const mdxModule = await import(`../posts/${slug}/index.mdx`);
-
-    // Return a merged object with both post metadata and the MDX component
-    return {
-      ...post,
-      default: mdxModule.default, // The React component from MDX
-      metadata: mdxModule.metadata || post, // The metadata from MDX or fallback to post
-    };
-  } catch (error) {
-    console.error(`Failed to load post content for ${slug}:`, error);
-    return null;
-  }
+  // The 'post' object from the cache contains everything:
+  return post;
 }

@@ -49,7 +49,7 @@ Buildah can be used from the VM or inside another container, but that is too com
 
 We will use [Nix](https://nixos.org/manual/nix/stable/package-management/basic-package-mgmt.html) to install QEMU and Podman.
 
-```sh frame="none"
+```sh frame="none" showLineNumbers=false
 nix-env -iA nixpkgs.qemu nixpkgs.podman 
 ```
 
@@ -61,7 +61,7 @@ You could either mount a specific limited directory into the machine or the whol
 Mounting the whole home directory might not be advised, but I will do it for demonstration purposes.
 CPU count and memory size has been also increased.
 
-```sh frame="none"
+```sh frame="none" showLineNumbers=false
 podman machine init -m 4096 --cpus 2 -v "$HOME:$HOME"
 podman machine start
 podman info
@@ -96,13 +96,13 @@ However, there is no official container image for ARM-based Arch Linux.
 
 We can create a base image from the scratch; we download the official AArch64 [multiplatform release](https://archlinuxarm.org/about/downloads), and since Linux is purely a file-based system, we just import the contents into the container, and it should work.
 
-```bash frame="none"
+```bash frame="none" showLineNumbers=false
 curl -L http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz | podman import - archlinuxarm
 ```
 This will create a new image with the namespace `localhost/archlinuxarm:latest`. 
 
 You can try it out
-```bash frame="none"
+```bash frame="none" showLineNumbers=false
 podman run --rm -it archlinuxarm bash
 ```
 
@@ -122,7 +122,7 @@ We might also want to install additional [CTAN](https://ctan.org/) packages, whi
 For that, we need The TeXLive Package Manager (tlmgr), which is often challenging to install.
 The following example installs *EB Garamond font* and *setspace* package.
 
-```dockerfile frame="code"
+```dockerfile
 
 FROM archlinuxarm:latest
 
@@ -175,21 +175,21 @@ As an example, we will build IEEE Conference template.
 The template is provided [in here.](https://www.ieee.org/conferences/publishing/templates.html)
 
 Download and extract it:
-```bash frame="none"
+```bash frame="none" showLineNumbers=false
 curl -o ieee_template.zip -L https://www.ieee.org/content/dam/ieee-org/ieee/web/org/pubs/conference-latex-template_10-17-19.zip && 7z x ieee_template.zip
 ```
 
 Mount the source into our container.
 Note the ``--userns`` option; it maps the ownership of the volume inside the container to the correct non-root user.
 
-```bash frame="none"
+```bash frame="none" showLineNumbers=false
 cd Conference-LaTeX-template_10-17-19 
 podman run --userns=keep-id:uid=1000,gid=1000 --rm -itv "$(pwd):/latex" texlive:latest
 ```
 
 To build our document with LuaLatex and to also detect new changes
 
-```bash frame="none"
+```bash frame="none" showLineNumbers=false
 cd /latex
 latexmk -pdflatex=lualatex  -pdf -pvc conference_101719.tex
 ```

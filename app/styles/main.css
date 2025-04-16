@@ -2,15 +2,15 @@
 
 @font-face {
   font-family: "DM Mono";
-  src: url("/fonts/DMMono-Regular.woff2") format("woff2");
+  src: local('DM Mono'), url("/fonts/DMMono-Regular.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "EB Garamond";
-  src: url("/fonts/EBGaramond-VariableFont_wght.ttf") format("truetype");
-  font-weight: normal;
+  src: local('EB Garamond'), url("/fonts/EBGaramond-VariableFont_wght.ttf") format("truetype");
+  font-weight: normal; /* Note: For variable fonts, weight/style here might be less critical if defined later */
   font-style: normal;
   font-display: swap;
 }
@@ -35,25 +35,32 @@
   --color-darkest-dark: #000000;
   --color-semi-dark: #0b0e14;
 }
-/* Code? box-shadow: inset 0 -1px 15px rgba(255,255,255,.15); */
-.expressive-code pre {
-  box-shadow: inset 0 -1px 7px rgba(255, 255, 255, 0.08) !important;
-}
 
 html,
 body {
   font-family: "EB Garamond", serif;
-  /* font-family: "Inter", serif; */
-  background-color: black;
+  @media (prefers-color-scheme: dark) {
+    background-color: black;
+  }
+  /* background-color: black; */
+  @media (prefers-color-scheme: light) {
+    background-color: white;
+  }
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
   }
-  .expressive-code {
-    padding-top: 1rem;
-  }
-  .expressive-code .gutter .ln {
-    padding-inline: 0;
-    padding-inline-start: 2ch;
+
+}
+
+@media (prefers-color-scheme: dark) {
+  .line,
+  .line span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+    /* Optional, if you also want font styles */
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
   }
 }

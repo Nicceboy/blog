@@ -1,11 +1,11 @@
 "use client";
 
+// import { Sidenotes } from "~/components/sidenote.tsx";
 import { MDXProvider } from "@mdx-js/react";
 import { ClockAlert } from "lucide-react";
 import Components from "~/typography.tsx";
 import { Alert, AlertTitle } from "~/components/alert.tsx";
 import { TableOfContents } from "~/lib/toc.tsx";
-import { Sidenotes } from "~/components/sidenotes.tsx";
 import { isValidElement, useMemo } from "react";
 
 export type MetaData = {
@@ -62,7 +62,7 @@ export const PostContainer = (
 
   const DateInfo = () => {
     return (
-      <div className="text-gray-500 text-md font-bold mb-4 flex flex-col sm:flex-row">
+      <div className="text-gray-800 dark:text-gray-500 text-md font-bold mb-4 flex flex-col sm:flex-row">
         <span>Published on {formattedDates.createdDate}</span>
         {formattedDates.updatedDate && (
           <span className="sm:ml-4 mt-1 sm:mt-0">
@@ -94,19 +94,19 @@ export const PostContainer = (
     );
   };
 
-  const EOF_TEXT_CLASS = "text-gray-700 text-sm font-bold font-mono py-1";
+  const EOF_TEXT_CLASS = "text-red-my text-sm font-bold font-mono ";
 
   return (
     <>
       <title>{meta.title}</title>
       <section
-        className={`prose max-w-screen md:max-w-[85ch] w-full space-y-6 sm:px-4 md:px-6 relative text-gray-300`}
+        className={`prose max-w-screen md:max-w-[85ch] w-full space-y-6 sm:px-4 md:px-6 relative text-black dark:text-gray-300`}
       >
-        <div className="bg-black p-6 space-y-4 rounded-3xl relative ">
+        <div className="dark:bg-black px-6 pb-6 space-y-4 rounded-3xl relative ">
           <div className="flex items-center">
             <span className={EOF_TEXT_CLASS}>
             </span>
-            <div className="flex-1 h-[2px] bg-gradient-to-r from-transparent via-gray-700 to-gray-700" />
+            <div className="flex-1 h-[2px] bg-gradient-to-r from-transparent via-red-my to-red-my" />
           </div>
           <Title />
           <DateInfo />
@@ -126,11 +126,9 @@ export const PostContainer = (
 
           <TagsList />
           <div className="flex items-center my-2">
-            <div className="flex-1 h-[2px] dark:border-gray-700 bg-gradient-to-r from-gray-700  via-gray-700 to-transparent" />
+            <div className="flex-1 h-[2px] border-red-my bg-gradient-to-r from-red-my  via-red-my to-transparent" />
             <span className={`${EOF_TEXT_CLASS} mx-4`}></span>
           </div>
-
-          <Sidenotes />
         </div>
       </section>
     </>
