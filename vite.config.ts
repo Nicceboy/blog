@@ -19,7 +19,6 @@ import rehypeSlug from "https://esm.sh/rehype-slug@6";
 import rehypeAutolinkHeadings from "https://esm.sh/rehype-autolink-headings@7";
 import rehypeMathjax from "rehype-mathjax/chtml";
 
-
 const typographyOptions: TypographyOptions = {
   initial_classes: [
     "first-letter:float-left",
@@ -35,7 +34,7 @@ const typographyOptions: TypographyOptions = {
 const highlighter = await createHighlighterCore ({
   themes : [
     import('@shikijs/themes/github-light-default'),
-    import('@shikijs/themes/github-dark-default'),
+    import('@shikijs/themes/vitesse-black'),
   ],
   langs : [
     import('@shikijs/langs/typescript'), 
@@ -50,44 +49,51 @@ const highlighter = await createHighlighterCore ({
 });
 
 
-
  const shiki_opts: RehypeShikiOptions =  {
-    themes: {
-      light: 'github-light-default',
-      dark: 'github-dark-default',
+  themes: {
+    light: 'github-light-default',
+    dark: 'vitesse-black',
+  },
+  colorReplacements: {
+    'github-light-default': {
+    '#953800': '#b7384b',
     },
-    colorReplacements: {
-      'github-light-default': {
-        '#953800': '#b7384b',
-      },
-      'github-dark-default': {
-        '#ffa657': '#b7384b',
-      },
+    'github-dark-default': {
+    '#ffa657': '#b7384b',
     },
-    transformers: [
-    //   {
-    //     // Transformer hook for the <pre> element
-    //     pre(node) {
-    //       // Ensure the pre element preserves whitespace and line breaks
-    //       const existingStyle = node.properties.style || '';
-    //       // Check if white-space is already set, if not, add it.
-    //       if (!/white-space\s*:/.test(String(existingStyle))) {
-    //         node.properties.style = `white-space: pre;${existingStyle ? ' ' + existingStyle : ''}`;
-    //       }
-    //       // You can add other classes or styles to the <pre> element here if needed
-    //       // node.properties.class = (node.properties.class || '') + ' custom-pre-class';
-    //     },
-    //     // Transformer hook for the <code> element
-    //     code(node) {
-    //       // `node` is the Hast node for the <code> element
-    //       // Add the custom class
-    //       node.properties.class = (node.properties.class || '') + ' processed-code-block';
-    //     }
-    //     // You can add other hooks like `line`, `span` if needed
-    //     // line(node, line) { ... }
-    //   }
-    // ]
-    ],
+    'houston': {
+    '#00daef': '#b7384b',
+    },
+    'vitesse-black': {
+    '#80a665': '#b7384b',
+    },
+  },
+  transformers: [
+    {
+    // Transformer hook for the <pre> element
+    pre(_node) {
+    },
+    // Transformer hook for the <code> element
+    code(_node) {
+    },
+    // Transformer hook for each line (span.line)
+    line(node, line) {
+      // `node` is the Hast node for the span.line element
+      // `line` is the line number (1-based)
+      node.properties.class = (node.properties.class || '') + '';
+
+      // Create the line number element
+      const lineNumberEl = {
+      type: 'element' as const,
+      tagName: 'span',
+      properties: { className: ['line-number', ''] }, // Add class for styling
+      children: [{ type: 'text' as const, value: String(line) }]
+      };
+
+      node.children.unshift(lineNumberEl);
+    }
+    }
+  ],
   };
 
 

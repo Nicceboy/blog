@@ -1,14 +1,19 @@
+import previewImage from './preview_mtg_container.png?w=800&format=webp';
+
 export const metadata = {
     title: "Running Your Favorite Windows Games on Linux Containers",
     created: Date.parse("2021-02-24"),
     // updated: Date.parse("2025-02-26"),
     tags: ["containers", "docker", "linux", "windows"],
     author: "Niklas Saari",
-    description: "Gaming on Linux can be simple."
+    description: "Gaming on Linux can be simple.",
+    toc: false,
+    image: previewImage
 };
-import previewImage from './preview_mtg_container.png?w=800&format=webp';
 
-There was a moment in one weekend when I wanted to play one Windows game on my laptop, but unfortunately, I am using Linux with integrated Intel graphics and that does not sound too promising.
+<p className="drop-cap">
+    {'There was a moment in one weekend when I wanted to play one Windows game on my laptop, but unfortunately, I am using Linux with integrated Intel graphics and that does not sound too promising.'}
+</p>
 
 The other repelling thought proved to be the amount of dependencies I would need that I am able to play this game on [Wine](https://www.winehq.org/). I would like to maintain my system as whole and get rid of unnecessary stuff later on, somewhat easily. Virtualization is not option, as I have already weak performance.
 
@@ -17,6 +22,7 @@ However, there is another, bit more lightweight solution; containers, especially
 <img 
     src={previewImage}
     alt="Testing MTGArena on container."
+    className="pt-2"
 />
 
 

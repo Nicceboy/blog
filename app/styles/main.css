@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @font-face {
   font-family: "DM Mono";
   src: local('DM Mono'), url("/fonts/DMMono-Regular.woff2") format("woff2");
@@ -14,6 +16,14 @@
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: "Departure Mono";
+  src: local('Departure Mono'), url("/fonts/DepartureMono-Regular.woff2") format("woff2");
+  font-weight: normal; /* Note: For variable fonts, weight/style here might be less critical if defined later */
+  font-style: normal;
+  font-display: swap;
+}
+
 
 @theme {
   --font-sans:
@@ -23,44 +33,77 @@
   /* --font-sans: VT323, serif; */
   --font-mono: "DM Mono", Iosevka, ui-monospace,Menlo,Monaco,monospace;
   /* ui-monospace, "Iosevka", monospace; */
+  --font-special: "Departure Mono";
 
   /* custom colors */
-  --color-red-my: #b7384b;
+  /* --color-red-my: #A12F3F;  */
+  --color-red-my-for-light: #A12F3F;
+  --color-red-my: #b7384b; 
   --color-red-my-hover: #830c16;
   --color-default-text: #e0e0e0;
-  /* --color-default-text: var(--color-stone-300); */
 }
 
 :root {
   --color-darkest-dark: #000000;
   --color-semi-dark: #0b0e14;
+  --shiki-dark-bg: #000000;
+  --grid-line-light: rgba(0, 0, 0, 0.05);
+  
+  /* Default (light mode) styles */
+  background-color: white;
+  color-scheme: light;
+}
+
+/* Styles for dark mode */
+html.dark {
+    background-color: #0a0a0a0a !important; /* Use theme variable or specific color */
+    color-scheme: dark;
+    pre {
+      background-color: var(--shiki-dark-bg) !important;
+    }
+    .line,
+    .line span {
+      color: var(--shiki-dark) !important;
+      background-color: var(--shiki-dark-bg) !important;
+      font-style: var(--shiki-dark-font-style) !important;
+      font-weight: var(--shiki-dark-font-weight) !important;
+      text-decoration: var(--shiki-dark-text-decoration) !important;
+    }
+}
+
+/* Drop cap styling for paragraphs */
+.drop-cap {
+  text-align: justify;
+  hyphens: auto;
+}
+
+/* Using Tailwind's actual implementation approach */
+.drop-cap::first-line {
+  letter-spacing: 0.1em; /* exact tracking-wider value */
+}
+
+.drop-cap::first-letter {
+  float: left;
+  margin-right: 0.75rem; /* mr-3 exactly as in Tailwind */
+  font-size: 4.5rem; /* text-7xl in Tailwind is 4.5rem (72px) */
+  line-height: 1;
+  font-weight: 700; /* font-bold */
+  color: var(--color-red-my-for-light);
+}
+
+html.dark .drop-cap::first-letter {
+  color: var(--color-red-my);
 }
 
 html,
 body {
   font-family: "EB Garamond", serif;
-  @media (prefers-color-scheme: dark) {
-    background-color: black;
-  }
-  /* background-color: black; */
-  @media (prefers-color-scheme: light) {
-    background-color: white;
-  }
 
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
-  }
-
-}
-
-@media (prefers-color-scheme: dark) {
-  .line,
-  .line span {
-    color: var(--shiki-dark) !important;
-    background-color: var(--shiki-dark-bg) !important;
-    /* Optional, if you also want font styles */
-    font-style: var(--shiki-dark-font-style) !important;
-    font-weight: var(--shiki-dark-font-weight) !important;
-    text-decoration: var(--shiki-dark-text-decoration) !important;
+  .shiki .line > .line-number {
+    color: var(--color-gray-600) !important;
+    display: inline-block; /* Needed for text-align and width */
+    min-width: 2.5em; /* Adjust based on max expected digits */
+    text-align: right;
+    padding-inline-end: 1em; /* Space between number and code */
   }
 }

@@ -24,7 +24,6 @@ export function rehypeTypographyInjector(_options: TypographyOptions) {
       text: string;
       id?: string;
     }[] = [];
-    let firstParagraph: string = "";
     // @ts-ignore - Tree type not exported by unist-util-visit :(
     visit(tree, ["element"], (node: Element) => {
       //   Extract headings (h1, h2, etc)
@@ -38,16 +37,6 @@ export function rehypeTypographyInjector(_options: TypographyOptions) {
           text,
           id,
         });
-      }
-
-      // Extract the first paragraph
-      if (node.tagName === "p" && !firstParagraph) {
-        firstParagraph = getTextContent(node);
-        // Initialize properties object if it doesn't exist
-        if (!node.properties) {
-          node.properties = {};
-        }
-        node.properties["first"] = "true";
       }
     });
 

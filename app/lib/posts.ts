@@ -1,102 +1,98 @@
 import type { MetaData } from "~/layouts/post.tsx";
-import type React from "react"; // Import React type
+import type React from "react";
 
-// Extended post interface that includes a slug and the component
+// Interface for the module structure when NOT eager
+interface MdxModule {
+  default: React.ComponentType;
+  metadata: MetaData;
+}
 export interface Post extends MetaData {
   slug: string;
   default: React.ComponentType; // Add the component type
-  path: string; // Ensure path is part of the interface if used
+  path: string; 
 }
+// Type for the glob result when NOT eager
+type MdxGlobResult = Record<string, () => Promise<MdxModule>>;
 
-// Cache for posts to avoid reloading
-let _posts: Post[] | null = null;
+// Get functions to load modules, doesn't load content immediately
+const modules = import.meta.glob("../posts/*/index.mdx") as MdxGlobResult;
 
-export function getAllLocalPosts(): Post[] {
-  // If we've already loaded the posts, return them (client-side cache)
-  if (_posts !== null) {
-    return _posts;
-  }
+// Cache for metadata only (avoids re-parsing all files)
+let _allMetadata: Omit<Post, 'default'>[] | null = null;
 
-  try {
-    // Use Vite's import.meta.glob to get all MDX files
-    // With { eager: true }, this is transformed at build time into synchronous imports
-    // This means the imports are already resolved when this code runs
-    const modules = import.meta.glob("../posts/*/index.mdx", { eager: true });
+// Function to get metadata list (can potentially run at build time or on server)
+export async function getAllPostsMetadata(): Promise<Omit<Post, 'default'>[]> {
+  if (_allMetadata) return _allMetadata;
 
-    if (Object.keys(modules).length === 0) {
-      console.warn("No MDX posts found in the posts directory");
-    } else {
-      console.log(`Found ${Object.keys(modules).length} posts`);
-    }
+  const postsData = await Promise.all(
+    Object.entries(modules).map(async ([path, loadModule]) => {
+      const slug = path.split("/").slice(-2)[0];
+      // Load module just to get metadata
+      const mod = await loadModule();
+      const metadata = mod.metadata;
 
-    _posts = Object.entries(modules)
-      .map(([path, module]) => {
-        // Extract slug from path (assuming format ../posts/slug/index.mdx)
-        const slug = path.split("/").slice(-2)[0];
-        // Cast the module with proper typing for MDX content
-        const mod = module as {
-          default: React.ComponentType;
-          metadata: MetaData;
-        };
-        const metadata = mod.metadata ;
+      if (!metadata.created) {
+         throw new Error(`Post "${path}" is missing the 'created' date.`);
+      }
+      // Process metadata similarly to your original function
+      const processedMetadata: MetaData = {
+         ...metadata,
+         title: metadata.title || "Untitled Post",
+         created: new Date(metadata.created),
+         updated: metadata.updated ? new Date(metadata.updated) : undefined,
+         tags: metadata.tags || [],
+         toc: metadata.toc ?? false,
+      };
+      return {
+        ...processedMetadata,
+        slug,
+        path,
+      };
+    })
+  );
 
-        if (!metadata.created) {
-          throw new Error(`Post "${path}" is missing the 'created' date in its frontmatter.`);
-        }
-        const created = new Date(metadata.created);
-
-        // Updated can be optional
-        const updated = metadata.updated
-          ? new Date(metadata.updated)
-          : undefined;
-
-        return {
-          slug,
-          title: metadata.title || "Untitled Post",
-          description: metadata.description,
-          created,
-          updated,
-          tags: metadata.tags || [],
-          image: metadata.image,
-          path,
-          default: mod.default, // Store the component itself
-        } as Post;
-      })
-      // Sort by creation date, newest first
-      .sort((a, b) =>
-        new Date(b.created).getTime() - new Date(a.created).getTime()
-      );
-
-    return _posts;
-  } catch (error) {
-    console.error("Error loading posts:", error);
-    // Return empty array in case of error
-    return [];
-  }
-}
-
-export async function getAllPosts(): Promise<Post[]> {
-  const posts = await getAllLocalPosts();
-  // Sort by creation date (newest first)
-  posts.sort((a, b) =>
+  _allMetadata = postsData.sort((a, b) =>
     new Date(b.created).getTime() - new Date(a.created).getTime()
   );
-  return posts;
+  return _allMetadata;
 }
 
-// get post by slug - Returns metadata AND the component from cache
-export async function getPostBySlug(slug: string): Promise<Post | null> { // Update return type
-  if (!slug) return null;
 
-  // Ensure posts are loaded into the cache
-  const posts = getAllLocalPosts();
-  const post = posts.find((post) => post.slug === slug);
+// Function to get a single post's content and metadata dynamically
+export async function getPostBySlug(slug: string): Promise<Post | null> {
+  const path = `../posts/${slug}/index.mdx`;
+  const loadModule = modules[path];
 
-  if (!post) {
-    console.log(`Post with slug "${slug}" not found.`);
+  if (!loadModule) {
+    console.log(`Post module with slug "${slug}" not found.`);
     return null;
   }
 
-  // The 'post' object from the cache contains everything:
-  return post;
+  try {
+    const mod = await loadModule(); // Dynamically load the specific post module
+    const metadata = mod.metadata;
+
+     if (!metadata.created) {
+       throw new Error(`Post "${path}" is missing the 'created' date.`);
+     }
+
+     const processedMetadata: MetaData = {
+       ...metadata,
+       title: metadata.title || "Untitled Post",
+       created: new Date(metadata.created),
+       updated: metadata.updated ? new Date(metadata.updated) : undefined,
+       tags: metadata.tags || [],
+       toc: metadata.toc ?? false,
+     };
+
+    return {
+      ...processedMetadata,
+      slug,
+      path,
+      default: mod.default,
+    };
+  } catch (error) {
+    console.error(`Error loading post ${slug}:`, error);
+    return null;
+  }
 }

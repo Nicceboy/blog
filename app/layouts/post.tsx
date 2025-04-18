@@ -2,9 +2,7 @@
 
 // import { Sidenotes } from "~/components/sidenote.tsx";
 import { MDXProvider } from "@mdx-js/react";
-import { ClockAlert } from "lucide-react";
 import Components from "~/typography.tsx";
-import { Alert, AlertTitle } from "~/components/alert.tsx";
 import { TableOfContents } from "~/lib/toc.tsx";
 import { isValidElement, useMemo } from "react";
 
@@ -15,6 +13,7 @@ export type MetaData = {
   updated?: Date | number;
   tags?: string[];
   image?: string;
+  toc: boolean;
 };
 
 export const PostContainer = (
@@ -22,25 +21,6 @@ export const PostContainer = (
 ) => {
   // @ts-expect-error Components.h1 is actually a valid component function
   const Title = () => Components.h1({ children: meta.title });
-  const PostAgeWarning = () => {
-    const ageInYears = Math.floor(
-      (Date.now() - new Date(meta.created).getTime()) /
-        (1000 * 60 * 60 * 24 * 365),
-    );
-
-    if (ageInYears >= 2) {
-      return (
-        <Alert className="border-none text-red-my font-black">
-          <ClockAlert className="h-7 w-7" />
-          <AlertTitle className="text-xl font-bold">
-            This post is over {ageInYears} years old.
-          </AlertTitle>
-        </Alert>
-      );
-    }
-
-    return null;
-  };
 
   const formattedDates = useMemo(() => {
     const createdDate = new Date(meta.created).toLocaleDateString("en-US", {
@@ -62,8 +42,8 @@ export const PostContainer = (
 
   const DateInfo = () => {
     return (
-      <div className="text-gray-800 dark:text-gray-500 text-md font-bold mb-4 flex flex-col sm:flex-row">
-        <span>Published on {formattedDates.createdDate}</span>
+      <div className="text-gray-800 dark:text-gray-500 text-md font-[1000] mb-4 flex flex-col sm:flex-row">
+        <span >Published on {formattedDates.createdDate}</span>
         {formattedDates.updatedDate && (
           <span className="sm:ml-4 mt-1 sm:mt-0">
             Updated: {formattedDates.updatedDate}
@@ -81,7 +61,7 @@ export const PostContainer = (
         {meta.tags.map((tag, index) => (
           <span
             key={index}
-            className="text-red-my font-medium cursor-pointer hover:text-red-my-hover  transition-colors"
+            className="text-red-my-for-light dark:text-red-my font-medium cursor-pointer hover:text-red-my-hover  transition-colors"
             onClick={() => {
               // TODO: Implement tag click logic
               console.log(`Tag clicked: ${tag}`);
@@ -94,24 +74,24 @@ export const PostContainer = (
     );
   };
 
-  const EOF_TEXT_CLASS = "text-red-my text-sm font-bold font-mono ";
+  const EOF_TEXT_CLASS = "text-red-my-for-light dark:text-red-my text-sm font-bold font-mono ";
 
   return (
     <>
       <title>{meta.title}</title>
       <section
-        className={`prose max-w-screen md:max-w-[85ch] w-full space-y-6 sm:px-4 md:px-6 relative text-black dark:text-gray-300`}
+        className={`prose max-w-screen md:max-w-[calc(50rem+1px)] w-full space-y-6 sm:px-[1rem] md:px-[calc(1rem)] relative text-black dark:text-gray-300`}
       >
-        <div className="dark:bg-black px-6 pb-6 space-y-4 rounded-3xl relative ">
-          <div className="flex items-center">
+        <div className="bg-white dark:bg-black px-[1rem] pb-6 space-y-4 relative overflow-hidden ">
+          <div className="flex items-center -mx-[4rem]">
             <span className={EOF_TEXT_CLASS}>
             </span>
             <div className="flex-1 h-[2px] bg-gradient-to-r from-transparent via-red-my to-red-my" />
           </div>
           <Title />
           <DateInfo />
-          <PostAgeWarning />
-          <TableOfContents />
+          {/* <PostAgeWarning /> */}
+          {meta.toc && <TableOfContents />}
 
           {/* Safely render the MDX content with error boundary */}
           <div className="mdx-content">
@@ -125,8 +105,8 @@ export const PostContainer = (
           </div>
 
           <TagsList />
-          <div className="flex items-center my-2">
-            <div className="flex-1 h-[2px] border-red-my bg-gradient-to-r from-red-my  via-red-my to-transparent" />
+          <div className="flex items-center my-2 -mx-6">
+            <div className="flex-1 h-[2px] border-red-my-for-light dark:border-red-my bg-gradient-to-r from-red-my-for-light dark:from-red-my  via-red-my-for-light dark:via-red-my to-transparent" />
             <span className={`${EOF_TEXT_CLASS} mx-4`}></span>
           </div>
         </div>

@@ -7,7 +7,7 @@ const AboutPage: React.FC = () => {
   return (
     <PageLayout >
       <title>About this page</title>
-      <section className="prose p-1">
+      <section className="prose bg-white dark:bg-black box-border">
         <MDXProvider components={Components}>
           <About.default components={Components} />
         </MDXProvider>

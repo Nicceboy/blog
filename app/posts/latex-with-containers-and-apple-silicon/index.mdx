@@ -4,7 +4,8 @@ export const metadata = {
     // updated: Date.parse("2025-02-26"),
     tags: ["containers", "podman", "docker", "mac", "arm", "latex", "oci"],
     author: "Niklas Saari",
-    description: "Building and using ARM-based OCI images on Apple Silicon from scratch. LaTeX document preparation system used as an example."
+    description: "Building and using ARM-based OCI images on Apple Silicon from scratch. LaTeX document preparation system used as an example.",
+    toc: true,
 };
 
 Since the release of Apple's M1 Chips, ARM architecture has expanded to a larger user base.
@@ -123,7 +124,6 @@ For that, we need The TeXLive Package Manager (tlmgr), which is often challengin
 The following example installs *EB Garamond font* and *setspace* package.
 
 ```dockerfile
-
 FROM archlinuxarm:latest
 
 # If you want to use custom mirror to download packages instead of the automatic geolocation

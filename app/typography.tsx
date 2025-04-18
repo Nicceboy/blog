@@ -10,7 +10,7 @@ export function useMDXComponents(): MDXComponents {
     ): JSX.Element => (
       <h1
         id={id}
-        className="scroll-m-20 text-red-my text-4xl font-extrabold tracking-tight lg:text-5xl"
+        className="scroll-m-20 text-red-my-for-light dark:text-red-my text-4xl font-extrabold tracking-tight lg:text-5xl"
       >
         {children}
       </h1>
@@ -36,24 +36,10 @@ export function useMDXComponents(): MDXComponents {
       </h3>
     ),
     p: ({ children, ...props }: { children: React.ReactNode }): JSX.Element => {
-      // Define the props type with the optional 'first' property
-      interface ParagraphProps
-        extends React.HTMLAttributes<HTMLParagraphElement> {
-        first?: string;
-        children: React.ReactNode;
-      }
-
-      const isFirstParagraph = (props as ParagraphProps).first === "true";
       return (
         <p
           {...props}
-          className={`leading-7 [&:not(:first-child)]:mt-6 text-justify w-full
-            ${
-            isFirstParagraph
-              ? "first-line:tracking-wider first-letter:float-left first-letter:mr-3 first-letter:text-7xl first-letter:font-bold first-letter:text-red-my"
-              : ""
-          }
-          `}
+          className="leading-7 [&:not(:first-child)]:mt-6 text-justify w-full hyphens-auto"
         >
           {children}
         </p>
@@ -76,7 +62,7 @@ export function useMDXComponents(): MDXComponents {
       const isInlineCode = typeof children === 'string';
       if (isInlineCode) {
         return (
-          <code className="relative rounded border border-black dark:border-gray-800 bg-muted/50 px-[0.25em] py-[0.15em] font-mono text-sm text-red-my whitespace-nowrap">
+          <code className="relative rounded border border-black dark:border-gray-800 bg-muted/50 px-[0.25em] py-[0.15em] font-mono text-sm text-red-my-for-light dark:text-red-my whitespace-nowrap">
             {children}
           </code>
         );
@@ -90,9 +76,15 @@ export function useMDXComponents(): MDXComponents {
         </code>
       );
     },
-    pre: ({ children }: { children: React.ReactNode }): JSX.Element => (
-      <pre className="mb-4 mt-6 p-4 overflow-x-auto rounded-lg bg-muted font-mono text-sm  border border-solid dark:border-gray-900">
-        {children}
+    // The 'pre' component wraps code blocks.
+    // It receives children (usually a 'code' element with highlighted syntax)
+    // and potentially other props like className from remark plugins.
+    pre: ({ children, className, ...props }: { children: React.ReactNode; className?: string } & React.HTMLAttributes<HTMLPreElement>): JSX.Element => (
+      <pre
+      className={`mb-4 mt-6 p-4 overflow-x-auto rounded-lg bg-muted font-mono text-sm border border-solid dark:border-gray-900 ${className || ''}`}
+      {...props} // Spread standard HTML pre attributes
+      >
+      {children}
       </pre>
     ),
     blockquote: ({ children }: { children: React.ReactNode }): JSX.Element => (
@@ -175,7 +167,7 @@ export function useMDXComponents(): MDXComponents {
           // See https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/noopener
           // and https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/noreferrer
           rel={href?.startsWith("#") ? undefined : "noopener noreferrer"}
-          className="font-medium text-primary underline underline-offset-4 decoration-red-my decoration-2"
+          className="font-medium text-primary underline underline-offset-4 decoration-red-my-for-light dark:decoration-red-my decoration-2"
           {...props}
         >
           {children}
@@ -205,6 +197,13 @@ export function useMDXComponents(): MDXComponents {
       <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
         {children}
       </td>
+    ),
+    img: (props: React.ImgHTMLAttributes<HTMLImageElement>): JSX.Element => (
+      <img
+        {...props}
+        alt={props.alt || ""} 
+        className={`${props.className || "py-2"}`}
+      />
     ),
   };
 }

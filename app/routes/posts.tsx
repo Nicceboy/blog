@@ -1,17 +1,10 @@
 import { PageLayout } from "~/layouts/default.tsx";
-import { PostContainer, type MetaData } from "~/layouts/post.tsx";
+import { PostContainer } from "~/layouts/post.tsx";
 import { getPostBySlug, type Post } from "~/lib/posts.ts"; // Import Post type
 import Components from "~/typography.tsx";
 import type { Route } from "+types/posts.ts";
-import React, { useMemo  } from "react"; 
+import { useMemo } from "react"; 
 import type {MDXContent} from "mdx";
-
-
-// // Define the expected shape of the data returned by the clientLoader
-// interface PostClientLoaderData extends Post { // Inherits metadata fields from Post
-//   default: React.ComponentType<MDXContent>; // The MDX component is expected
-//   metadata: MetaData; // Ensure metadata is explicitly part of the type
-// }
 
 // // Define the props for the Posts component
 interface PostsProps {
@@ -21,7 +14,6 @@ interface PostsProps {
 
 // clientLoader fetches metadata AND component on the client
 export async function clientLoader({ params }: Route.LoaderArgs): Promise<Post> {
-  console.log(`[clientLoader] Fetching data for slug: ${params.slug}`);
   if (!params.slug) {
     console.error("[clientLoader] Missing slug parameter");
     throw new Error("Bad Request: Missing slug parameter"); // Or return null/error object
@@ -51,7 +43,6 @@ export function HydrateFallback() {
 }
 
 export default function Posts({ loaderData }: PostsProps) {
-
   // Handle error state (if clientLoader resolved but data is invalid - though it should throw)
   if (typeof loaderData.default !== "function") {
      console.error("Rendering error state. Invalid loaderData:", loaderData);
@@ -73,21 +64,17 @@ export default function Posts({ loaderData }: PostsProps) {
     return <PostContent components={Components} />;
   }, [PostContent]);
 
-  // Memoizing the container might still be useful if metadata changes trigger re-renders unnecessarily
   const memoizedPostContainer = useMemo(() => {
-    // Pass loaderData directly as it contains all MetaData properties
     return (
       <PostContainer meta={loaderData}>
         {memoizedContent}
       </PostContainer>
     );
-    // Update dependency array
   }, [loaderData, memoizedContent]);
-
 
   return (
     <PageLayout>
-      {memoizedPostContainer}
+        {memoizedPostContainer}
     </PageLayout>
   );
 }

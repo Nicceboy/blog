@@ -2,11 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import type { MetaData } from "./post.tsx";
-
-interface Post extends MetaData {
-  slug: string;
-}
+import type { Post } from "~/./lib/posts.ts";
 
 const PostCard = ({ post }: { post: Post }) => {
   const formattedDate = new Date(post.created).toLocaleDateString("en-US", {
@@ -16,25 +12,38 @@ const PostCard = ({ post }: { post: Post }) => {
   });
 
   return (
-    <div className="dark:bg-black p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-800 mb-3">
+    <div className="flex flex-col h-full bg-white dark:bg-black p-4 shadow-sm hover:shadow-md transition-shadow box-border border border-gray-900">
+      {/* Content Section */}
+      <div className="flex-grow mb-4"> {/* flex-grow pushes tags down, mb-4 adds space above tags */}
       <Link to={`/posts/${post.slug}`} className="no-underline">
         <h2 className="text-2xl font-bold dark:text-gray-400 mb-2 hover:text-red-my transition-colors">
-          {post.title}
+        {post.title}
         </h2>
       </Link>
       <div className="dark:text-gray-400 text-sm mb-3">{formattedDate}</div>
       {post.description && (
         <p className="dark:text-gray-500 mb-3">{post.description}</p>
       )}
-      {post.tags && post.tags.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          {post.tags.map((tag, index) => (
-            <span key={index} className="text-sm text-red-my">
-              #{tag}
-            </span>
-          ))}
-        </div>
+      {post.image && (
+        <img
+        src={post.image}
+        alt={post.title || 'Post image'}
+        className="w-full object-cover mb-3 rounded-md" // Added basic image styling
+        />
       )}
+      </div>
+
+      {
+      post.tags && post.tags.length > 0 && (
+      <div className="flex flex-wrap gap-2 pt-2 border-t border-gray-200 dark:border-gray-900"> {/* Added top border for separation */}
+        {post.tags.map((tag, index) => (
+        <span key={index} className="text-[1rem] text-black dark:text-red-my">
+          #{tag}
+        </span>
+        ))}
+      </div>
+      )
+      }
     </div>
   );
 };
@@ -71,11 +80,11 @@ export const PostsLayout = () => {
   }
 
   return (
-    <div className="container mx-auto lg:px-4 mb-14">
+    <div className="container mx-auto lg:px-4 b-14">
       {isLoading
         ? (
-          <div className="text-center py-8">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-900 border-t-red-my">
+          <div className="text-center py-[1rem]">
+            <div className="inline-block animate-spin rounded-full h-[3rem] w-12 border-4 border-gray-900 border-t-red-my-for-light dark:border-t-red-my">
             </div>
             <p className="mt-2">Loading posts...</p>
           </div>
@@ -83,7 +92,7 @@ export const PostsLayout = () => {
         : posts.length > 0
         ? (
           <>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-[3rem]">
               {posts.map((post) => <PostCard key={post.slug} post={post} />)}
             </div>
           </>
