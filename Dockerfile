@@ -10,3 +10,5 @@ COPY --from=build-env /app/build/client/ /app/build/client/
 COPY --from=build-env /app/server /app/server
 WORKDIR /app
 CMD ["/app/server"]
+
+LABEL org.opencontainers.image.source=https://github.com/Nicceboy/blog
