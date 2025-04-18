@@ -43,7 +43,7 @@ export const PostContainer = (
   const DateInfo = () => {
     return (
       <div className="text-gray-800 dark:text-gray-500 text-md font-[1000] mb-4 flex flex-col sm:flex-row">
-        <span >Published on {formattedDates.createdDate}</span>
+        <span>Published on {formattedDates.createdDate}</span>
         {formattedDates.updatedDate && (
           <span className="sm:ml-4 mt-1 sm:mt-0">
             Updated: {formattedDates.updatedDate}
@@ -74,7 +74,8 @@ export const PostContainer = (
     );
   };
 
-  const EOF_TEXT_CLASS = "text-red-my-for-light dark:text-red-my text-sm font-bold font-mono ";
+  const EOF_TEXT_CLASS =
+    "text-red-my-for-light dark:text-red-my text-sm font-bold font-mono ";
 
   return (
     <>

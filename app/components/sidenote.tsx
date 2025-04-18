@@ -89,12 +89,15 @@ export function Sidenotes() {
       const verticalOffset = -9; // Initial vertical offset for each footnote
 
       initialPositions.forEach((currentFootnote, index) => {
-        const calculatedHeight = calculateFootnoteHeight(currentFootnote.content);
+        const calculatedHeight = calculateFootnoteHeight(
+          currentFootnote.content,
+        );
         let currentAdjustedTop = currentFootnote.top + verticalOffset;
 
         if (index > 0) {
           const prevAdjustedFootnote = adjustedPositions[index - 1];
-          const prevBottom = prevAdjustedFootnote.adjustedTop + prevAdjustedFootnote.height + spacing;
+          const prevBottom = prevAdjustedFootnote.adjustedTop +
+            prevAdjustedFootnote.height + spacing;
 
           // If current footnote overlaps with the previous one, adjust its top
           if (currentAdjustedTop < prevBottom) {
@@ -161,7 +164,9 @@ export function Sidenotes() {
       {adjustedFootnotePositions.map((footnote, index) => {
         // Extract footnote number from id (e.g., user-content-fn-1 -> 1)
         const footnoteNumberMatch = footnote.id.match(/(\d+)$/);
-        const footnoteNumber = footnoteNumberMatch ? footnoteNumberMatch[1] : index + 1;
+        const footnoteNumber = footnoteNumberMatch
+          ? footnoteNumberMatch[1]
+          : index + 1;
 
         let finalContent = footnote.content;
         const supTag = `<sup>${footnoteNumber}</sup> `;
@@ -171,8 +176,8 @@ export function Sidenotes() {
           const firstClosingBracketIndex = finalContent.indexOf(">");
           if (firstClosingBracketIndex !== -1) {
             finalContent = finalContent.slice(0, firstClosingBracketIndex + 1) +
-                           supTag +
-                           finalContent.slice(firstClosingBracketIndex + 1);
+              supTag +
+              finalContent.slice(firstClosingBracketIndex + 1);
           } else {
             finalContent = supTag + finalContent; // Fallback for malformed <p>
           }

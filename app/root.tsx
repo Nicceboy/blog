@@ -10,7 +10,6 @@ import {
 import type { Route } from "./+types/root.ts";
 import "./styles/main.css";
 
-
 export const links: Route.LinksFunction = () => [];
 
 // Simple non-blocking script to prevent theme flash
@@ -33,40 +32,39 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <title>A blog about something</title>
         <Meta />
         <Links />
-        {/* Add non-blocking script for theme */}
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body className="text-shadow-default-text dark:text-default-text font-normal text-xl min-h-screen flex flex-col bg-white dark:bg-black">
-          <div className="flex-grow">
-            {children}
-            <ScrollRestoration />
-            <Scripts />
-          </div>
-          <footer className="w-full py-4 text-sm text-black dark:text-gray-500 text-center bg-opacity-50 backdrop-blur-sm z-10">
-            <div className="container mx-auto">
-              <div className="px-4 flex flex-col items-center justify-center gap-1 max-w-xl mx-auto">
-                <p>
-                  Except where otherwise noted, content on this site is licensed
-                  under{" "}
-                  <a
-                    href="https://creativecommons.org/licenses/by/4.0/"
-                    className="text-red-my-for-light dark:text-red-my hover:text-red-my-hover underline"
-                    target="_blank"
-                    rel="license noopener noreferrer"
-                  >
-                    CC BY 4.0
-                  </a>{" "}
-                  © {new Date().getFullYear()} Niklas Saari
-                </p>
-                <p>
-                  <span>
-                    This website does not collect data or use any third-party
-                    APIs.
-                  </span>
-                </p>
-              </div>
+        <div className="flex-grow">
+          {children}
+          <ScrollRestoration />
+          <Scripts />
+        </div>
+        <footer className="w-full py-4 text-sm text-black dark:text-gray-500 text-center bg-opacity-50 backdrop-blur-sm z-10">
+          <div className="container mx-auto">
+            <div className="px-4 flex flex-col items-center justify-center gap-1 max-w-xl mx-auto">
+              <p>
+                Except where otherwise noted, content on this site is licensed
+                under{" "}
+                <a
+                  href="https://creativecommons.org/licenses/by/4.0/"
+                  className="text-red-my-for-light dark:text-red-my hover:text-red-my-hover underline"
+                  target="_blank"
+                  rel="license noopener noreferrer"
+                >
+                  CC BY 4.0
+                </a>{" "}
+                © {new Date().getFullYear()} Niklas Saari
+              </p>
+              <p>
+                <span>
+                  This website does not collect data or use any third-party
+                  APIs.
+                </span>
+              </p>
             </div>
-          </footer>
+          </div>
+        </footer>
       </body>
     </html>
   );

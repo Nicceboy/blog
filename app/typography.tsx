@@ -55,11 +55,16 @@ export function useMDXComponents(): MDXComponents {
         {children}
       </ol>
     ),
-    code: ({ children, className }: { children: React.ReactNode, className?: string }): JSX.Element => {
+    code: (
+      { children, className }: {
+        children: React.ReactNode;
+        className?: string;
+      },
+    ): JSX.Element => {
       // Check if children is a plain string. If so, assume it's inline code.
       // If children is complex (e.g., React elements from syntax highlighting),
       // assume it's inside a <pre> block.
-      const isInlineCode = typeof children === 'string';
+      const isInlineCode = typeof children === "string";
       if (isInlineCode) {
         return (
           <code className="relative rounded border border-black dark:border-gray-800 bg-muted/50 px-[0.25em] py-[0.15em] font-mono text-sm text-red-my-for-light dark:text-red-my whitespace-nowrap">
@@ -79,11 +84,18 @@ export function useMDXComponents(): MDXComponents {
     // The 'pre' component wraps code blocks.
     // It receives children (usually a 'code' element with highlighted syntax)
     // and potentially other props like className from remark plugins.
-    pre: ({ children, className, ...props }: { children: React.ReactNode; className?: string } & React.HTMLAttributes<HTMLPreElement>): JSX.Element => (
+    pre: (
+      { children, className, ...props }: {
+        children: React.ReactNode;
+        className?: string;
+      } & React.HTMLAttributes<HTMLPreElement>,
+    ): JSX.Element => (
       <pre
-      className={`mb-4 mt-6 p-4 overflow-x-auto rounded-lg bg-muted font-mono text-sm border border-solid dark:border-gray-900 ${className || ''}`}
-      {...props} // Spread standard HTML pre attributes
-      >
+        className={`mb-4 mt-6 p-4 overflow-x-auto rounded-lg bg-muted font-mono text-sm border border-solid dark:border-gray-900 ${
+          className || ""
+        }`}
+        {...props}
+      > // Spread standard HTML pre attributes
       {children}
       </pre>
     ),
@@ -201,7 +213,7 @@ export function useMDXComponents(): MDXComponents {
     img: (props: React.ImgHTMLAttributes<HTMLImageElement>): JSX.Element => (
       <img
         {...props}
-        alt={props.alt || ""} 
+        alt={props.alt || ""}
         className={`${props.className || "py-2"}`}
       />
     ),

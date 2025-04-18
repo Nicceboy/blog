@@ -5,10 +5,10 @@ import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import { imagetools } from "vite-imagetools";
-import type {RehypeShikiOptions} from '@shikijs/rehype';
-import rehypeShikiFromHighlighter from '@shikijs/rehype/core';
-import { createOnigurumaEngine } from 'shiki/engine/oniguruma';
-import { createHighlighterCore } from 'shiki/core';
+import type { RehypeShikiOptions } from "@shikijs/rehype";
+import rehypeShikiFromHighlighter from "@shikijs/rehype/core";
+import { createOnigurumaEngine } from "shiki/engine/oniguruma";
+import { createHighlighterCore } from "shiki/core";
 
 import remarkMath from "remark-math";
 import remarkGfm from "remark-gfm";
@@ -30,72 +30,69 @@ const typographyOptions: TypographyOptions = {
   heading_depth: 3,
 };
 
-
-const highlighter = await createHighlighterCore ({
-  themes : [
-    import('@shikijs/themes/github-light-default'),
-    import('@shikijs/themes/vitesse-black'),
+const highlighter = await createHighlighterCore({
+  themes: [
+    import("@shikijs/themes/github-light-default"),
+    import("@shikijs/themes/vitesse-black"),
   ],
-  langs : [
-    import('@shikijs/langs/typescript'), 
-    import('@shikijs/langs/rust'),
-    import('@shikijs/langs/bash'),
-    import('@shikijs/langs/dockerfile'),
-    import('@shikijs/langs/yaml'),
-    import('@shikijs/langs/json'),
-    import('@shikijs/langs/hcl'),
+  langs: [
+    import("@shikijs/langs/typescript"),
+    import("@shikijs/langs/rust"),
+    import("@shikijs/langs/bash"),
+    import("@shikijs/langs/dockerfile"),
+    import("@shikijs/langs/yaml"),
+    import("@shikijs/langs/json"),
+    import("@shikijs/langs/hcl"),
   ],
-  engine : createOnigurumaEngine (() => import('shiki/wasm'))
+  engine: createOnigurumaEngine(() => import("shiki/wasm")),
 });
 
-
- const shiki_opts: RehypeShikiOptions =  {
+const shiki_opts: RehypeShikiOptions = {
   themes: {
-    light: 'github-light-default',
-    dark: 'vitesse-black',
+    light: "github-light-default",
+    dark: "vitesse-black",
   },
   colorReplacements: {
-    'github-light-default': {
-    '#953800': '#b7384b',
+    "github-light-default": {
+      "#953800": "#b7384b",
     },
-    'github-dark-default': {
-    '#ffa657': '#b7384b',
+    "github-dark-default": {
+      "#ffa657": "#b7384b",
     },
-    'houston': {
-    '#00daef': '#b7384b',
+    "houston": {
+      "#00daef": "#b7384b",
     },
-    'vitesse-black': {
-    '#80a665': '#b7384b',
+    "vitesse-black": {
+      "#80a665": "#b7384b",
     },
   },
   transformers: [
     {
-    // Transformer hook for the <pre> element
-    pre(_node) {
-    },
-    // Transformer hook for the <code> element
-    code(_node) {
-    },
-    // Transformer hook for each line (span.line)
-    line(node, line) {
-      // `node` is the Hast node for the span.line element
-      // `line` is the line number (1-based)
-      node.properties.class = (node.properties.class || '') + '';
+      // Transformer hook for the <pre> element
+      pre(_node) {
+      },
+      // Transformer hook for the <code> element
+      code(_node) {
+      },
+      // Transformer hook for each line (span.line)
+      line(node, line) {
+        // `node` is the Hast node for the span.line element
+        // `line` is the line number (1-based)
+        node.properties.class = (node.properties.class || "") + "";
 
-      // Create the line number element
-      const lineNumberEl = {
-      type: 'element' as const,
-      tagName: 'span',
-      properties: { className: ['line-number', ''] }, // Add class for styling
-      children: [{ type: 'text' as const, value: String(line) }]
-      };
+        // Create the line number element
+        const lineNumberEl = {
+          type: "element" as const,
+          tagName: "span",
+          properties: { className: ["line-number", ""] }, // Add class for styling
+          children: [{ type: "text" as const, value: String(line) }],
+        };
 
-      node.children.unshift(lineNumberEl);
-    }
-    }
+        node.children.unshift(lineNumberEl);
+      },
+    },
   ],
-  };
-
+};
 
 const mathjax_options = {
   chtml: {

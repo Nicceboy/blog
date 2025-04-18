@@ -10,7 +10,7 @@ export function PageLayout({ children }: { children: React.ReactNode }) {
         </header>
         <div className="flex-1 max-w-3xl px-[1rem] relative">
           <div className="flex flex-row">
-              {children}
+            {children}
             <Sidenotes />
           </div>
         </div>

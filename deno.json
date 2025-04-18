@@ -27,7 +27,7 @@
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "jsxImportSourceTypes": "@types/react",
-    "rootDirs": [".", "./.react-router/types" ],
+    "rootDirs": [".", "./.react-router/types"],
     "types": [
       "vite/client",
       ".react-router/types/**/*"

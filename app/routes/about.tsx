@@ -5,7 +5,7 @@ import Components from "~/typography.tsx";
 
 const AboutPage: React.FC = () => {
   return (
-    <PageLayout >
+    <PageLayout>
       <title>About this page</title>
       <section className="prose bg-white dark:bg-black box-border">
         <MDXProvider components={Components}>

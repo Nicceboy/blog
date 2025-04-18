@@ -9,7 +9,7 @@ interface MdxModule {
 export interface Post extends MetaData {
   slug: string;
   default: React.ComponentType; // Add the component type
-  path: string; 
+  path: string;
 }
 // Type for the glob result when NOT eager
 type MdxGlobResult = Record<string, () => Promise<MdxModule>>;
@@ -18,10 +18,10 @@ type MdxGlobResult = Record<string, () => Promise<MdxModule>>;
 const modules = import.meta.glob("../posts/*/index.mdx") as MdxGlobResult;
 
 // Cache for metadata only (avoids re-parsing all files)
-let _allMetadata: Omit<Post, 'default'>[] | null = null;
+let _allMetadata: Omit<Post, "default">[] | null = null;
 
 // Function to get metadata list (can potentially run at build time or on server)
-export async function getAllPostsMetadata(): Promise<Omit<Post, 'default'>[]> {
+export async function getAllPostsMetadata(): Promise<Omit<Post, "default">[]> {
   if (_allMetadata) return _allMetadata;
 
   const postsData = await Promise.all(
@@ -32,23 +32,23 @@ export async function getAllPostsMetadata(): Promise<Omit<Post, 'default'>[]> {
       const metadata = mod.metadata;
 
       if (!metadata.created) {
-         throw new Error(`Post "${path}" is missing the 'created' date.`);
+        throw new Error(`Post "${path}" is missing the 'created' date.`);
       }
       // Process metadata similarly to your original function
       const processedMetadata: MetaData = {
-         ...metadata,
-         title: metadata.title || "Untitled Post",
-         created: new Date(metadata.created),
-         updated: metadata.updated ? new Date(metadata.updated) : undefined,
-         tags: metadata.tags || [],
-         toc: metadata.toc ?? false,
+        ...metadata,
+        title: metadata.title || "Untitled Post",
+        created: new Date(metadata.created),
+        updated: metadata.updated ? new Date(metadata.updated) : undefined,
+        tags: metadata.tags || [],
+        toc: metadata.toc ?? false,
       };
       return {
         ...processedMetadata,
         slug,
         path,
       };
-    })
+    }),
   );
 
   _allMetadata = postsData.sort((a, b) =>
@@ -56,7 +56,6 @@ export async function getAllPostsMetadata(): Promise<Omit<Post, 'default'>[]> {
   );
   return _allMetadata;
 }
-
 
 // Function to get a single post's content and metadata dynamically
 export async function getPostBySlug(slug: string): Promise<Post | null> {
@@ -72,18 +71,18 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     const mod = await loadModule(); // Dynamically load the specific post module
     const metadata = mod.metadata;
 
-     if (!metadata.created) {
-       throw new Error(`Post "${path}" is missing the 'created' date.`);
-     }
+    if (!metadata.created) {
+      throw new Error(`Post "${path}" is missing the 'created' date.`);
+    }
 
-     const processedMetadata: MetaData = {
-       ...metadata,
-       title: metadata.title || "Untitled Post",
-       created: new Date(metadata.created),
-       updated: metadata.updated ? new Date(metadata.updated) : undefined,
-       tags: metadata.tags || [],
-       toc: metadata.toc ?? false,
-     };
+    const processedMetadata: MetaData = {
+      ...metadata,
+      title: metadata.title || "Untitled Post",
+      created: new Date(metadata.created),
+      updated: metadata.updated ? new Date(metadata.updated) : undefined,
+      tags: metadata.tags || [],
+      toc: metadata.toc ?? false,
+    };
 
     return {
       ...processedMetadata,
