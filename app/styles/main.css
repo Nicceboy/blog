@@ -20,15 +20,6 @@
   font-style: normal;
   font-display: swap;
 }
-@font-face {
-  font-family: "Departure Mono";
-  src:
-    local("Departure Mono"),
-    url("/fonts/DepartureMono-Regular.woff2") format("woff2");
-  font-weight: normal; /* Note: For variable fonts, weight/style here might be less critical if defined later */
-  font-style: normal;
-  font-display: swap;
-}
 
 @theme {
   --font-sans:

@@ -95,7 +95,7 @@ export function useMDXComponents(): MDXComponents {
           className || ""
         }`}
         {...props}
-      > // Spread standard HTML pre attributes
+      >
       {children}
       </pre>
     ),
