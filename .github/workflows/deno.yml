@@ -39,4 +39,4 @@ jobs:
 
       - name: Build container image
         run: |
-          docker build -t ghcr.io/Nicceboy/denoblog:latest .
+          docker build -t ghcr.io/nicceboy/denoblog:latest .
