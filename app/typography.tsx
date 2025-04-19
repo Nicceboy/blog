@@ -1,6 +1,6 @@
 import type { MDXComponents } from "mdx/types";
 import type { JSX } from "react";
-import { CornerRightUp, Link } from "lucide-react";
+import { ArrowElbowRightUp, Link } from "@phosphor-icons/react";
 import "./styles/footnotes.css";
 
 export function useMDXComponents(): MDXComponents {
@@ -10,7 +10,7 @@ export function useMDXComponents(): MDXComponents {
     ): JSX.Element => (
       <h1
         id={id}
-        className="scroll-m-20 text-red-my-for-light dark:text-red-my text-4xl font-extrabold tracking-tight lg:text-5xl"
+        className="scroll-m-20 text-red-my-for-light dark:text-red-my text-4xl font-bold tracking-tight lg:text-5xl"
       >
         {children}
       </h1>
@@ -144,7 +144,7 @@ export function useMDXComponents(): MDXComponents {
             onClick={handleAnchorClick}
             className="footnote-ref inline-flex items-center"
           >
-            <CornerRightUp
+            <ArrowElbowRightUp
               className="inline"
               style={{ width: "1em", height: "1em" }}
             />
@@ -157,14 +157,17 @@ export function useMDXComponents(): MDXComponents {
           <a
             href={href}
             onClick={handleAnchorClick}
+            // Added overflow-visible
             className="group relative font-medium text-primary"
             {...props}
           >
             <span
+              // Added z-10
               className="absolute -left-5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity"
               aria-hidden="true"
             >
-              <Link size={16} className="text-muted-foreground" />
+              {!href?.startsWith("#user-content-fn") && <Link size={16} className="text-muted-foreground" />}
+
             </span>
             {children}
           </a>
@@ -210,6 +213,13 @@ export function useMDXComponents(): MDXComponents {
         {children}
       </td>
     ),
+    sup: ({ children }: { children: React.ReactNode }): JSX.Element => (
+      <sup className="font-medium text-red-my-for-light dark:text-red-my">
+        [{children}]
+      </sup>
+    ),
+
+
     img: (props: React.ImgHTMLAttributes<HTMLImageElement>): JSX.Element => (
       <img
         {...props}

@@ -10,7 +10,19 @@ import {
 import type { Route } from "./+types/root.ts";
 import "./styles/main.css";
 
-export const links: Route.LinksFunction = () => [];
+export const links: Route.LinksFunction = () => [
+  // { rel: "preconnect", href: "https://fonts.googleapis.com" },
+  // {
+  //   rel: "preconnect",
+  //   href: "https://fonts.gstatic.com",
+  //   crossOrigin: "anonymous",
+  // },
+  // {
+  //   rel: "stylesheet",
+  //   href:
+  //     "https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
+  // },
+];
 
 // Simple non-blocking script to prevent theme flash
 const themeInitScript = `
@@ -34,13 +46,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      <body className="text-shadow-default-text dark:text-default-text font-normal text-xl min-h-screen flex flex-col bg-white dark:bg-black">
+      <body className="text-shadow-default-text dark:text-gray-300 font-normal text-xl min-h-screen flex flex-col bg-warm-white dark:bg-darkest-dark">
         <div className="flex-grow">
           {children}
           <ScrollRestoration />
           <Scripts />
         </div>
-        <footer className="w-full py-4 text-sm text-black dark:text-gray-500 text-center bg-opacity-50 backdrop-blur-sm z-10">
+        <footer className="w-full py-[1rem] text-sm text-black dark:text-gray-500 text-center bg-opacity-50 backdrop-blur-sm z-10">
           <div className="container mx-auto">
             <div className="px-4 flex flex-col items-center justify-center gap-1 max-w-xl mx-auto">
               <p>

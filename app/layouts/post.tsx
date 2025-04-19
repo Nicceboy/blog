@@ -1,6 +1,5 @@
 "use client";
 
-// import { Sidenotes } from "~/components/sidenote.tsx";
 import { MDXProvider } from "@mdx-js/react";
 import Components from "~/typography.tsx";
 import { TableOfContents } from "~/lib/toc.tsx";
@@ -42,7 +41,7 @@ export const PostContainer = (
 
   const DateInfo = () => {
     return (
-      <div className="text-gray-800 dark:text-gray-500 text-md font-[1000] mb-4 flex flex-col sm:flex-row">
+      <div className="text-gray-800 dark:text-gray-200 text-md font-semibold mb-4 flex flex-col sm:flex-row">
         <span>Published on {formattedDates.createdDate}</span>
         {formattedDates.updatedDate && (
           <span className="sm:ml-4 mt-1 sm:mt-0">
@@ -74,24 +73,17 @@ export const PostContainer = (
     );
   };
 
-  const EOF_TEXT_CLASS =
-    "text-red-my-for-light dark:text-red-my text-sm font-bold font-mono ";
 
   return (
     <>
       <title>{meta.title}</title>
       <section
-        className={`prose max-w-screen md:max-w-[calc(50rem+1px)] w-full space-y-6 sm:px-[1rem] md:px-[calc(1rem)] relative text-black dark:text-gray-300`}
+        className={`prose max-w-screen md:max-w-[calc(50rem+1px)] w-full space-y-6 sm:px-[1rem] md:px-[calc(1rem)] relative`}
       >
-        <div className="bg-white dark:bg-black px-[1rem] pb-6 space-y-4 relative overflow-hidden ">
-          <div className="flex items-center -mx-[4rem]">
-            <span className={EOF_TEXT_CLASS}>
-            </span>
-            <div className="flex-1 h-[2px] bg-gradient-to-r from-transparent via-red-my to-red-my" />
-          </div>
+        <div className="px-[1rem] pb-6 space-y-4 relative">
+      
           <Title />
           <DateInfo />
-          {/* <PostAgeWarning /> */}
           {meta.toc && <TableOfContents />}
 
           {/* Safely render the MDX content with error boundary */}
@@ -106,12 +98,10 @@ export const PostContainer = (
           </div>
 
           <TagsList />
-          <div className="flex items-center my-2 -mx-6">
-            <div className="flex-1 h-[2px] border-red-my-for-light dark:border-red-my bg-gradient-to-r from-red-my-for-light dark:from-red-my  via-red-my-for-light dark:via-red-my to-transparent" />
-            <span className={`${EOF_TEXT_CLASS} mx-4`}></span>
-          </div>
         </div>
       </section>
     </>
   );
 };
+
+export default PostContainer;

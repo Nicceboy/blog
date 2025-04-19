@@ -1,21 +1,18 @@
 import { PageLayout } from "~/layouts/default.tsx";
-import { PostContainer } from "~/layouts/post.tsx";
-import { getPostBySlug, type Post } from "~/lib/posts.ts"; // Import Post type
+import { getPostBySlug } from "~/lib/posts.ts"; // Import Post type
 import Components from "~/typography.tsx";
 import type { Route } from "+types/posts.ts";
 import { useMemo } from "react";
 import type { MDXContent } from "mdx";
 
-// // Define the props for the Posts component
 interface PostsProps {
-  // loaderData comes from clientLoader, should contain the component
-  loaderData: Post;
+  loaderData: MDXContent;
 }
 
 // clientLoader fetches metadata AND component on the client
 export async function clientLoader(
   { params }: Route.LoaderArgs,
-): Promise<Post> {
+): Promise<MDXContent> {
   if (!params.slug) {
     console.error("[clientLoader] Missing slug parameter");
     throw new Error("Bad Request: Missing slug parameter"); // Or return null/error object
@@ -23,7 +20,7 @@ export async function clientLoader(
 
   const postData = await getPostBySlug(params.slug);
 
-  if (!postData || typeof postData.default !== "function") {
+  if (!postData || typeof postData !== "function") {
     console.error(
       `[clientLoader] Failed to get valid post data or component for slug: ${params.slug}`,
     );
@@ -48,7 +45,7 @@ export function HydrateFallback() {
 
 export default function Posts({ loaderData }: PostsProps) {
   // Handle error state (if clientLoader resolved but data is invalid - though it should throw)
-  if (typeof loaderData.default !== "function") {
+  if (typeof loaderData !== "function") {
     console.error("Rendering error state. Invalid loaderData:", loaderData);
     return (
       <PageLayout>
@@ -61,24 +58,15 @@ export default function Posts({ loaderData }: PostsProps) {
     );
   }
 
-  // Data is valid
-  const PostContent: MDXContent = loaderData.default;
+  const PostContent = loaderData;
 
-  const memoizedContent = useMemo(() => {
+  const memoizedPostContentElement = useMemo(() => {
     return <PostContent components={Components} />;
-  }, [PostContent]);
-
-  const memoizedPostContainer = useMemo(() => {
-    return (
-      <PostContainer meta={loaderData}>
-        {memoizedContent}
-      </PostContainer>
-    );
-  }, [loaderData, memoizedContent]);
+  }, [PostContent]); 
 
   return (
     <PageLayout>
-      {memoizedPostContainer}
+      {memoizedPostContentElement}
     </PageLayout>
   );
 }

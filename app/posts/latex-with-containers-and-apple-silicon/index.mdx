@@ -1,3 +1,4 @@
+import PostContainer from "~/layouts/post.tsx";
 export const metadata = {
     title: "LaTeX with OCI containers, Podman and Arch Linux ARM on Apple Silicon",
     created: Date.parse("2023-02-11"),
@@ -200,3 +201,5 @@ And the PDF will finally appear in the mounted folder and will be rebuilt if the
 
 Using Podman to build PDF files might be overly complicated, but it gives us a working and reproducible environment.
 LaTeX can be messy sometimes, and it is good to have a chance to roll back to the previous working environment version, which can be quickly removed as well.
+
+export default (props) => <PostContainer meta={metadata} {...props} />;

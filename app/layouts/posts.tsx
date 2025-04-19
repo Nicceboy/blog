@@ -12,7 +12,7 @@ const PostCard = ({ post }: { post: Post }) => {
   });
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-black p-4 shadow-sm hover:shadow-md transition-shadow box-border border border-gray-900">
+    <div className="flex flex-col h-full  p-4 shadow-sm hover:shadow-md transition-shadow box-border border border-gray-300 dark:border-gray-800">
       {/* Content Section */}
       <div className="flex-grow mb-4">
         {/* flex-grow pushes tags down, mb-4 adds space above tags */}

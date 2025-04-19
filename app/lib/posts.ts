@@ -1,14 +1,14 @@
 import type { MetaData } from "~/layouts/post.tsx";
-import type React from "react";
+import type { MDXContent} from "mdx/types"
+// import {PostContainer} from "~/layouts/post.tsx"
 
 // Interface for the module structure when NOT eager
 interface MdxModule {
-  default: React.ComponentType;
-  metadata: MetaData;
+  default: MDXContent; // Use MDXContent type
+  metadata: MetaData; // Raw metadata from the file
 }
 export interface Post extends MetaData {
   slug: string;
-  default: React.ComponentType; // Add the component type
   path: string;
 }
 // Type for the glob result when NOT eager
@@ -18,10 +18,10 @@ type MdxGlobResult = Record<string, () => Promise<MdxModule>>;
 const modules = import.meta.glob("../posts/*/index.mdx") as MdxGlobResult;
 
 // Cache for metadata only (avoids re-parsing all files)
-let _allMetadata: Omit<Post, "default">[] | null = null;
+let _allMetadata: Post[] ; 
 
 // Function to get metadata list (can potentially run at build time or on server)
-export async function getAllPostsMetadata(): Promise<Omit<Post, "default">[]> {
+export async function getAllPostsMetadata(): Promise<Post[]> {
   if (_allMetadata) return _allMetadata;
 
   const postsData = await Promise.all(
@@ -58,7 +58,7 @@ export async function getAllPostsMetadata(): Promise<Omit<Post, "default">[]> {
 }
 
 // Function to get a single post's content and metadata dynamically
-export async function getPostBySlug(slug: string): Promise<Post | null> {
+export async function getPostBySlug(slug: string): Promise<MDXContent | null> {
   const path = `../posts/${slug}/index.mdx`;
   const loadModule = modules[path];
 
@@ -69,27 +69,8 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 
   try {
     const mod = await loadModule(); // Dynamically load the specific post module
-    const metadata = mod.metadata;
+    return mod.default;
 
-    if (!metadata.created) {
-      throw new Error(`Post "${path}" is missing the 'created' date.`);
-    }
-
-    const processedMetadata: MetaData = {
-      ...metadata,
-      title: metadata.title || "Untitled Post",
-      created: new Date(metadata.created),
-      updated: metadata.updated ? new Date(metadata.updated) : undefined,
-      tags: metadata.tags || [],
-      toc: metadata.toc ?? false,
-    };
-
-    return {
-      ...processedMetadata,
-      slug,
-      path,
-      default: mod.default,
-    };
   } catch (error) {
     console.error(`Error loading post ${slug}:`, error);
     return null;

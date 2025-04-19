@@ -188,7 +188,7 @@ export function Sidenotes() {
         return (
           <div
             key={footnote.id}
-            className="bg-white dark:bg-black rounded-xl absolute left-full ml-6 max-w-[10rem] lg:max-w-[25rem] w-128 text-sm dark:text-gray-500 p-3 pointer-events-auto"
+            className="bg-warm-white dark:bg-darkest-dark rounded-xl absolute left-full ml-6 max-w-[10rem] lg:max-w-[25rem] w-128 text-sm dark:text-gray-400 p-3 pointer-events-auto"
             style={{
               top: `${footnote.adjustedTop}px`,
             }}

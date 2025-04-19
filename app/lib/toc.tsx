@@ -41,11 +41,11 @@ export function TableOfContents() {
   if (headings.length === 0) return null;
 
   return (
-    <nav className="dark:bg-black block w-full mb-6 lg:float-right lg:ml-8 lg:mb-8 lg:w-64 max-h-[calc(100vh-8rem)] overflow-auto p-3 border border-gray-800 rounded-lg transition-all duration-300 ">
+    <nav className="dark:bg-darkest-dark block w-full mb-6 lg:float-right lg:ml-8 lg:mb-8 lg:w-64 max-h-[calc(100vh-8rem)] overflow-auto p-3 border border-gray-800 rounded-lg transition-all duration-300 ">
       {headings.length > 0
         ? (
           <>
-            <h2 className="text-xl  font-bold mb-2">Table of Contents</h2>
+            <h2 className="text-xl  font-semibold mb-2">Table of Contents</h2>
             <ul className="space-y-1">
               {headings.map((heading, i) => (
                 <li
@@ -56,7 +56,7 @@ export function TableOfContents() {
                   <a
                     href={`#${heading.id}`}
                     onClick={(e) => handleLinkClick(e, heading.id)}
-                    className="text-xl text-red-my font-bold hover:text-red-my-hover hover:underline"
+                    className="text-xl text-red-my font-semibold hover:text-red-my-hover hover:underline"
                   >
                     {heading.text}
                   </a>

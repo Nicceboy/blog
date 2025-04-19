@@ -1,3 +1,4 @@
+import PostContainer from "~/layouts/post.tsx";
 import previewImage from './preview_mtg_container.png?w=800&format=avif';
 
 export const metadata = {
@@ -208,3 +209,5 @@ At this point, I had already installed the game before, and game data is visible
 
 In my case, I did not make any performance measurements to see impact from container usage. Game was still very playable and therefore I did not bother with that.
 
+
+export default (props) => <PostContainer meta={metadata} {...props} />;
