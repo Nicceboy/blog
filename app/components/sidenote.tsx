@@ -1,196 +1,282 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 
-type FootnotePosition = {
-  id: string;
+// Type for holding footnote data throughout the process
+type FootnoteData = {
+  id: string; // e.g., user-content-fn-1
   content: string;
-  top: number;
+  top: number; // Initial top based on ref marker's position
+  height?: number; // Measured height of the rendered sidenote
+  adjustedTop?: number; // Final calculated top position after overlap adjustment
 };
 
-// Type for adjusted positions including calculated height and final top
-type AdjustedFootnotePosition = FootnotePosition & {
-  adjustedTop: number;
-  height: number;
-};
+function debounce<F extends (...args: any[]) => any>(func: F, waitFor: number) {
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+  const debounced = (...args: Parameters<F>) => {
+    if (timeoutId !== null) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => func(...args), waitFor);
+  };
+
+  // Add a cancel method to the debounced function
+  debounced.cancel = () => {
+    if (timeoutId !== null) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+  };
+
+  return debounced;
+}
 
 export function Sidenotes() {
-  const [adjustedFootnotePositions, setAdjustedFootnotePositions] = useState<
-    AdjustedFootnotePosition[]
-  >([]);
+  const [sidenoteData, setSidenoteData] = useState<FootnoteData[]>([]);
+  const sidenoteRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const containerRef = useRef<Element | null>(null); // Ref for the .prose container
 
-  useEffect(() => {
-    const processFootnotes = () => {
-      const container = document.querySelector(".prose");
+  const debouncedProcessFootnotes = useCallback(
+    debounce(() => {
+      // Ensure this runs only in the browser
+      if (typeof globalThis.document === "undefined") return;
+
+      const container = containerRef.current; // Use the stored ref
       if (!container) return;
 
-      const footnoteRefs = document.querySelectorAll(
+      const footnoteRefs = document.querySelectorAll<HTMLAnchorElement>(
         '[id^="user-content-fnref-"]',
       );
       const footnotesSection = document.querySelector(".footnotes");
-      if (!footnotesSection || footnoteRefs.length === 0) return;
+
+      if (!footnotesSection || footnoteRefs.length === 0) {
+        // If footnotes disappear dynamically, clear the state
+        if (sidenoteData.length > 0) setSidenoteData([]);
+        return;
+      }
 
       const footnoteItems = footnotesSection.querySelectorAll("li");
-      const footnoteContents = new Map();
-
+      const footnoteContents = new Map<string, string>();
       footnoteItems.forEach((item) => {
         const id = item.id;
+        if (!id) return;
         const contentClone = item.cloneNode(true) as HTMLElement;
-
-        // Remove the backlink (last link that points back to reference)
-        // This is often added by Markdown processors.
-        const backlink = contentClone.querySelector(".data-footnote-backref");
-        if (backlink) {
-          backlink.remove();
-        } else {
-          // Fallback: Try removing the last link if it looks like a backlink.
-          const links = contentClone.querySelectorAll("a");
-          if (links.length > 0) {
-            const lastLink = links[links.length - 1];
-            if (
-              lastLink.getAttribute("href")?.includes("#fnref") ||
-              lastLink.querySelector("svg") ||
-              lastLink.textContent === "↩" ||
-              lastLink.textContent === "↩︎" ||
-              lastLink.textContent === "↵"
-            ) {
-              lastLink.remove();
-            }
-          }
-        }
-
-        const content = contentClone.innerHTML;
-        footnoteContents.set(id, content);
+        const backlink = contentClone.querySelector(
+          'a[data-footnote-backref], a[href^="#user-content-fnref"]',
+        );
+        backlink?.remove();
+        const paragraph = contentClone.querySelector("p");
+        footnoteContents.set(
+          id,
+          paragraph?.innerHTML || contentClone.innerHTML,
+        );
       });
 
-      const initialPositions: FootnotePosition[] = [];
+      const initialData: FootnoteData[] = [];
       const containerRect = container.getBoundingClientRect();
+      const scrollY = globalThis.scrollY || globalThis.pageYOffset;
 
-      footnoteRefs.forEach((ref) => {
-        const link = ref as HTMLAnchorElement;
-        const id = link.id.replace("fnref", "fn");
-        const content = footnoteContents.get(id);
+      footnoteRefs.forEach((refLink) => {
+        const match = refLink.id.match(/^user-content-fnref-(.*)$/);
+        if (!match) return;
+        const fnIdentifier = match[1];
+        const footnoteId = `user-content-fn-${fnIdentifier}`;
+        const content = footnoteContents.get(footnoteId);
 
         if (content) {
-          const rect = link.getBoundingClientRect();
-          initialPositions.push({
-            id,
+          const rect = refLink.getBoundingClientRect();
+          const topRelativeToContainer = rect.top + scrollY -
+            (containerRect.top + scrollY);
+          initialData.push({
+            id: footnoteId,
             content,
-            top: rect.top - containerRect.top,
+            top: topRelativeToContainer,
           });
         }
       });
 
-      initialPositions.sort((a, b) => a.top - b.top);
+      initialData.sort((a, b) => a.top - b.top);
 
-      // Calculate adjusted positions to prevent overlap
-      const adjustedPositions: AdjustedFootnotePosition[] = [];
-      const spacing = 16; // Desired vertical space between footnotes (in px)
-      const verticalOffset = -9; // Initial vertical offset for each footnote
-
-      initialPositions.forEach((currentFootnote, index) => {
-        const calculatedHeight = calculateFootnoteHeight(
-          currentFootnote.content,
+      // Only update state if the calculated positions or number of notes actually changed
+      // Compare based on IDs and initial top positions
+      const hasChanged = sidenoteData.length !== initialData.length ||
+        sidenoteData.some((sd, i) =>
+          sd.id !== initialData[i]?.id || sd.top !== initialData[i]?.top
         );
-        let currentAdjustedTop = currentFootnote.top + verticalOffset;
 
-        if (index > 0) {
-          const prevAdjustedFootnote = adjustedPositions[index - 1];
-          const prevBottom = prevAdjustedFootnote.adjustedTop +
-            prevAdjustedFootnote.height + spacing;
+      if (hasChanged) {
+        sidenoteRefs.current = initialData.map(() => null);
+        // Reset adjustedTop and height when recalculating initial positions
+        setSidenoteData(
+          initialData.map((d) => ({
+            ...d,
+            adjustedTop: undefined,
+            height: undefined,
+          })),
+        );
+      }
+    }, 300), // Debounce time (e.g., 300ms)
+    [sidenoteData], // Recreate debounce function if sidenoteData changes structure (though comparison inside handles data changes)
+  );
 
-          // If current footnote overlaps with the previous one, adjust its top
+  // Effect 1: Find container, set up observers, initial calculation
+  useEffect(() => {
+    // Ensure this runs only in the browser
+    if (typeof globalThis.document === "undefined") return;
+
+    containerRef.current = document.querySelector(".prose");
+    const container = containerRef.current;
+
+    if (!container) {
+      console.warn("Sidenotes: '.prose' container not found.");
+      return;
+    }
+
+    // Initial calculation
+    debouncedProcessFootnotes();
+
+    // Observe container size changes (catches image loads, etc.)
+    const resizeObserver = new ResizeObserver(() => {
+      debouncedProcessFootnotes();
+    });
+    resizeObserver.observe(container);
+
+    // Optional: Recalculate on scroll as well, if needed
+    // const handleScroll = () => debouncedProcessFootnotes();
+    // globalThis.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      resizeObserver.disconnect();
+      // globalThis.removeEventListener('scroll', handleScroll);
+      debouncedProcessFootnotes.cancel(); // Cancel any pending debounced calls
+    };
+  }, [debouncedProcessFootnotes]); // Dependency array includes the debounced function
+
+  // Effect 2: Measure and adjust positions (remains largely the same)
+  useLayoutEffect(() => {
+    // Only run if we have initial data and haven't calculated adjusted positions yet
+    // OR if the initial top positions have changed (signalling a recalculation trigger)
+    const needsAdjustment = sidenoteData.length > 0 &&
+      sidenoteData.some((d) => d.adjustedTop === undefined);
+
+    if (!needsAdjustment) {
+      return;
+    }
+
+    const adjustedPositions: FootnoteData[] = [];
+    const spacing = 16;
+    const verticalOffset = -9;
+    let needsStateUpdate = false;
+
+    sidenoteData.forEach((currentSidenote, index) => {
+      const element = sidenoteRefs.current[index];
+      if (!element) {
+        adjustedPositions.push({ ...currentSidenote });
+        console.warn(`Sidenote element ref missing for ${currentSidenote.id}`);
+        // Don't set needsStateUpdate here, wait for ref
+        return;
+      }
+
+      const measuredHeight = element.offsetHeight;
+      if (measuredHeight === 0 && element.offsetParent !== null) { // Check if it's actually rendered but maybe display:none?
+        adjustedPositions.push({ ...currentSidenote });
+        console.warn(
+          `Sidenote element has zero height for ${currentSidenote.id}. Deferring adjustment.`,
+        );
+        // Don't set needsStateUpdate here, wait for height
+        return;
+      }
+
+      let currentAdjustedTop = currentSidenote.top + verticalOffset;
+
+      if (index > 0) {
+        const prevAdjustedSidenote = adjustedPositions[index - 1];
+        if (
+          prevAdjustedSidenote.adjustedTop !== undefined &&
+          prevAdjustedSidenote.height !== undefined
+        ) {
+          const prevBottom = prevAdjustedSidenote.adjustedTop +
+            prevAdjustedSidenote.height + spacing;
           if (currentAdjustedTop < prevBottom) {
             currentAdjustedTop = prevBottom;
           }
+        } else {
+          // Previous element wasn't ready, cannot adjust based on it yet.
+          // Keep current calculation, it might get fixed in a subsequent run.
         }
+      }
 
-        adjustedPositions.push({
-          ...currentFootnote,
-          adjustedTop: currentAdjustedTop,
-          height: calculatedHeight,
-        });
+      // Check if measured height or calculated top differs from current state
+      if (
+        currentSidenote.height !== measuredHeight ||
+        currentSidenote.adjustedTop !== currentAdjustedTop
+      ) {
+        needsStateUpdate = true;
+      }
+
+      adjustedPositions.push({
+        ...currentSidenote,
+        height: measuredHeight,
+        adjustedTop: currentAdjustedTop,
       });
+    });
 
-      setAdjustedFootnotePositions(adjustedPositions);
-    };
-
-    // Wait for the page to fully render before processing footnotes
-    if (document.readyState === "complete") {
-      processFootnotes();
-      return () => {};
-    } else {
-      self.addEventListener("load", processFootnotes);
-      // Fallback timer in case 'load' event doesn't fire as expected
-      const timer = setTimeout(processFootnotes, 1000);
-      return () => {
-        self.removeEventListener("load", processFootnotes);
-        clearTimeout(timer);
-      };
+    // Update state only if heights were measured or positions were adjusted
+    if (needsStateUpdate) {
+      // Avoid infinite loops: only update if the data actually changed significantly
+      const significantChange = sidenoteData.some((sd, i) =>
+        sd.height !== adjustedPositions[i]?.height ||
+        sd.adjustedTop !== adjustedPositions[i]?.adjustedTop
+      );
+      if (significantChange) {
+        setSidenoteData(adjustedPositions);
+      }
     }
-  }, []);
+  }, [sidenoteData]); // Re-run when sidenoteData changes
 
-  // Calculate approximate height for footnotes based on content and fixed width.
-  // This is an estimation as actual rendering can vary.
-  const calculateFootnoteHeight = (content: string) => {
-    // Use the large screen max-width (lg:max-w-[25rem] -> 400px) for calculation
-    const footnoteWidthPx = 25 * 16;
-    // Account for padding (p-3 -> 0.75rem * 16px/rem = 12px each side)
-    const contentWidthPx = footnoteWidthPx - 2 * 12;
-    // Estimate characters per line (avg char width ~8px for text-sm)
-    const avgCharWidthPx = 8;
-    const charsPerLine = Math.floor(contentWidthPx / avgCharWidthPx);
-
-    // Remove HTML tags for a more accurate character count of visible text
-    const textOnly = content.replace(/<[^>]*>/g, "");
-    const totalChars = textOnly.length;
-
-    // Calculate approx lines needed (ensure at least 1 line)
-    const estimatedLines = Math.ceil(totalChars / charsPerLine) || 1;
-
-    // Line height for text-sm (leading-relaxed is ~1.625, using 1.5 for safety/simplicity)
-    // text-sm is 14px, but using 16px base for rem calculation consistency.
-    const lineHeightPx = 1.5 * 16;
-    // Add vertical padding (p-3 -> 12px top + 12px bottom)
-    const verticalPaddingPx = 2 * 12;
-
-    return estimatedLines * lineHeightPx + verticalPaddingPx;
-  };
-
-  if (adjustedFootnotePositions.length === 0) return null;
+  // Render the sidenotes
+  if (sidenoteData.length === 0) return null;
 
   return (
     <div className="hidden sidenotes-container xl:block top-0 h-full pointer-events-none">
-      {adjustedFootnotePositions.map((footnote, index) => {
-        // Extract footnote number from id (e.g., user-content-fn-1 -> 1)
+      {sidenoteData.map((footnote, index) => {
         const footnoteNumberMatch = footnote.id.match(/(\d+)$/);
         const footnoteNumber = footnoteNumberMatch
           ? footnoteNumberMatch[1]
           : index + 1;
-
-        let finalContent = footnote.content;
+        let finalContent = footnote.content || "";
         const supTag = `<sup>${footnoteNumber}</sup> `;
-
-        // Prepend the superscript number, handling potential <p> tags at the start.
         if (finalContent.trim().startsWith("<p")) {
           const firstClosingBracketIndex = finalContent.indexOf(">");
           if (firstClosingBracketIndex !== -1) {
             finalContent = finalContent.slice(0, firstClosingBracketIndex + 1) +
-              supTag +
-              finalContent.slice(firstClosingBracketIndex + 1);
+              supTag + finalContent.slice(firstClosingBracketIndex + 1);
           } else {
-            finalContent = supTag + finalContent; // Fallback for malformed <p>
+            finalContent = supTag + finalContent;
           }
         } else {
           finalContent = supTag + finalContent;
         }
+        const topPosition = footnote.adjustedTop ?? footnote.top; // Use initial top as fallback before adjustment
+        const isPositioned = footnote.adjustedTop !== undefined;
 
         return (
           <div
             key={footnote.id}
-            className="bg-warm-white dark:bg-darkest-dark rounded-xl absolute left-full ml-6 max-w-[10rem] lg:max-w-[25rem] w-128 text-sm dark:text-gray-400 p-3 pointer-events-auto"
+            ref={(el) => {
+              sidenoteRefs.current[index] = el;
+            }}
+            className="bg-warm-white dark:bg-darkest-dark rounded-xl absolute left-full ml-6 max-w-[10rem] lg:max-w-[25rem] w-128 text-sm dark:text-gray-400 p-3 pointer-events-auto transition-opacity duration-300"
             style={{
-              top: `${footnote.adjustedTop}px`,
+              top: `${topPosition}px`,
+              opacity: isPositioned ? 1 : 0,
             }}
             dangerouslySetInnerHTML={{ __html: finalContent }}
           />

@@ -12,7 +12,7 @@ const PostCard = ({ post }: { post: Post }) => {
   });
 
   return (
-    <div className="flex flex-col h-full  p-4 shadow-sm hover:shadow-md transition-shadow box-border border border-gray-300 dark:border-gray-800">
+    <div className="flex flex-col h-full rounded p-4 shadow-sm hover:shadow-md transition-shadow box-border border border-red-my-for-light dark:border-gray-800">
       {/* Content Section */}
       <div className="flex-grow mb-4">
         {/* flex-grow pushes tags down, mb-4 adds space above tags */}
@@ -34,7 +34,7 @@ const PostCard = ({ post }: { post: Post }) => {
         )}
       </div>
 
-      {post.tags && post.tags.length > 0 && (
+      {post.tags && post.tags.length < 0 && (
         <div className="flex flex-wrap gap-2 pt-2 border-t border-gray-200 dark:border-gray-900">
           {/* Added top border for separation */}
           {post.tags.map((tag, index) => (
@@ -47,6 +47,7 @@ const PostCard = ({ post }: { post: Post }) => {
           ))}
         </div>
       )}
+      <div className="border-t border-gray-200 dark:border-gray-900"></div>
     </div>
   );
 };

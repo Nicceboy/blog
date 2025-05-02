@@ -1,15 +1,17 @@
 import { NavLink } from "react-router";
-import { HouseSimple, Moon, Signpost, Sun } from "@phosphor-icons/react";
+import { HouseSimple, Moon, Sun, User } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 
 const getNavLinkClass = (isActive: boolean) =>
-  `text-2xl hover:text-red-my transition-colors ${
-    isActive ? "text-red-my font-semibold" : "text-gray-800 dark:text-gray-500"
-  } block select-none space-y-1 rounded-md lg:py-3 px-[1rem] leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground`;
+  `text-2xl hover:text-red-my transition-colors ${isActive
+      ? "text-red-my font-semibold"
+      : "text-gray-800 dark:text-gray-500"
+    // Use focus-visible: for ring styles
+  } block select-none space-y-1 rounded-md lg:py-3 px-[1rem] leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus-visible:ring-2 focus-visible:ring-red-my focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900`;
 
-// Style for the theme toggle button, similar to NavLink but without active state logic
 const getButtonClass = () =>
-  `text-2xl text-gray-800 dark:text-gray-500 hover:text-red-my transition-colors block select-none space-y-1 rounded-md lg:py-3 px-[1rem] leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground`;
+  // Use focus-visible: for ring styles
+  `text-2xl text-gray-800 dark:text-gray-500 hover:text-red-my transition-colors block select-none space-y-1 rounded-md lg:py-3 px-[1rem] leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus-visible:ring-2 focus-visible:ring-red-my focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900`;
 
 export function Navbar() {
   // Initialize state based on localStorage first, then the HTML class as fallback
@@ -54,27 +56,33 @@ export function Navbar() {
 
   return (
     <nav className="w-full flex lg:flex-col items-left sticky top-0 lg:pl-[calc(6rem+2px)] z-10">
-      {/* <ThemeScript /> */}
       <NavLink
         to="/"
         end
         className={({ isActive }) => getNavLinkClass(isActive)}
         title="Home"
+        tabIndex={0}
       >
         <HouseSimple weight="thin" aria-label="Home" size="2rem" />
       </NavLink>
-      <NavLink
+      {
+        /* <NavLink
         to="/about"
         className={({ isActive }) => getNavLinkClass(isActive)}
         title="About this site"
+        tabIndex={0}
       >
-        <Signpost weight="thin" aria-label="About" size="2rem"></Signpost>
-      </NavLink>
+        <User weight="thin" aria-label="About" size="2rem"></User>
+      </NavLink> */
+      }
 
       <button
         type="button"
         onClick={toggleTheme}
+        // The className now correctly includes focus-visible ring styles via getButtonClass()
         className={`${getButtonClass()} cursor-pointer`}
+        title="Toggle theme"
+        tabIndex={0}
         aria-label={theme === "dark"
           ? "Switch to light mode"
           : "Switch to dark mode"}

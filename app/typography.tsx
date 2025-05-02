@@ -90,14 +90,17 @@ export function useMDXComponents(): MDXComponents {
         className?: string;
       } & React.HTMLAttributes<HTMLPreElement>,
     ): JSX.Element => (
-      <pre
-        className={`mb-4 mt-6 p-4 overflow-x-auto rounded-lg bg-muted font-mono text-sm border border-solid dark:border-gray-900 ${
-          className || ""
-        }`}
-        {...props}
-      >
+      // Extra div to hide scrollbar overflow
+      <div className="mb-4 mt-4 overflow-hidden rounded-lg border border-solid dark:border-gray-900">
+        <pre
+          className={`p-3 overflow-x-auto bg-muted font-mono text-sm ${
+            className || ""
+          }`}
+          {...props}
+        >
       {children}
-      </pre>
+        </pre>
+      </div>
     ),
     blockquote: ({ children }: { children: React.ReactNode }): JSX.Element => (
       <blockquote className="mt-6 border-l-2 pl-6 italic">
@@ -166,8 +169,9 @@ export function useMDXComponents(): MDXComponents {
               className="absolute -left-5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity"
               aria-hidden="true"
             >
-              {!href?.startsWith("#user-content-fn") && <Link size={16} className="text-muted-foreground" />}
-
+              {!href?.startsWith("#user-content-fn") && (
+                <Link size={16} className="text-muted-foreground" />
+              )}
             </span>
             {children}
           </a>
@@ -190,7 +194,7 @@ export function useMDXComponents(): MDXComponents {
       );
     },
     table: ({ children }: { children: React.ReactNode }): JSX.Element => (
-      <div className="my-6 w-full overflow-y-auto">
+      <div className="my-6 w-full overflow-x-auto">
         <table className="w-full">{children}</table>
       </div>
     ),
@@ -209,7 +213,7 @@ export function useMDXComponents(): MDXComponents {
       </th>
     ),
     td: ({ children }: { children: React.ReactNode }): JSX.Element => (
-      <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
+      <td className="border px-4 py-2 text-justify [&[align=center]]:text-center [&[align=left]]:text-left [&[align=right]]:text-right hyphens-auto">
         {children}
       </td>
     ),
@@ -219,12 +223,12 @@ export function useMDXComponents(): MDXComponents {
       </sup>
     ),
 
-
     img: (props: React.ImgHTMLAttributes<HTMLImageElement>): JSX.Element => (
       <img
         {...props}
         alt={props.alt || ""}
-        className={`${props.className || "py-2"}`}
+        // Added max-w-full and h-auto for responsive images
+        className={`max-w-full h-auto ${props.className || "py-2"}`}
       />
     ),
   };

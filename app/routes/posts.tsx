@@ -15,7 +15,7 @@ export async function clientLoader(
 ): Promise<MDXContent> {
   if (!params.slug) {
     console.error("[clientLoader] Missing slug parameter");
-    throw new Error("Bad Request: Missing slug parameter"); // Or return null/error object
+    throw new Error("Bad Request: Missing slug parameter");
   }
 
   const postData = await getPostBySlug(params.slug);
@@ -24,7 +24,7 @@ export async function clientLoader(
     console.error(
       `[clientLoader] Failed to get valid post data or component for slug: ${params.slug}`,
     );
-    throw new Error("Not Found or Invalid Post Data"); // Or return null/error object
+    throw new Error("Not Found or Invalid Post Data");
   }
   return postData;
 }
@@ -62,7 +62,7 @@ export default function Posts({ loaderData }: PostsProps) {
 
   const memoizedPostContentElement = useMemo(() => {
     return <PostContent components={Components} />;
-  }, [PostContent]); 
+  }, [PostContent]);
 
   return (
     <PageLayout>

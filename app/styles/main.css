@@ -15,7 +15,8 @@
   font-family: "EB Garamond";
   src:
     local("EB Garamond"),
-    url("/fonts/EBGaramond-VariableFont_wght.ttf") format("truetype-variations");
+    url("/fonts/EBGaramond-VariableFont_wght.ttf")
+    format("truetype-variations");
   font-style: normal italic;
   font-display: swap;
   font-weight: 200 800;
@@ -54,8 +55,9 @@
 
 /* Styles for dark mode */
 html.dark {
-  background-color:var(--color-darkest-dark) !important;
+  background-color: var(--color-darkest-dark) !important;
   color-scheme: dark;
+  scrollbar-color: var(--color-gray-800) var(--color-darkest-dark);
   pre {
     background-color: var(--color-darkest-dark) !important;
   }
@@ -66,8 +68,9 @@ html.dark {
 }
 
 html {
-  background-color:var(--color-warm-white) !important;
+  background-color: var(--color-warm-white) !important;
   color-scheme: light;
+  scrollbar-color: var(--color-red-my-for-light) var(--color-warm-white);
   pre {
     background-color: var(--color-warm-white) !important;
   }

@@ -4,6 +4,8 @@ import { MDXProvider } from "@mdx-js/react";
 import Components from "~/typography.tsx";
 import { TableOfContents } from "~/lib/toc.tsx";
 import { isValidElement, useMemo } from "react";
+import { CalendarBlank } from "@phosphor-icons/react";
+import { Sidenotes } from "~/components/sidenote.tsx";
 
 export type MetaData = {
   title: string;
@@ -13,6 +15,7 @@ export type MetaData = {
   tags?: string[];
   image?: string;
   toc: boolean;
+  draft: boolean;
 };
 
 export const PostContainer = (
@@ -41,8 +44,11 @@ export const PostContainer = (
 
   const DateInfo = () => {
     return (
-      <div className="text-gray-800 dark:text-gray-200 text-md font-semibold mb-4 flex flex-col sm:flex-row">
-        <span>Published on {formattedDates.createdDate}</span>
+      <div className="text-gray-800 dark:text-gray-200 text-md font-light mb-4 flex flex-col sm:flex-row">
+          <div className="flex items-center">
+            <CalendarBlank weight="thin" aria-label="Published" size="1.5rem" className="mr-1" />
+            <span>Published on {formattedDates.createdDate}</span>
+          </div>
         {formattedDates.updatedDate && (
           <span className="sm:ml-4 mt-1 sm:mt-0">
             Updated: {formattedDates.updatedDate}
@@ -75,14 +81,20 @@ export const PostContainer = (
 
 
   return (
-    <>
+    <div className="flex-1 max-w-[70ch] px-[1rem] relative">
+      <div className="flex flex-row">
       <title>{meta.title}</title>
       <section
-        className={`prose max-w-screen md:max-w-[calc(50rem+1px)] w-full space-y-6 sm:px-[1rem] md:px-[calc(1rem)] relative`}
+        className={`prose  w-full space-y-6 md:px-[calc(1rem)] relative`}
       >
-        <div className="px-[1rem] pb-6 space-y-4 relative">
+        <div className="pb-6 space-y-4 relative">
       
           <Title />
+          {meta.description && (
+            <p className="text-xl font-semibold text-gray-700 dark:text-gray-300 mt-2 mb-2">
+              {meta.description}
+            </p>
+          )}
           <DateInfo />
           {meta.toc && <TableOfContents />}
 
@@ -100,7 +112,10 @@ export const PostContainer = (
           <TagsList />
         </div>
       </section>
-    </>
+      <Sidenotes />
+      </div>
+      </div>
+
   );
 };
 

@@ -37,6 +37,7 @@ export function TableOfContents() {
       globalThis.history.pushState(null, "", `#${id}`);
     }
   };
+  console.log(headings);
 
   if (headings.length === 0) return null;
 
@@ -69,3 +70,5 @@ export function TableOfContents() {
     </nav>
   );
 }
+
+export default TableOfContents;
