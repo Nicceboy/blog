@@ -7,7 +7,6 @@ export function TableOfContents() {
   >([]);
 
   useEffect(() => {
-    // Option 1: Exclude h1 headings entirely
     const headingElements = document.querySelectorAll("h2, h3, h4, h5");
 
     const headingsData = Array.from(headingElements)
@@ -37,7 +36,6 @@ export function TableOfContents() {
       globalThis.history.pushState(null, "", `#${id}`);
     }
   };
-  console.log(headings);
 
   if (headings.length === 0) return null;
 

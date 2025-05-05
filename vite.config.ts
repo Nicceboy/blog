@@ -115,7 +115,6 @@ export default defineConfig({
   plugins: [
     deno(),
     tailwindcss(),
-    reactRouter(),
     imagetools(),
     {
       enforce: "pre",
@@ -131,6 +130,7 @@ export default defineConfig({
         ],
       }),
     },
+    reactRouter(),
   ],
   resolve: {
     alias: {

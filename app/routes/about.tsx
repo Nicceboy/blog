@@ -7,7 +7,6 @@ import { Sidenotes } from "~/components/sidenote.tsx";
 const AboutPage: React.FC = () => {
   return (
     <PageLayout>
-
       <div className="flex flex-row">
       <title>About this page</title>
       <section className="prose box-border">
@@ -20,5 +19,15 @@ const AboutPage: React.FC = () => {
     </PageLayout>
   );
 };
+
+export function meta() {
+  return [
+    { title: "About this page" },
+    {
+      name: "description",
+      content: "If you ever wonder what this is, here it is.",
+    },
+  ];
+}
 
 export default AboutPage;

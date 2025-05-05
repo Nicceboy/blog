@@ -1,9 +1,9 @@
 import type { LoaderFunction } from "react-router";
-import { getAllPostsMetadata } from "~/lib/posts.ts";
+import { getAllPostsMetadata } from "./get_posts_cached.ts";
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = () => {
   try {
-    const posts = await getAllPostsMetadata();
+    const posts = getAllPostsMetadata();
     return { posts, status: 200 };
   } catch (error) {
     console.error("Error fetching posts:", error);

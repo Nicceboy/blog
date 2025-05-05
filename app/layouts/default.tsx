@@ -1,5 +1,4 @@
 import { Navbar } from "~/components/navbar.tsx";
-import { Sidenotes } from "~/components/sidenote.tsx";
 
 export function PageLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -8,7 +7,9 @@ export function PageLayout({ children }: { children: React.ReactNode }) {
         <header className="flex flex-col items-center sticky">
           <Navbar />
         </header>
+      <div className="flex-1  max-w-screen px-[1rem] relative">
             {children}
+      </div>
       </div>
     </main>
   );

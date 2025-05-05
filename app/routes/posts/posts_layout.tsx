@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import type { Post } from "~/./lib/posts.ts";
+import type { Post } from "./get_posts_cached.ts";
 
 const PostCard = ({ post }: { post: Post }) => {
   const formattedDate = new Date(post.created).toLocaleDateString("en-US", {
@@ -12,7 +12,7 @@ const PostCard = ({ post }: { post: Post }) => {
   });
 
   return (
-    <div className="flex flex-col h-full rounded p-4 shadow-sm hover:shadow-md transition-shadow box-border border border-red-my-for-light dark:border-gray-800">
+    <div className="flex flex-col h-full rounded p-4 shadow-sm hover:shadow-md transition-shadow box-border border border-gray-300 dark:border-gray-800">
       {/* Content Section */}
       <div className="flex-grow mb-4">
         {/* flex-grow pushes tags down, mb-4 adds space above tags */}
@@ -88,14 +88,15 @@ export const PostsLayout = () => {
       {isLoading
         ? (
           <div className="text-center py-[1rem]">
-            <div className="inline-block animate-spin rounded-full h-[3rem] w-12 border-4 border-gray-900 border-t-red-my-for-light dark:border-t-red-my">
+            <div className="inline-block animate-spin rounded-full h-[3rem] w-12 border-4 border-gray-200 dark:border-gray-900 border-t-red-my-for-light dark:border-t-red-my">
             </div>
-            <p className="mt-2">Loading posts...</p>
+            <p className="mt-2 font-bold">Loading posts...</p>
           </div>
         )
         : posts.length > 0
         ? (
           <>
+            <h1 className="pl-[1rem] mb-[2rem] font-bold text-3xl text-red-my-for-light dark:text-red-my">Writings</h1>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-[3rem]">
               {posts.map((post) => <PostCard key={post.slug} post={post} />)}
             </div>

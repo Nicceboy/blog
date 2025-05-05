@@ -81,9 +81,8 @@ export const PostContainer = (
 
 
   return (
-    <div className="flex-1 max-w-[70ch] px-[1rem] relative">
+    <div className="max-w-[70ch] relative">
       <div className="flex flex-row">
-      <title>{meta.title}</title>
       <section
         className={`prose  w-full space-y-6 md:px-[calc(1rem)] relative`}
       >
