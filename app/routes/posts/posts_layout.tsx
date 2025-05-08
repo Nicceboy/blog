@@ -15,24 +15,28 @@ const PostCard = ({ post }: { post: Post }) => {
     <div className="flex flex-col h-full rounded p-4 shadow-sm hover:shadow-md transition-shadow box-border border border-gray-300 dark:border-gray-800">
       {/* Content Section */}
       <div className="flex-grow mb-4">
-        {/* flex-grow pushes tags down, mb-4 adds space above tags */}
         <Link to={`/posts/${post.slug}`} className="no-underline">
           <h2 className="text-2xl font-bold dark:text-gray-400 mb-2 hover:text-red-my transition-colors">
             {post.title}
           </h2>
         </Link>
+        <div className="py-1 border-t border-gray-300 dark:border-gray-900"></div>
         <div className="dark:text-gray-400 text-sm mb-3">{formattedDate}</div>
         {post.description && (
           <p className="dark:text-gray-500 mb-3">{post.description}</p>
         )}
-        {post.image && (
+      </div>
+
+      {/* Image Section - Moved outside content div to position at bottom */}
+      {post.image && (
+        <div className="mt-auto mb-3">
           <img
             src={post.image}
             alt={post.title || "Post image"}
-            className="w-full object-cover mb-3 rounded-md" // Added basic image styling
+            className="w-full object-cover rounded-md opacity-95"
           />
-        )}
-      </div>
+        </div>
+      )}
 
       {post.tags && post.tags.length < 0 && (
         <div className="flex flex-wrap gap-2 pt-2 border-t border-gray-200 dark:border-gray-900">
@@ -47,7 +51,7 @@ const PostCard = ({ post }: { post: Post }) => {
           ))}
         </div>
       )}
-      <div className="border-t border-gray-200 dark:border-gray-900"></div>
+      <div className="py-1 border-b border-gray-300 dark:border-gray-900"></div>
     </div>
   );
 };

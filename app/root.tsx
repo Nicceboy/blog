@@ -7,6 +7,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
+// import { PageLayout } from "~/layouts/default.tsx";
 
 import type { Route } from "./+types/root.ts";
 import "./styles/main.css";
@@ -23,6 +24,10 @@ export const links: Route.LinksFunction = () => [
   //   href:
   //     "https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
   // },
+  { rel: "icon", href: "/butterfly.svg", type: "image/svg+xml", media: "(prefers-color-scheme: light)" },
+  { rel: "icon", href: "/butterfly_white.svg", type: "image/svg+xml", media: "(prefers-color-scheme: dark)" },
+  { rel: "apple-touch-icon", href: "/butterfly.svg", type: "image/svg+xml", media: "(prefers-color-scheme: light)" },
+  { rel: "apple-touch-icon", href: "/butterfly_white.svg", type: "image/svg+xml", media: "(prefers-color-scheme: dark)" },
 ];
 
 // Simple non-blocking script to prevent theme flash

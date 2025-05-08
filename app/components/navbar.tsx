@@ -1,5 +1,5 @@
 import { NavLink } from "react-router";
-import { HouseSimple, Moon, Sun, User } from "@phosphor-icons/react";
+import { HouseSimple, Moon, Sun} from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 
 const getNavLinkClass = (isActive: boolean) =>
@@ -63,7 +63,7 @@ export function Navbar() {
         title="Home"
         tabIndex={0}
       >
-        <HouseSimple weight="thin" aria-label="Home" size="2rem" />
+        <HouseSimple weight="thin" aria-label="Home" size="30px" />
       </NavLink>
       {
         /* <NavLink
@@ -88,8 +88,8 @@ export function Navbar() {
           : "Switch to dark mode"}
       >
         {theme === "dark"
-          ? <Sun weight="thin" size="2rem" aria-hidden="true" />
-          : <Moon weight="thin" size="2rem" aria-hidden="true" />}
+          ? <Sun weight="thin" size="30px" aria-hidden="true" />
+          : <Moon weight="thin" size="30px" aria-hidden="true" />}
       </button>
     </nav>
   );

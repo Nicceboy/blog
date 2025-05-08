@@ -1,0 +1,288 @@
+import PostContainer from "~/routes/posts/post_layout.tsx";
+import previewImage from './castle_and_flag.png?w=800&format=avif';
+import comparisonImage from './comparison.png?w=800&format=avif';
+
+
+import Toc from "~/lib/toc.tsx"
+
+export const metadata = {
+    // title: "Adapting CTF challenges in academic education",
+    // title: "Applicability of the CTF challenges in academic education",
+    title: "CTFs may help combat students' LLM abuse in academic education",
+    created: Date.parse("2025-05-08"),
+    // updated: Date.parse("2025-05-07"),
+    area: "Essay",
+    tags: [ "CTF", "education", "LLMs" ],
+    author: "Niklas Saari",
+    description: "In a competitive and enjoyment setting, implementation and usage of CTF challenges can be obvious, but for purely educational purpose, there can be challenges and benefits other than the tasks itself.",
+    image: previewImage,
+    toc: false,
+    // draft: "0196a5fa-a0ae-74ea-9a3b-16bce341ae6a" 
+};
+
+{/* Constraints on the resources and maintaining the fairness in teaching of cybersecurity can be challenging. */}
+
+
+<figure className="flex flex-col items-center pt-[1rem] pb-[1rem]">
+    <img 
+        src={previewImage}
+        alt="Gothic-style University with a flag on the roof"
+        className="rounded"
+    />
+    <figcaption className="text-center text-sm text-gray-600 dark:text-gray-400 text- mt-2">
+        Sometimes only one person needs to bring the flag down.
+    </figcaption>
+</figure>
+
+> This post will be long and it is mostly about abstract educational discussion. There will be a follow-up post if you are simply interested in technical details or deploying stuff "in a IaC way" into Finland's IT Center for Science [^1] services by using Terraform/OpenTofu. You may ignore the rest.
+
+
+What does it take to provide technical, and especially Capture the Flag (CTF)-like cybersecurity exercises for students in an academic context?
+You may wonder what is so special here if you are familiar with the existing general scene, but there are challenges related to both resource optimisation for teachers and the overall fairness and efficiency of the teaching methodology itself, not to mention the existence of LLMs.
+This post is about discussing the technical cybersecurity teaching, required skills, suitability of CTF-like challenges to combat LLM existence and the current state of the technical solutions.  
+
+
+{/* {<Toc></Toc>} */}
+
+## Motivation for learning
+
+In a higher-level education, students are aiming to certain degree, where the degree certification, grades of the courses and possible thesis should matter and represent their skills, consumed time and effort somewhat correctly.
+It is a way to signal in a job-market while no credential is a perfect proxy for ability.
+
+Skills they learn are hopefully useful in real life but should not be completely tied to a specific time and place, e.g. contrary to some applied sciences. 
+A common thought is that the teaching and material should be *visionary* on some level; what kind of information should future generations possess? 
+Are we supporting the learning process of future, more complex information? 
+As it happens to be, denominator among the different pedagogical approaches is jointly underline the importance of long-term future orientation and higher-order thinking, which has an association for *deep learning* [^2]. 
+This is often visible in the university studies that enforce deep learning; subjects can be abstracted and practical skills might be omitted or reduced. 
+Practical skills are sometimes thought to be "novice" and be more relevant to be acquired with surface-level learning. 
+
+This brings challenges to technical fields like cybersecurity.
+You should be capable of high-level thinking while also having a wide range of technical skills and background knowledge. 
+You need to understand how different complex systems work and interact with each other.
+In a volatile field where information keeps changing, likely more than in many other fields, and new tools emerge every day or some designs become obsolete overnight, you cannot focus too much on a single thing at a specific time. 
+However, if you don't focus *enough*, then in practice, your skills might not be that useful or relevant at all.
+There is a saying that you will learn that at work, and some industries might be even dismissive about the overall benefits of university education.
+The problem arises if you don't get the first job or you don't know enough about the field to come up with a valid business idea and found your own company, or you simply don't have the skills to deliver your idea.
+
+Motivation is usually the driving method for a student to reach the required skills, or anything in life for that matter.
+Teachers should at least provide the basis from which students could grab and go further if they like.
+**If** students choose to, and they actually obtained the required minimal skills to be capable of doing so.
+There's a clear association between intrinsic and extrinsic motivators and their impact on deep versus surface-level learning.
+An endless debate continues about which type of motivation should be encouraged, but the connection between motivation type and learning depth is quite well established [^3].
+
+| Motivation type | Description | Association with learning |
+| -------------- | ----------- | ------------------------- |
+| **Intrinsic** | Arises from curiosity, joy, and personal interest; the activity itself is satisfying. | Often leads to deep learning - students explore topics beyond requirements, seek connections, and engage meaningfully. |
+| **Extrinsic** | Tied to external rewards such as grades, certification, recognition, or avoiding negative consequences. | Typically results in surface-level learning - focusing on minimum requirements and memorisation rather than understanding. |
+
+In the context of cybersecurity, you may have heard the word *hacker*. 
+For some people, the origin is surprising since it is not related to malicious activity or software exploitation.
+Rather, it is about the spirit itself - something that is done in the spirit of playfulness and exploration.
+Quoting Richard Stallman, the creator of GNU Project and Free Software Foundation, about hackers and software [^4]:
+
+> What they had in common was mainly love of excellence and programming. They wanted to make their programs that they used be as good as they could. They also wanted to make them do neat things. They wanted to be able to do something in a more exciting way than anyone believed possible and show "Look how wonderful this is. I bet you didn't believe this could be done."
+
+A more recent academic definitions are somewhat related to previous hacker definition - e.g. Bratus et. al. [^5] defines *hacking* as "the ability to question the trust assumptions in
+the design and implementation of computer systems rather than any negative use of such skills."
+
+You may see where this is going. 
+We can assume that hackers were highly intrinsically motivated, which resulted in pushing the boundaries of software and innovation in different areas.
+With the inclusion of higher-order thinking, this perhaps allowed them to go beyond what the system was originally intended for.
+Unfortunately, sometimes the context matters more than statistical occurrence of ill-advised decisions, and ultimately, that has altered the meaning of the term, when journalist and law-enforcements adapted it. 
+
+We may see hackers as some sort of talented wizards, but where is the line between high motivation and pure intelligence and talent?
+Personally, I believe that with sufficient motivation you can reach quite many things, but the limiting factor is always the time, which isn't original thought at all. 
+Intelligence and talent can substantially reduce the required time to achieve such things, and curiosity is often tied to intelligence, which in further boosts the intrinsic motivation. 
+You might have heard the word *passion*, and it can be a synonym for intrinsic motivation.
+Most people we see in the talented group were able to go much further than others in a similar time frame, though we may not see the whole truth.
+
+Passion might drive learning, but what if that passion isn't high enough for a specific topic, or life circumstances don't allow enough time for it?
+That is usually the moment when motivating factors start to conflict.
+Intrinsic motivation may be higher in other areas, and extrinsic motivation begins to take its place.
+Of course, it can be more complicated than that, and some extrinsic motivations can also be strong enough to drive deep learning.
+
+However, at that point, people may start taking shortcuts.
+The deadline is closing in, and they haven't started yet.
+They had more interesting things to do, were held up for some reason, or perhaps just the thought of starting felt too overwhelming (also known as procrastination).
+The hard truth is that many students are primarily there for the credential itself, hoping it will help them in the job market.
+
+This presents a primary pedagogical challenge: while not every teaching method suits everyone, we still need to measure learning and find the best *average* way to teach necessary skills in the shortest possible time.
+Broadly speaking, we evaluate learning in two domains [^6]:
+* **Knowledge retention** - memorizing content and evaluating recall (e.g., traditional exams, "repeat-after-me" exercises).
+* **Knowledge application** - measuring understanding by applying information in different contexts, demonstrating problem-solving skills, and transferring knowledge to new situations.
+
+Recent technological advancements have particularly impacted *the knowledge retention aspect*, permanently changing how we should approach teaching.
+This is especially true **if knowledge retention evaluations primarily target students lacking intrinsic motivation**.
+
+## LLMs, knowledge retention and cybersecurity
+
+LLMs are here to stay, at least until we run out of electricity.
+While we cannot yet outsource reasoning to LLMs completely, they excel at knowledge retention based on *the data they were trained on*, unless provided with more contextual information.
+
+While I was writing this text (it took actually many days), another a bit similar post appeared in Hacker News [^7] where the comments shared a lot of my thoughts, but can also offer more perspective than I have here.
+However, I would argue that we can do more than just demand for the prompt. 
+
+If teaching methods and evaluations are based mainly on knowledge retention, and students are mostly motivated by extrinsic factors, we can be sure they will take the path of least resistance.
+If course credentials depend on artifacts students create (such as text, code, or other deliverables), students will use whatever means necessary to generate those artifacts with the least amount of effort where the associated risk for negative penalty is negligible.
+I have seen this personally even before the time of LLMs.
+We could say that it is the responsibility of teachers to provide evaluation mechanisms that note this and consider the overall impact of gamification on the degree, as well as how the outside world validates the associated credentials, but do they have enough time to do so?
+
+Teaching, especially in cybersecurity (or perhaps in any field), isn't solely about the produced artifacts; rather, it emphasises the process of arriving at those artifacts and the capability to evaluate their correctness.
+No information is permanent.
+I would see the skills cybersecurity requires across four broad areas:
+    1. Correlating the "hacking" mindset (as previously defined) with high-level thinking and problem-solving to technically secure systems while noting "the unknown".
+    2. Applying skills effectively under time constraints, requiring both memorised knowledge (e.g., commands) and a deep understanding of system mechanics.
+    3. Understanding the broader context of events, how they interconnect, and their implications for laws, regulations, and other areas in society.
+    4. Considering usability (UX), human behavior, and psychology in design. For example, creating user-facing APIs or configurations resistant to misuse, or assessing how application design might affect social engineering like phishing.
+
+> The following is mostly about the **technical perspective**, but it also applies to other areas (e.g. remembering legislation or regulation).
+
+Knowledge retention is primarily relevant to part *two* and *three*, and memorisation typically plays a supporting role in speeding up the process.
+It is also relevant for forming a high-level understanding, as you need to remember at least the core concepts to achieve it.
+Reading technical specifications or blog posts isn't primarily about remembering the exact interface details or technical approach, but rather understanding how they fit into the overall scheme or topic.
+If you need detailed, bit-level information, you can always refer back to the specification manual.
+I would say that it's more important to know that the specification exists, where to find the information, and its overall purpose or approach, rather than memorising it completely.
+In many cases, memorisation in education is just about proofing that you put some effort, rather than you are required to remember it all in real life.
+
+The exception, to describe the impact of time constraints, there is an **xkcd** comic for every situation.
+Who knows how to use `tar`? I do; I must be the odd person. But I don't remember regular expressions, at all.
+How would these comics look if an LLM were always available?
+
+<figure className="flex flex-col items-center py-[2rem]">
+    <img
+        src="https://imgs.xkcd.com/comics/tar.png"
+        alt="xkcd comic about the tar command"
+        className="rounded"
+    />
+    <figcaption className="text-center text-sm text-gray-600 dark:text-gray-400 text- mt-2">
+        [xkcd: tar](https://xkcd.com/1168/)
+    </figcaption>
+</figure>
+
+
+<figure className="flex flex-col items-center py-[2rem]">
+    <img
+        src="https://imgs.xkcd.com/comics/regular_expressions.png"
+        alt="xkcd comic about the regex"
+        className="rounded"
+    />
+    <figcaption className="text-center text-sm text-gray-600 dark:text-gray-400 text- mt-2">
+        [xkcd: Regular Expressions](https://xkcd.com/208/)
+    </figcaption>
+</figure>
+
+
+
+
+LLMs can replace manuals or specifications when contextual information is needed quickly to apply a tool or complete part of a process, when the consequence of applying misinformation (or hallucinations) is negligible, or the assumption for correctness is high enough. 
+Assuming you know what needs to be done and understand the end goal, *the artifact generator* can help you achieve it faster.
+
+Maybe we can think this as an improvement, as it reduces cognitive load, freeing up mental capacity for other tasks.
+However, the overall thinking and workflow required to complete the entire process should likely still remain under human control, because we still possess the theoretical capability to achieve better outcomes.
+LLMs may offer guidance on the processes themselves, but they still struggle to accurately understand the context or intent.
+They also demonstrate an iterative self-evaluation process every day in new areas, but they remain restricted and can be particularly expensive when using non-local models.
+Local models might either too slow or not good enough, while this will change in the future very likely.
+
+If the evaluation of learning in cybersecurity relies primarily on knowledge retention, it fails miserably to reflect the real-world skills students need.
+Also, this likely isn't an original thought, but the more we rely on knowledge retention-based evaluations that don't push the boundaries of thinking and processes, the more we risk getting "stuck in time".
+LLMs can be terribly bad at generating configuration syntax or code in new areas where they haven't been well-trained.
+Or you end up instructing more about what *not to do*, instead of instructing the actual need.
+
+If students widely use these LLMs solely to produce artifacts, they might stick with technologies currently well-understood by LLMs.
+Adapting to newer technologies becomes a hindrance, as they would need to do it themselves or take additional steps to provide the LLM with context, which can be more expensive, time-consuming, and less accurate, at least for now.
+Will we ever see another major programming language emerge?
+Or does every new framework or library need its own LLM instance, like [Polars](https://docs.pola.rs/api/python/stable/reference/) has?
+
+But how does this fit with the CTFs mentioned earlier?
+When we start doing CTFs, we could say that we start *hacking*.
+Is it possible that it also awakens the spiritual hacker within the student?
+For some, it may not, but it still enforces the process-oriented learning and you need to think at least a bit.
+Maybe we can say that the correct approach using CTF-like tasks addresses the requirements for high-level thinking and technical skills, while also offering an effective automatic evaluation mechanism, if implemented in a specific way.
+This helps scale teaching and reduces the time needed for assessing tasks, which might otherwise be mostly LLM-generated.
+
+For a very complex tasks, we could still require write-ups and manual review instead of using flag-based evaluation, since even with an LLM, the end artifact may be more beneficial, and not all students attempt these most challenging tasks.
+However, if the default assumption is that an editor's or terminal's *autocomplete* can automatically complete tasks, it is not useful to spend time reviewing such tasks or even to consider them worthy of achievement.
+
+## Adapting CTFs - we are almost there?
+
+The original CTF competition and the term in a cybersecurity context goes back to DEF CON conference in 1996.
+There were no strict rules, and the original competition somewhat resembled the "old-school CTF".
+Players tried to replace their opponents' flags with their own, but just in computer systems that they created themselves (a.k.a. attack-defence format) [^8]. 
+Later on, the *jeopardy* format has started to dominate in general, where the organisers provide the flags and participants simply try to find them.
+
+The gamification of computer and network security is thought to greatly improve the technical skills of the participants, though perhaps not as effectively developing general awareness and social aspects. 
+Gamification in education itself is a very known approach to improve the motivation and engagement.
+We note only the jeopardy format here, while the attack/defence approach is also important and is usually taught with [Cyber Range platforms](https://en.wikipedia.org/wiki/Cyber_range).
+The jeopardy format might allow us to teach skills from very different areas and levels and possibly scale indefinitely.
+Once we have enough skills and knowledge, Cyber Range-like exercises could be more useful.
+
+The core problem of original CTFs is that everyone is trying to find the same flag in the same environment, without any variations.
+From a competitive perspective, flag sharing and process sharing are less of a problem since it is a competition after all.
+Since it is a competition, it is also okay if only the final result matters, no matter how difficult the task is, or the player goes down rabbit holes or hits a hard wall.
+
+In an educational setting, the requirements are different:
+ * The student may lack most, if not all, background knowledge.
+ * The task cannot be ambiguous, but it also must require original thought and be engaging.
+ * The overall task should be educative and there should be sufficient feedback.
+ * The automatic grading should assume that cheating requires more effort than playing by the rules (a.k.a. **a zero-trust policy for students**). Extrinsic motivation might be high.
+ * **The content of the task should not be restricted by the capabilities of the platform**
+
+There are many open CTF platforms that can evaluate the flag, and even host some parts of the challenge, but in most cases, they have single flag and single environment. Probably the most known open-source platform is [CTFd](https://ctfd.io/).
+
+There are few approaches that have tried to solve some above problems.
+Commercial platform Hack The Box introduced dynamic flags in 2020, which was though as a bit negative because [the way write-ups were controlled](https://forum.hackthebox.com/t/dynamic-root-flags-to-be-introduced/2378/6).
+The reason was that since a Hack The Box profile has some credential value, people were sharing flags to increase their rank.
+In the Hack The Box platform and machine exploitation contexts, changing the flag can be easy (e.g. flag is always in `/root/flag.txt`), but there can be situations where a dedicated machine is not a desirable requirement, or might add too much overhead for the topic, because of the flag location requirement.
+
+Connor David Nelson has somewhat recently finished his PhD "Hacking the Learning Curve
+Effective Cybersecurity Education at Scale" [^9] that covers current education and the state of the art.
+Thesis also introduced DOJO [^10] platform (CTFd plugin) which empowers https://pwn.college/, by further trying to improve the area in educational setting, and they have succeed a lot. 
+Some of the DOJO features are listed below (I highly recommend looking at the paper, it also covers similar problems as mentioned earlier):
+    * Every flag is unique and cryptographically tied to a student
+    * The is a templating system to provide slight variations for the tasks in some cases
+    * Every challenge is based on reading the flag from Docker container
+    * Challenge environment is tied to working environment
+    * They have also capability to run Linux kernel exploit challenges, by running QEMU in the container
+
+The downsides are that they are not capable of running more complex network-based challenges and every challenge requires the Docker container with a flag in specific place.
+Authors say that integrated environment is good, but I believe that is a bit controversial - that forces the process and teaching to follow specific patterns, and students has less freedom to choose the tooling.
+While also avoiding installing and configuring tools may help with completing the task itself, it avoids real-life problems, and maybe there is some compromise available.
+Whether that should be included - depends on the overall courses.
+The platform is mostly build with Python so it is difficult to say about the maintainability aspects.
+
+Overall comparison table about features of Cybersecurity Education Projects is presented below.
+The table is from the paper that presents DOJO [^10].
+
+<figure className="flex flex-col items-center py-[2rem]">
+    <img
+        src={comparisonImage}
+        alt="Features of Cybersecurity Education Projects"
+        className="rounded"
+    />
+    <figcaption className="text-center text-sm text-gray-600 dark:text-gray-400 text- mt-2">
+       Features of Cybersecurity Education Projects, from the publication DOJO: Applied cybersecurity education in the browser [^10]
+    </figcaption>
+</figure>
+
+
+Alpaca and SecGen are based on generating random tasks using known CVEs. 
+picoCTF is deprecated, so it seems that we might have only one platform with dynamic support!.
+
+The world was somewhat unprepared for LLMs and their impact on education, and we lack platforms that could help create efficient technical exercises to evaluate student skills correctly. 
+Maybe we see more development on this area in the future. 
+We should definitely seek new approaches to technical teaching in cybersecurity, as we can no longer use knowledge retention as a measurement of skill.
+
+
+[^1]: [CSC](csc.fi) is a non-profit limited liability company with a special mission, owned by the Finnish Government and Finnish higher education institutions.
+
+[^2]: Kovač, V. B., Nome, D. Ø., Jensen, A. R., & Skreland, L. Lj. (2023). The why, what and how of deep learning: critical analysis and additional concerns. Education Inquiry, 1–17. https://doi.org/10.1080/20004508.2023.2194502
+[^3]: See self-determination theory (SDT) or Biggs' 3-P Model.
+[^4]: From the documentary [Hackers: Wizards of the Electronic Age](https://en.wikipedia.org/wiki/Hackers:_Wizards_of_the_Electronic_Age) in 1985
+[^5]: Bratus, S., Shubina, A., & Locasto, M. E. (2010). Teaching the principles of the hacker curriculum to undergraduates. In Proceedings of the 41st ACM Technical Symposium on Computer Science Education (SIGCSE ’10) (pp. 122–126). Association for Computing Machinery. https://doi.org/10.1145/1734263.1734303
+[^6]: There is much more. See also e.g., Bloom's taxonomy. 
+[^7]: [I'd rather read the prompt ](https://claytonwramsey.com/blog/prompt/). Comments in [here.](https://news.ycombinator.com/item?id=43888803)
+[^8]: [Defcon Capture the Flag: defending vulnerable code from intense attack](https://ieeexplore.ieee.org/document/1194878)
+[^9]: Nelson, C. D. (2024). Hacking the Learning Curve: Effective Cybersecurity Education at Scale (Doctoral dissertation, Arizona State University).
+[^10]: Nelson, C., & Shoshitaishvili, Y. (2024). DOJO: Applied cybersecurity education in the browser. In Proceedings of the 55th ACM Technical Symposium on Computer Science Education (Vol. 1, pp. 930–936). Association for Computing Machinery. https://doi.org/10.1145/3626252.3630836
+
+export default (props) => <PostContainer meta={metadata} {...props} />;

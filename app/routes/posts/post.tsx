@@ -9,20 +9,32 @@ interface PostsProps {
   loaderData: Post;
 }
 
-// Loader only has dynamic slug to pass to the component
+// Loader always returns a Post object, with 404 content if needed
 export function loader(
   { params }: Route.LoaderArgs,
-): Post  {
+): Post {
   if (!params.slug) {
     console.error("[loader] Missing slug parameter");
     throw new Error("Bad Request: Missing slug parameter");
   }
+  
   const metadata = getPostMetadataBySlug(params.slug);
-  if (!metadata) {
-    console.error("[loader] Post not found for slug:", params.slug);
-    throw new Response("Not Found", { status: 404 });
+  
+  if (metadata) {
+    return metadata;
   }
-  return metadata;
+  
+  // Return 404 content as Post type
+  return {
+    slug: params.slug,
+    title: "Post Not Found",
+    description: `The post with slug "${params.slug}" could not be found`,
+    image: "",
+    path: "",
+    created: new Date(),
+    toc: false,
+    draft: "",
+  };
 }
 
 export function HydrateFallback() {
@@ -42,6 +54,7 @@ export function HydrateFallback() {
 export default function Posts({ loaderData }: PostsProps) {
   const PostContentComponent: MDXContent | null = getPostBySlug(loaderData.slug);
   const memoizedPostContentElement = useMemo(() => {
+    // Check for notFound flag or missing PostContentComponent
     if (PostContentComponent === null || PostContentComponent === undefined) {
       return (
         <div className="prose max-w-screen md:max-w-[85ch] w-full p-4">
@@ -59,8 +72,10 @@ export default function Posts({ loaderData }: PostsProps) {
     </PageLayout>
   );
 }
+
 // TODO https://github.com/remix-run/react-router/discussions/12672
 export function meta({ data }: { data: Post }) {
+  // Use data directly since it's always a Post object
   return [
     { title: data.title },
     {

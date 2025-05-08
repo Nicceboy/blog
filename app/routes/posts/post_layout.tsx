@@ -12,10 +12,11 @@ export type MetaData = {
   description?: string;
   created: Date | number;
   updated?: Date | number;
+  area?: string;
   tags?: string[];
   image?: string;
   toc: boolean;
-  draft: boolean;
+  draft?: string;
 };
 
 export const PostContainer = (
@@ -45,11 +46,21 @@ export const PostContainer = (
   const DateInfo = () => {
     return (
       <div className="text-gray-800 dark:text-gray-200 text-md font-light mb-4 flex flex-col sm:flex-row">
-          <div className="flex items-center">
-            <CalendarBlank weight="thin" aria-label="Published" size="1.5rem" className="mr-1" />
-            <span>Published on {formattedDates.createdDate}</span>
+          <div className="flex items-center flex-wrap gap-x-4 gap-y-1"> {/* Wrap published date and area */}
+            {/* Published Date */}
+            <div className="flex items-center">
+              <CalendarBlank weight="thin" aria-label="Published" size="1.5rem" className="mr-1" />
+              <span>Published on {formattedDates.createdDate}</span>
+            </div>
+            {/* Area Tag */}
+            {meta.area && (
+              <div className="px-2 rounded-md border border-gray-300 dark:border-gray-600 whitespace-nowrap text-md"> 
+                {meta.area}
+              </div>
+            )}
           </div>
-        {formattedDates.updatedDate && (
+          {/* Updated Date */}
+          {formattedDates.updatedDate && (
           <span className="sm:ml-4 mt-1 sm:mt-0">
             Updated: {formattedDates.updatedDate}
           </span>
